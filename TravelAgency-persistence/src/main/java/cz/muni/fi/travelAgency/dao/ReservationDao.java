@@ -11,9 +11,8 @@ public interface ReservationDao {
     /**
      * Add new Reservation into database
      * @param reservation
-     * @return Created Reservation
      */
-    Reservation create(Reservation reservation);
+    void create(Reservation reservation);
 
     /**
      * Get all reservation
