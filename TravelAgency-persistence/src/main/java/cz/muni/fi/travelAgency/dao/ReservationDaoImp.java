@@ -2,11 +2,9 @@ package cz.muni.fi.travelAgency.dao;
 
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
 import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.entities.Reservation;
@@ -17,7 +15,6 @@ public class ReservationDaoImp implements ReservationDao {
 
     @PersistenceContext
     private EntityManager em;
-
 
     @Override
     public Reservation create(Reservation reservation) {
@@ -58,7 +55,7 @@ public class ReservationDaoImp implements ReservationDao {
         query.setParameter("endDate", endDate);
         return query.getResultList();
     }
-    
+
     @Override
     public void update(Reservation reservation) {
         em.merge(reservation);
@@ -68,7 +65,4 @@ public class ReservationDaoImp implements ReservationDao {
     public void remove(Reservation reservation) throws IllegalArgumentException {
         em.remove(reservation);
     }
-
-
-
 }
