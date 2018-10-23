@@ -10,12 +10,8 @@ import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
-
-
 /**
- *
  * Representing Excursion Entity
- *
  * @author xrajivv
  */
 @Entity
@@ -60,9 +56,17 @@ public class Excursion {
     @NotNull
     @Column(nullable = false)
     private Duration excursionDuration;
-    
-    @ManyToOne
+
+    @OneToMany
     private Set<Trip> trips = new HashSet<Trip>();
+
+    /**
+     * Adds trip for this excursion
+     * @param trip to be added
+     */
+    public void addTrip(Trip trip) {
+        this.trips.add(trip);
+    }
 
     public Excursion() {
     }
@@ -76,7 +80,6 @@ public class Excursion {
 
     /**
      * Sets the ID, should be used primary by the DB
-     *
      * @param id of the entity
      */
     public void setId(Long id) {
@@ -92,7 +95,6 @@ public class Excursion {
 
     /**
      * Name setter
-     *
      * @param description of the excursion
      */
     public void setDescription(String description) {
@@ -108,7 +110,6 @@ public class Excursion {
 
     /**
      * Destination setter
-     *
      * @param destination of the excursion
      */
     public void setDestination(String destination) {
@@ -124,7 +125,6 @@ public class Excursion {
 
     /**
      * Price setter
-     *
      * @param price non-null price
      */
     public void setPrice(BigDecimal price) {
@@ -140,7 +140,6 @@ public class Excursion {
 
     /**
      * Date setter
-     *
      * @param excursionDate non-null excursionDate
      */
     public void setExcursionDate(Date excursionDate) {
@@ -156,11 +155,26 @@ public class Excursion {
 
     /**
      * Duration setter
-     *
      * @param excursionDuration non-null excursionDuration
      */
     public void setExcursionDuration(Duration excursionDuration) {
         this.excursionDuration = excursionDuration;
+    }
+
+    /**
+     * Retrieves all trips for this excursion
+     * @return set of trips
+     */
+    public Set<Trip> getTrips() {
+        return trips;
+    }
+
+    /**
+     * Sets trips to this excursion entity
+     * @param trips set of {@link Trip}s
+     */
+    public void setTrips(Set<Trip> trips) {
+        this.trips = trips;
     }
 
     @Override
