@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ReservationDao {
 
-    Reservation create(Reservation reservation);
+    void create(Reservation reservation);
 
     List<Reservation> findAll();
 
