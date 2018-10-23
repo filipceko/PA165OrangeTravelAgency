@@ -36,7 +36,7 @@ public class ExcursionDaoImpl implements ExcursionDao {
         return eManager.createQuery("select e from Excursion e", Excursion.class).getResultList();
 
     }
-
+    @Override
     public List<Excursion> findByTrip(Trip trip) {
         TypedQuery<Excursion> query = eManager.createQuery("SELECT e FROM Excursion e WHERE e.trip = :tripId", Excursion.class);
         query.setParameter("tripId", trip);
