@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 /**
- * Implementation of {@link CustomerDao}
+ * Implementation of {@link ExcursionDao}
  * @author xrajivv
  */
 @Repository
