@@ -13,10 +13,11 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CUSTOMER_ID")
     private Customer customer;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Trip trip;
 
     @Temporal(value = TemporalType.DATE)
@@ -38,6 +39,7 @@ public class Reservation {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+        customer.addReservation(this);
     }
 
     public Trip getTrip() {
