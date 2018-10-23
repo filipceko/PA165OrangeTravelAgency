@@ -10,6 +10,10 @@ import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Implementation of {@link ReservationDao}
+ * @author Rithy 
+ */
 @Repository
 public class ReservationDaoImp implements ReservationDao {
 
