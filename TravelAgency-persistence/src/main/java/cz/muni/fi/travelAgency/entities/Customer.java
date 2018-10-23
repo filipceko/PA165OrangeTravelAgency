@@ -2,7 +2,9 @@ package cz.muni.fi.travelAgency.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Class representing Customer entity.
@@ -40,6 +42,8 @@ public class Customer {
     @Column
     private String passportNumber;
 
+    @OneToMany(mappedBy = "customer")
+    private Set<Reservation> reservations = new HashSet<>();
     /**
      * Basic non-parametric constructor
      */
@@ -142,6 +146,30 @@ public class Customer {
      */
     public void setPassportNumber(String passportNumber) {
         this.passportNumber = passportNumber;
+    }
+
+    /**
+     * Retrieves all reservations for this customer
+     * @return set of reservations
+     */
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    /**
+     * Adds reservation for this customer
+     * @param reservation to be added
+     */
+    public void addReservation(Reservation reservation) {
+        reservations.add(reservation);
+    }
+
+    /**
+     * Sets reservations to this customer entity
+     * @param reservations set of {@link Reservation}s
+     */
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     @Override
