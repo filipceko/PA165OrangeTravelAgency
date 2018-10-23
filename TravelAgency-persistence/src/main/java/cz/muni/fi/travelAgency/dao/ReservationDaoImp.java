@@ -13,18 +13,20 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ReservationDaoImp implements ReservationDao {
 
+    /**
+     * Entity manager for this class.
+     */
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public Reservation create(Reservation reservation) {
+    public void create(Reservation reservation) {
         em.persist(reservation);
-        return reservation;
     }
 
     @Override
     public List<Reservation> findAll() {
-        return em.createQuery("SELECT e FROM Reservation e ORDER BY e.reserveDate DESC").getResultList();
+        return em.createQuery("SELECT e FROM Reservation e ORDER BY e.reserveDate DESC", Reservation.class).getResultList();
     }
 
     @Override
