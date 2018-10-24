@@ -1,6 +1,7 @@
 package cz.muni.fi.travelAgency.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
@@ -19,18 +20,22 @@ public class Reservation {
     private Long id;
 
     /** Customer who made this reservation */
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUSTOMER_ID")
+    @JoinColumn(name = "CUSTOMER_ID", nullable = false)
     private Customer customer;
 
     /** Trip this reservation is related to */
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TRIP_ID")
+    @JoinColumn(name = "TRIP_ID", nullable = false)
     private Trip trip;
 
     /** Date this reservation was made on */
+    @NotNull
     @Temporal(value = TemporalType.DATE)
-    private java.util.Date reserveDate;
+    @Column(nullable = false)
+    private Date reserveDate;
 
     /** Excursions reserved with this trip */
     @OneToMany(fetch = FetchType.LAZY)
