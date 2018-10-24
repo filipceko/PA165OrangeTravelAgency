@@ -2,10 +2,7 @@ package cz.muni.fi.travelAgency.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Class representing Customer entity.
@@ -15,9 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "CUSTOMERS")
 public class Customer {
-    /**
-     * Unique ID set by the DB
-     */
+    /** Unique ID set by the DB */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -170,10 +165,10 @@ public class Customer {
 
     /**
      * Retrieves all reservations for this customer
-     * @return set of reservations
+     * @return unmodifiable set of reservations
      */
     public Set<Reservation> getReservations() {
-        return reservations;
+        return Collections.unmodifiableSet(reservations);
     }
 
     /**
@@ -190,6 +185,14 @@ public class Customer {
      */
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
+    }
+
+    /**
+     * Removes one of customer's reservations
+     * @param reservation to be removed
+     */
+    public void removeReservation(Reservation reservation){
+        reservations.remove(reservation);
     }
 
     /**
