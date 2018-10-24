@@ -2,10 +2,12 @@ package cz.muni.fi.travelAgency.dao;
 
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
-import java.util.List;
+
+import java.util.Collection;
 
 /**
- * dao class for {@link Excursion} entity
+ * DAO class for {@link Excursion} entity
+ *
  * @author xrajivv
  */
 public interface ExcursionDao {
@@ -17,7 +19,7 @@ public interface ExcursionDao {
     void create(Excursion excursion);
 
     /**
-     * Retrievs excursion with given ID.
+     * Retrieves excursion with given ID.
      * @param id of the excursion
      * @return excursion with given ID
      */
@@ -25,16 +27,16 @@ public interface ExcursionDao {
 
     /**
      * Retrieves all excursions.
-     * @return list of all excursion
+     * @return collection of all excursion
      */
-    List<Excursion> findAll();
+    Collection<Excursion> findAll();
 
     /**
      * Retrieves all excursions by Trip.
      * @param trip of the excursion
-     * @return list of all excursion by Trip
+     * @return collection of all excursion by Trip
      */
-    List<Excursion> findByTrip(Trip trip);
+    Collection<Excursion> findByTrip(Trip trip);
 
     /**
      * Updates given excursion's data in the DB
