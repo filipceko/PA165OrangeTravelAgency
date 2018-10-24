@@ -1,6 +1,7 @@
 package cz.muni.fi.travelAgency.dao;
 
 import cz.muni.fi.travelAgency.entities.Trip;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,6 +12,7 @@ import java.util.List;
  * Class to implement @link{TripDao} interface.
  * @author Simona Raucinova
  */
+@Repository
 public class TripDaoImpl implements TripDao{
 
     @PersistenceContext
