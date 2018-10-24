@@ -57,16 +57,8 @@ public class Excursion {
     @Column(nullable = false)
     private Duration excursionDuration;
 
-    @OneToMany
-    private Set<Trip> trips = new HashSet<Trip>();
-
-    /**
-     * Adds trip for this excursion
-     * @param trip to be added
-     */
-    public void addTrip(Trip trip) {
-        this.trips.add(trip);
-    }
+    @ManyToOne
+    private Trip trip;
 
     public Excursion() {
     }
@@ -162,19 +154,19 @@ public class Excursion {
     }
 
     /**
-     * Retrieves all trips for this excursion
-     * @return set of trips
+     * Retrieves all trip for this excursion
+     * @return set of trip
      */
-    public Set<Trip> getTrips() {
-        return trips;
+    public Trip getTrip() {
+        return trip;
     }
 
     /**
-     * Sets trips to this excursion entity
-     * @param trips set of {@link Trip}s
+     * Sets trip to this excursion entity
+     * @param trip set of Trip
      */
-    public void setTrips(Set<Trip> trips) {
-        this.trips = trips;
+    public void setTrip(Trip trip) {
+        this.trip = trip;
     }
 
     @Override

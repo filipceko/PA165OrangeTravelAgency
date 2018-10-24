@@ -23,7 +23,6 @@ public class Reservation {
     @Temporal(value = TemporalType.DATE)
     private java.util.Date reserveDate;
 
-
     public void Reservation(){};
 
     public Long getId() {
@@ -58,7 +57,6 @@ public class Reservation {
     public void setReserveDate(Date reserveDate) {
         this.reserveDate = reserveDate;
     }
-
 
     @Override
     public boolean equals(Object o) {
