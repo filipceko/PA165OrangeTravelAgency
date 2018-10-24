@@ -11,8 +11,10 @@ import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 public class ReservationDaoImp implements ReservationDao {
 
     @PersistenceContext

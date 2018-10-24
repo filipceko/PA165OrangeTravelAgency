@@ -39,7 +39,7 @@ public class Customer {
     private String phoneNumber;
 
     /** Passport number */
-    @Column
+    @Column(unique = true)
     private String passportNumber;
 
     @OneToMany(mappedBy = "customer")
