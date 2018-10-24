@@ -165,6 +165,7 @@ public class Excursion {
      */
     public void setTrip(Trip trip) {
         this.trip = trip;
+        trip.addExcursion(this);
     }
 
     @Override
