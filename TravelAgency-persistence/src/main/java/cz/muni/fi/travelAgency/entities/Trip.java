@@ -2,11 +2,7 @@ package cz.muni.fi.travelAgency.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Class representing trip.
@@ -25,12 +21,14 @@ public class Trip {
     /** Day when trip starts. */
     @NotNull
     @Column(nullable = false)
-    private LocalDate fromDate;
+    @Temporal(TemporalType.DATE)
+    private Date fromDate;
 
     /** Day when trip ends. */
     @NotNull
     @Column(nullable = false)
-    private LocalDate toDate;
+    @Temporal(TemporalType.DATE)
+    private Date toDate;
 
     /** Destination of the trip. */
     @NotNull
@@ -59,7 +57,7 @@ public class Trip {
     /**
      * All fields constructor.
      */
-    public Trip(LocalDate fromDate, LocalDate toDate, int availableSlots, Set<Excursion> excursions, Set<Reservation> reservations) {
+    public Trip(Date fromDate, Date toDate, int availableSlots, Set<Excursion> excursions, Set<Reservation> reservations) {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.capacity = availableSlots;
@@ -87,7 +85,7 @@ public class Trip {
      * Retrieves starting date of the trip.
      * @return Date the trip starts
      */
-    public LocalDate getFromDate() {
+    public Date getFromDate() {
         return fromDate;
     }
 
@@ -95,7 +93,7 @@ public class Trip {
      * Trip start setter.
      * @param fromDate Date the trip starts
      */
-    public void setFromDate(LocalDate fromDate) {
+    public void setFromDate(Date fromDate) {
         this.fromDate = fromDate;
     }
 
@@ -103,7 +101,7 @@ public class Trip {
      * Retrieves ending date of the trip.
      * @return Date the trip ends
      */
-    public LocalDate getToDate() {
+    public Date getToDate() {
         return toDate;
     }
 
@@ -111,7 +109,7 @@ public class Trip {
      * Trip end setter.
      * @param toDate Date the trip ends
      */
-    public void setToDate(LocalDate toDate) {
+    public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
 

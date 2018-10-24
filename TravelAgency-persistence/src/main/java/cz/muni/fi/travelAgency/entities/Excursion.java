@@ -49,12 +49,11 @@ public class Excursion {
     /** Duration of the Excursion */
     @NotNull
     @Column(nullable = false)
-    @Temporal(TemporalType.TIME)
     private Duration excursionDuration;
 
     /** Trip this excursion is related to */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TRIP_ID")
+    @JoinColumn(name = "TRIP_ID", nullable = false)
     private Trip trip;
 
     /**
@@ -166,6 +165,7 @@ public class Excursion {
      */
     public void setTrip(Trip trip) {
         this.trip = trip;
+        trip.addExcursion(this);
     }
 
     @Override
