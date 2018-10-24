@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -14,9 +15,11 @@ import java.util.Set;
 @Entity
 @Table(name = "CUSTOMERS")
 public class Customer {
-    /** Unique ID set by the DB */
+    /**
+     * Unique ID set by the DB
+     */
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /** Name of the customer */
@@ -29,36 +32,48 @@ public class Customer {
     @Column(nullable = false)
     private String surname;
 
-    /** Email address - compulsory*/
+    /** Email address - compulsory */
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     /** Nullable phone number */
     @Column
     private String phoneNumber;
 
-    /** Passport number */
+    /** Nullable passport number */
     @Column(unique = true)
     private String passportNumber;
 
+    /** Nullable date of birth */
+    @Column
+    @Temporal(TemporalType.DATE)
+    private Date dateOfBirth;
+
+    /** Set of reservations made by the customer */
     @OneToMany(mappedBy = "customer")
     private Set<Reservation> reservations = new HashSet<>();
+
     /**
      * Basic non-parametric constructor
      */
-    public Customer(){}
+    public Customer() {
+    }
 
-    /** All fields constructor */
-    public Customer(String name, String surname, String email, String phoneNumber, String passportNumber) {
+    /**
+     * All fields constructor
+     */
+    public Customer(String name, String surname, String email, String phoneNumber, String passportNumber, Date dateOfBirth) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.passportNumber = passportNumber;
+        this.dateOfBirth = dateOfBirth;
     }
 
     /**
+     * Retrieves ID of this customer
      * @return unique ID
      */
     public Long getId() {
@@ -74,6 +89,7 @@ public class Customer {
     }
 
     /**
+     * Retrieves customer's name
      * @return name of the customer
      */
     public String getName() {
@@ -89,6 +105,7 @@ public class Customer {
     }
 
     /**
+     * Retrieves customer's surname
      * @return surname of the customer
      */
     public String getSurname() {
@@ -104,6 +121,7 @@ public class Customer {
     }
 
     /**
+     * Retrieves customer's email
      * @return email of the customer
      */
     public String getEmail() {
@@ -119,6 +137,7 @@ public class Customer {
     }
 
     /**
+     * Retrieves customers phone number
      * @return customer's phone number ro null if none set
      */
     public String getPhoneNumber() {
@@ -134,6 +153,7 @@ public class Customer {
     }
 
     /**
+     * Retrieves customers passport number
      * @return customer's passport number or null if none set
      */
     public String getPassportNumber() {
@@ -157,6 +177,14 @@ public class Customer {
     }
 
     /**
+     * Sets reservations to this customer entity
+     * @param reservations set of {@link Reservation}s
+     */
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    /**
      * Adds reservation for this customer
      * @param reservation to be added
      */
@@ -165,11 +193,19 @@ public class Customer {
     }
 
     /**
-     * Sets reservations to this customer entity
-     * @param reservations set of {@link Reservation}s
+     * Retrieves customers date of birth
+     * @return Date of birth
      */
-    public void setReservations(Set<Reservation> reservations) {
-        this.reservations = reservations;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    /**
+     * Date of birth setter
+     * @param dateOfBirth Date of birth of this customer
+     */
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override
@@ -179,13 +215,11 @@ public class Customer {
         Customer customer = (Customer) o;
         return Objects.equals(getName(), customer.getName()) &&
                 Objects.equals(getSurname(), customer.getSurname()) &&
-                Objects.equals(getEmail(), customer.getEmail()) &&
-                Objects.equals(getPhoneNumber(), customer.getPhoneNumber()) &&
-                Objects.equals(getPassportNumber(), customer.getPassportNumber());
+                Objects.equals(getEmail(), customer.getEmail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getSurname(), getEmail(), getPhoneNumber(), getPassportNumber());
+        return Objects.hash(getName(), getSurname(), getEmail());
     }
 }
