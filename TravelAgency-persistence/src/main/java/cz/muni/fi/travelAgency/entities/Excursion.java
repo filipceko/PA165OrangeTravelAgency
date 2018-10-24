@@ -1,13 +1,11 @@
 package cz.muni.fi.travelAgency.entities;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -43,8 +41,7 @@ public class Excursion {
     /** Date of the Excursion */
     @NotNull
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date excursionDate;
+    private LocalDate excursionDate;
 
     /** Duration of the Excursion */
     @NotNull
@@ -52,6 +49,7 @@ public class Excursion {
     private Duration excursionDuration;
 
     /** Trip this excursion is related to */
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TRIP_ID", nullable = false)
     private Trip trip;
@@ -60,6 +58,19 @@ public class Excursion {
      * Basic non-parametric constructor.
      */
     public Excursion() {
+    }
+
+    /**
+     * All non-null fields constructor
+     */
+    public Excursion(String description, String destination, BigDecimal price, LocalDate excursionDate, Duration excursionDuration, Trip trip) {
+        this.description = description;
+        this.destination = destination;
+        this.price = price;
+        this.excursionDate = excursionDate;
+        this.excursionDuration = excursionDuration;
+        this.trip = trip;
+        trip.addExcursion(this);
     }
 
     /**
@@ -125,14 +136,14 @@ public class Excursion {
     /**
      * @return date of the excursion
      */
-    public Date getExcursionDate() {
+    public LocalDate getExcursionDate() {
         return excursionDate;
     }
 
     /**
      * @param excursionDate non-null excursionDate
      */
-    public void setExcursionDate(Date excursionDate) {
+    public void setExcursionDate(LocalDate excursionDate) {
         this.excursionDate = excursionDate;
     }
 
