@@ -1,19 +1,21 @@
 package cz.muni.fi.travelAgency.dao;
 
-import java.util.Date;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import cz.muni.fi.travelAgency.entities.Customer;
-import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.entities.Reservation;
+import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.Collection;
+import java.util.Date;
+
 /**
  * Implementation of {@link ReservationDao}
- * @author Rithy 
+ *
+ * @author Rithy
  */
 @Repository
 @Transactional
@@ -31,7 +33,7 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public List<Reservation> findAll() {
+    public Collection<Reservation> findAll() {
         return em.createQuery("SELECT e FROM Reservation e ORDER BY e.reserveDate DESC", Reservation.class).getResultList();
     }
 
@@ -41,14 +43,15 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public List<Reservation> findByCustomer(Customer customer) {
+    public Collection<Reservation> findByCustomer(Customer customer) {
         TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.customer = :customerId",
                 Reservation.class);
         query.setParameter("customerId", customer);
         return query.getResultList();
     }
 
-    public List<Reservation> findByTrip( Trip trip) {
+    @Override
+    public Collection<Reservation> findByTrip(Trip trip) {
         TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.trip = :tripId",
                 Reservation.class);
         query.setParameter("tripId", trip);
@@ -56,7 +59,7 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public List<Reservation> findReservationBetween(Date startDate, Date endDate) {
+    public Collection<Reservation> findReservationBetween(Date startDate, Date endDate) {
         TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate BETWEEN :startDate AND :endDate",
                 Reservation.class);
         query.setParameter("startDate", startDate);
@@ -70,7 +73,7 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public void remove(Reservation reservation) throws IllegalArgumentException {
-        em.remove(reservation);
+    public void remove(Reservation reservation) {
+        em.remove(em.merge(reservation));
     }
 }

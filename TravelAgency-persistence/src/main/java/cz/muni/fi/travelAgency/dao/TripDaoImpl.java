@@ -2,18 +2,21 @@ package cz.muni.fi.travelAgency.dao;
 
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Class to implement @link{TripDao} interface.
+ *
  * @author Simona Raucinova
  */
 @Repository
-public class TripDaoImpl implements TripDao{
+@Transactional
+public class TripDaoImpl implements TripDao {
 
     @PersistenceContext
     private EntityManager em;
@@ -25,26 +28,26 @@ public class TripDaoImpl implements TripDao{
 
     @Override
     public Trip findById(Long id) {
-        return em.find(Trip.class,id);
+        return em.find(Trip.class, id);
     }
 
     @Override
-    public List<Trip> findAll() {
-        return em.createQuery("select t from Trips t",Trip.class).getResultList();
+    public Collection<Trip> findAll() {
+        return em.createQuery("select t from Trip t", Trip.class).getResultList();
     }
 
     @Override
-    public List<Trip> findByDestination(String destination) {
-        return em.createQuery("select t from Trips t where destination = :destination",Trip.class)
-                .setParameter("destination",destination)
+    public Collection<Trip> findByDestination(String destination) {
+        return em.createQuery("select t from Trip t where t.destination = :destination", Trip.class)
+                .setParameter("destination", destination)
                 .getResultList();
     }
 
     @Override
-    public List<Trip> findByToDateAndFromDate(LocalDate fromDate, LocalDate toDate) {
-        return em.createQuery("select t from Trips t where fromDate = :fromDate and toDate = :toDate",Trip.class)
-                .setParameter("fromDate",fromDate)
-                .setParameter("toDate",toDate)
+    public Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate) {
+        return em.createQuery("select t from Trip t where t.fromDate = :fromDate and t.toDate = :toDate", Trip.class)
+                .setParameter("fromDate", fromDate)
+                .setParameter("toDate", toDate)
                 .getResultList();
     }
 
