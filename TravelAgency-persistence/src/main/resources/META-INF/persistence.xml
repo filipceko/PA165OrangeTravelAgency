@@ -2,7 +2,6 @@
 
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
              version="1.0">
-
     <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
@@ -15,6 +14,5 @@
             <property name="hibernate.format_sql" value="true"/>
         </properties>
     </persistence-unit>
-
 
 </persistence>

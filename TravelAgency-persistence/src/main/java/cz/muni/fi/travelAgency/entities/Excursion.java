@@ -1,66 +1,76 @@
 package cz.muni.fi.travelAgency.entities;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Representing Excursion Entity
+ *
  * @author xrajivv
  */
 @Entity
 @Table(name = "EXCURSION")
 public class Excursion {
 
-    /**
-     * Unique ID set by the DB
-     */
+    /** Unique ID set by the DB */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    /**
-     * Description of the Excursion
-     */
+
+    /** Description of the Excursion */
     @NotNull
     @Column(nullable = false)
     private String description;
-    /**
-     * Destination of the Excursion
-     */
+
+    /** Destination of the Excursion */
     @NotNull
     @Column(nullable = false)
     private String destination;
-    /**
-     * Price of the Excursion
-     */
+
+    /** Price of the Excursion */
     @DecimalMin("0.0")
     @NotNull
     @Column(nullable = false)
     private BigDecimal price;
-    /**
-     * Date of the Excursion
-     */
+
+    /** Date of the Excursion */
     @NotNull
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date excursionDate;
-    /**
-     * Duration of the Excursion
-     */
+    private LocalDate excursionDate;
+
+    /** Duration of the Excursion */
     @NotNull
     @Column(nullable = false)
     private Duration excursionDuration;
 
-    @ManyToOne
+    /** Trip this excursion is related to */
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TRIP_ID", nullable = false)
     private Trip trip;
 
+    /**
+     * Basic non-parametric constructor.
+     */
     public Excursion() {
+    }
+
+    /**
+     * All non-null fields constructor
+     */
+    public Excursion(String description, String destination, BigDecimal price, LocalDate excursionDate, Duration excursionDuration, Trip trip) {
+        this.description = description;
+        this.destination = destination;
+        this.price = price;
+        this.excursionDate = excursionDate;
+        this.excursionDuration = excursionDuration;
+        this.trip = trip;
+        trip.addExcursion(this);
     }
 
     /**
@@ -126,15 +136,14 @@ public class Excursion {
     /**
      * @return date of the excursion
      */
-    public Date getExcursionDate() {
+    public LocalDate getExcursionDate() {
         return excursionDate;
     }
 
     /**
-     * Date setter
      * @param excursionDate non-null excursionDate
      */
-    public void setExcursionDate(Date excursionDate) {
+    public void setExcursionDate(LocalDate excursionDate) {
         this.excursionDate = excursionDate;
     }
 
@@ -167,26 +176,23 @@ public class Excursion {
      */
     public void setTrip(Trip trip) {
         this.trip = trip;
+        trip.addExcursion(this);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (!(obj instanceof Excursion)) {
-            return false;
-        }
-        Excursion excursion = (Excursion) obj;
-        return Objects.equals(getDescription(), excursion.getDescription())
-                && Objects.equals(getDestination(), excursion.getDestination())
-                && Objects.equals(getPrice(), excursion.getPrice())
-                && Objects.equals(getExcursionDate(), excursion.getExcursionDate())
-                && Objects.equals(getExcursionDuration(), excursion.getExcursionDuration());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Excursion)) return false;
+        Excursion excursion = (Excursion) o;
+        return Objects.equals(getDestination(), excursion.getDestination()) &&
+                Objects.equals(getPrice(), excursion.getPrice()) &&
+                Objects.equals(getExcursionDate(), excursion.getExcursionDate()) &&
+                Objects.equals(getExcursionDuration(), excursion.getExcursionDuration()) &&
+                Objects.equals(getTrip(), excursion.getTrip());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDescription(), getDestination(), getPrice(), getExcursionDate(), getExcursionDuration());
+        return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getExcursionDuration(), getTrip());
     }
 }
