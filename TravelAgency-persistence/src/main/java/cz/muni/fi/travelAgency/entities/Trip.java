@@ -200,14 +200,13 @@ public class Trip {
         if (this == o) return true;
         if (!(o instanceof Trip)) return false;
         Trip trip = (Trip) o;
-        return Objects.equals(getId(), trip.getId()) &&
-                Objects.equals(getFromDate(), trip.getFromDate()) &&
+        return Objects.equals(getFromDate(), trip.getFromDate()) &&
                 Objects.equals(getToDate(), trip.getToDate()) &&
                 Objects.equals(getDestination(), trip.getDestination());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFromDate(), getToDate(), getDestination());
+        return Objects.hash(getFromDate(), getToDate(), getDestination());
     }
 }
