@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -21,14 +22,12 @@ public class Trip {
     /** Day when trip starts. */
     @NotNull
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fromDate;
+    private LocalDate fromDate;
 
     /** Day when trip ends. */
     @NotNull
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date toDate;
+    private LocalDate toDate;
 
     /** Destination of the trip. */
     @NotNull
@@ -57,12 +56,21 @@ public class Trip {
     /**
      * All fields constructor.
      */
-    public Trip(Date fromDate, Date toDate, int availableSlots, Set<Excursion> excursions, Set<Reservation> reservations) {
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-        this.capacity = availableSlots;
+    public Trip(LocalDate fromDate, LocalDate toDate, String destination, int capacity, Set<Excursion> excursions,
+                Set<Reservation> reservations) {
+        this(fromDate, toDate, destination, capacity);
         this.excursions = excursions;
         this.reservations = reservations;
+    }
+
+    /**
+     * Non-null fields constructor.
+     */
+    public Trip(LocalDate fromDate, LocalDate toDate, String destination, int capacity) {
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.destination = destination;
+        this.capacity = capacity;
     }
 
     /**
@@ -85,7 +93,7 @@ public class Trip {
      * Retrieves starting date of the trip.
      * @return Date the trip starts
      */
-    public Date getFromDate() {
+    public LocalDate getFromDate() {
         return fromDate;
     }
 
@@ -93,7 +101,7 @@ public class Trip {
      * Trip start setter.
      * @param fromDate Date the trip starts
      */
-    public void setFromDate(Date fromDate) {
+    public void setFromDate(LocalDate fromDate) {
         this.fromDate = fromDate;
     }
 
@@ -101,7 +109,7 @@ public class Trip {
      * Retrieves ending date of the trip.
      * @return Date the trip ends
      */
-    public Date getToDate() {
+    public LocalDate getToDate() {
         return toDate;
     }
 
@@ -109,7 +117,7 @@ public class Trip {
      * Trip end setter.
      * @param toDate Date the trip ends
      */
-    public void setToDate(Date toDate) {
+    public void setToDate(LocalDate toDate) {
         this.toDate = toDate;
     }
 

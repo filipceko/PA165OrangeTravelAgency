@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -33,9 +34,8 @@ public class Reservation {
 
     /** Date this reservation was made on */
     @NotNull
-    @Temporal(value = TemporalType.DATE)
     @Column(nullable = false)
-    private Date reserveDate;
+    private LocalDate reserveDate;
 
     /** Excursions reserved with this trip */
     @OneToMany(fetch = FetchType.LAZY)
@@ -48,7 +48,26 @@ public class Reservation {
     public Reservation(){}
 
     /**
-     * ID getter
+     * All fields constructor.
+     */
+    public Reservation(Customer customer, Trip trip, LocalDate reserveDate, Set<Excursion> excursions) {
+        this(customer, trip, reserveDate);
+        this.excursions = excursions;
+    }
+
+    /**
+     * Non-null fields constructor.
+     */
+    public Reservation(Customer customer, Trip trip, LocalDate reserveDate) {
+        this.customer = customer;
+        customer.addReservation(this);
+        this.trip = trip;
+        trip.addReservation(this);
+        this.reserveDate = reserveDate;
+    }
+
+    /**
+     * ID getter.
      * @return ID
      */
     public Long getId() {
@@ -98,7 +117,7 @@ public class Reservation {
     /**
      * @return Date the reservation was made
      */
-    public Date getReserveDate() {
+    public LocalDate getReserveDate() {
         return reserveDate;
     }
 
@@ -106,7 +125,7 @@ public class Reservation {
      * Reservation date setter.
      * @param reserveDate the Date this reservation was made
      */
-    public void setReserveDate(Date reserveDate) {
+    public void setReserveDate(LocalDate reserveDate) {
         this.reserveDate = reserveDate;
     }
 

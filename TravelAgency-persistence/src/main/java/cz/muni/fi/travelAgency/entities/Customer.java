@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -42,8 +43,7 @@ public class Customer {
 
     /** Nullable date of birth */
     @Column
-    @Temporal(TemporalType.DATE)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     /** Set of reservations made by the customer */
     @OneToMany(mappedBy = "customer")
@@ -58,13 +58,20 @@ public class Customer {
     /**
      * All fields constructor
      */
-    public Customer(String name, String surname, String email, String phoneNumber, String passportNumber, Date dateOfBirth) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
+    public Customer(String name, String surname, String email, String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
+        this(name, surname, email);
         this.phoneNumber = phoneNumber;
         this.passportNumber = passportNumber;
         this.dateOfBirth = dateOfBirth;
+    }
+
+    /**
+     * Non-null fields constructor
+     */
+    public Customer(String name, String surname, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
     }
 
     /**
@@ -199,7 +206,7 @@ public class Customer {
      * Retrieves customers date of birth
      * @return Date of birth
      */
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -207,7 +214,7 @@ public class Customer {
      * Date of birth setter
      * @param dateOfBirth Date of birth of this customer
      */
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
