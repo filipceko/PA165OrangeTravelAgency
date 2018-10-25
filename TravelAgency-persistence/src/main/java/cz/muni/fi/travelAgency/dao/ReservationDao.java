@@ -3,63 +3,69 @@ package cz.muni.fi.travelAgency.dao;
 import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
-import java.util.Date;
-import java.util.List;
 
+import java.util.Collection;
+import java.util.Date;
+
+/**
+ * Reservation DAO interface
+ *
+ * @author Rithy
+ */
 public interface ReservationDao {
 
     /**
      * Add new Reservation into database
-     * @param reservation
+     * @param reservation to be added
      */
     void create(Reservation reservation);
 
     /**
-     * Get all reservation
-     * @return List of Reservation in database
+     * Get all reservations
+     * @return collection of Reservation in database
      */
-    List<Reservation> findAll();
+    Collection<Reservation> findAll();
 
     /**
      * Get Reservation by id
-     * @param id
-     * @return​ Reservation retrieved with the given id
+     * @param id of the reservation
+     * @return reservation with the given id
      */
     Reservation findById(Long id);
 
     /**
      * Get Reservation by customer
-     * @param customer
-     * @return Reservation retrieved with the given related customer
+     * @param customer to retrieve reservations for
+     * @return collection of reservations by the given customer
      */
-    List<Reservation> findByCustomer(Customer customer);
+    Collection<Reservation> findByCustomer(Customer customer);
 
     /**
      * Get Reservation by trip
-     * @param trip
-     * @return Reservation retrieved with the given related trip
+     * @param trip to retrieve reservations for
+     * @return collection of reservations with the given trip
      */
-    List<Reservation> findByTrip(Trip trip);
+    Collection<Reservation> findByTrip(Trip trip);
 
     /**
      * Update existing Reservation
-     * @param reservation
+     * @param reservation to be updated
      */
     void update(Reservation reservation);
 
     /**
      * Remove existing Reservation
-     * @param reservation
-     * @throws IllegalArgumentException
+     * @param reservation to be deleted
      */
-    void remove(Reservation reservation)  throws IllegalArgumentException;
+    void remove(Reservation reservation);
 
     /**
      * Get List of Reservation by providing from date and to date
-     * @param startDate and enddate
-     * @return Reservation retrieved with the given date
+     * @param startDate of the interval
+     * @param endDate   of the interval
+     * @return collection of reservations with the given date
      */
-    List<Reservation> findReservationBetween(Date startDate, Date endDate);
+    Collection<Reservation> findReservationBetween(Date startDate, Date endDate);
 }
 
 

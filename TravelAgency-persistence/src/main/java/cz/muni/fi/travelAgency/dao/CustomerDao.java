@@ -2,10 +2,10 @@ package cz.muni.fi.travelAgency.dao;
 
 import cz.muni.fi.travelAgency.entities.Customer;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
- * dao class for {@link Customer} entity
+ * DAO class for {@link Customer} entity.
  *
  * @author Filip Cekovsky
  */
@@ -19,12 +19,12 @@ public interface CustomerDao {
 
     /**
      * Retrieves all customers.
-     * @return list of all customer
+     * @return collection of all customer
      */
-    List<Customer> findAll();
+    Collection<Customer> findAll();
 
     /**
-     * Retrievs customer with given ID.
+     * Retrieves customer with given ID.
      * @param id of the customer
      * @return customer with given ID
      */
@@ -32,7 +32,7 @@ public interface CustomerDao {
 
     /**
      * Retrieves customer with given name.
-     * @param name of the customer
+     * @param name    of the customer
      * @param surname of the custome
      * @return customer with given name
      */

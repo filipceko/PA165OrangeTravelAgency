@@ -2,10 +2,11 @@ package cz.muni.fi.travelAgency.dao;
 
 import cz.muni.fi.travelAgency.entities.Customer;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Implementation of {@link CustomerDao}
@@ -13,6 +14,7 @@ import java.util.List;
  * @author Filip Cekovsky
  */
 @Repository
+@Transactional
 public class CustomerDaoImpl implements CustomerDao {
 
     /**
@@ -27,7 +29,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public List<Customer> findAll() {
+    public Collection<Customer> findAll() {
         return manager.createQuery("select c from Customer c", Customer.class).getResultList();
     }
 
@@ -51,6 +53,6 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public void remove(Customer customer) {
-        manager.remove(customer);
+        manager.remove(manager.merge(customer));
     }
 }
