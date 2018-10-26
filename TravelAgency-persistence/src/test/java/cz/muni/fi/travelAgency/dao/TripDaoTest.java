@@ -26,7 +26,7 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private TripDao tripDao;
 
-    private Trip trip1;
+    private Trip tripBrno;
     private LocalDate firstDate = LocalDate.of(2018, 10, 20);
     private LocalDate secondDate = LocalDate.of(2018, 10, 25);
 
@@ -35,12 +35,12 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
      */
     @BeforeClass
     public void createTripTest() {
-        trip1 = new Trip();
-        trip1.setFromDate(firstDate);
-        trip1.setToDate(secondDate);
-        trip1.setDestination("Lake");
-        trip1.setCapacity(10);
-        tripDao.create(trip1);
+        tripBrno = new Trip();
+        tripBrno.setFromDate(firstDate);
+        tripBrno.setToDate(secondDate);
+        tripBrno.setDestination("Lake");
+        tripBrno.setCapacity(10);
+        tripDao.create(tripBrno);
     }
 
     /**
@@ -48,12 +48,12 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testFindTripById() {
-        Assert.assertNotNull(trip1.getId());
-        Trip found = tripDao.findById(trip1.getId());
-        Assert.assertEquals(found.getFromDate(), firstDate);
-        Assert.assertEquals(found.getToDate(), secondDate);
-        Assert.assertEquals(found.getDestination(), "Lake");
-        Assert.assertEquals(found.getCapacity(), 10);
+        Assert.assertNotNull(tripBrno.getId());
+        Trip found = tripDao.findById(tripBrno.getId());
+        Assert.assertEquals(firstDate, found.getFromDate());
+        Assert.assertEquals(secondDate, found.getToDate());
+        Assert.assertEquals("Lake", found.getDestination());
+        Assert.assertEquals(10, found.getCapacity());
     }
 
     /**
@@ -61,8 +61,8 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void findByDestination() {
-        Assert.assertEquals(tripDao.findByDestination("Lake").size(), 1);
-        Assert.assertEquals(tripDao.findByDestination("Hill").size(), 0);
+        Assert.assertEquals(1, tripDao.findByDestination("Lake").size());
+        Assert.assertEquals(0, tripDao.findByDestination("Hill").size());
     }
 
     /**
@@ -70,9 +70,9 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void findByInterval() {
-        LocalDate startDate = LocalDate.of(2018, 7, 29);
-        LocalDate endDate = LocalDate.of(2018, 11, 24);
-        Assert.assertEquals(tripDao.findByInterval(startDate, endDate).size(), 0);
+        LocalDate startDate = LocalDate.of(2018, 10, 20);
+        LocalDate endDate = LocalDate.of(2018, 10, 25);
+        Assert.assertEquals(1, tripDao.findByInterval(startDate, endDate).size());
     }
 
     /**
@@ -81,14 +81,14 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void testFindAllTrip() {
         //create new trip
-        Trip trip2 = new Trip();
-        trip2.setFromDate(firstDate);
-        trip2.setToDate(secondDate);
-        trip2.setDestination("Brno Dragon");
-        trip2.setCapacity(5);
-        tripDao.create(trip2);
+        Trip tripBali = new Trip();
+        tripBali.setFromDate(firstDate);
+        tripBali.setToDate(secondDate);
+        tripBali.setDestination("Ubud");
+        tripBali.setCapacity(5);
+        tripDao.create(tripBali);
         Collection<Trip> founds = tripDao.findAll();
-        Assert.assertEquals(founds.size(), 2);
+        Assert.assertEquals(2, founds.size());
     }
 
     /**
@@ -96,13 +96,12 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testUpdateTrip() {
-
-        Trip found = tripDao.findById(trip1.getId());
+        Trip found = tripDao.findById(tripBrno.getId());
         Assert.assertNotNull(found);
         found.setDestination("Brno Dam");
         tripDao.update(found);
         Trip updatedTrip = tripDao.findById(found.getId());
-        Assert.assertEquals(updatedTrip.getDestination(), "Brno Dam");
+        Assert.assertEquals("Brno Dam", updatedTrip.getDestination());
     }
 
     /**
@@ -110,9 +109,8 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testDeleteTrip() {
-        Assert.assertNotNull(tripDao.findById(trip1.getId()));
-        tripDao.delete(trip1);
-        Assert.assertNull(tripDao.findById(trip1.getId()));
+        Assert.assertNotNull(tripDao.findById(tripBrno.getId()));
+        tripDao.delete(tripBrno);
+        Assert.assertNull(tripDao.findById(tripBrno.getId()));
     }
-
 }
