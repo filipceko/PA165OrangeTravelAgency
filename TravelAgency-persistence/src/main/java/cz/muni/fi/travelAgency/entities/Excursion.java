@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * Representing Excursion Entity
  *
- * @author xrajivv
+ * @author Rajivv
  */
 @Entity
 @Table(name = "EXCURSION")
