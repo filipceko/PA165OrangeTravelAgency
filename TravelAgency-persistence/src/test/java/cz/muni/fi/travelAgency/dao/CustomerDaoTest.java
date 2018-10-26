@@ -64,7 +64,7 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
     }
 
     @Test
-    public void testFindAllCustomer() {
+    public void testFindAllCustomers() {
         //Add new customer
         Customer newCustomer = new Customer();
         newCustomer.setName("Filip");
