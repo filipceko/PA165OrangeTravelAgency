@@ -20,6 +20,10 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 
+/**
+ * Implementation of {@link AbstractTestNGSpringContextTests}
+ * @author Rithy 
+ */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
@@ -27,11 +31,15 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
 
     @Autowired
     private CustomerDao customerDao;
+    
     private Customer customer;
     private Trip tripParis1;
     private Excursion excursionParis1;
     private Reservation reservationParis1;
 
+     /**
+     * Init and create customer entity 
+     */
     @BeforeClass
     public void InitCustomerTest() {
         customer = new Customer();
@@ -49,7 +57,6 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
      */
     @Test
     public void testFindCustomerById() {
-
        // Get customer and test find methods
         Assert.assertNotNull(customer.getId());
         Customer found = customerDao.findById(customer.getId());
@@ -80,9 +87,7 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
         // Get all customers store in database
         Collection<Customer> allCustomers = customerDao.findAll();
         Assert.assertEquals(allCustomers.size(),2);
-
     }
-
 
     /**
      * Test customer entity update
@@ -130,6 +135,5 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
         //Make Reservation
         reservationParis1 = new Reservation(customer, tripParis1, LocalDate.of(2018, 10, 15));
         Assert.assertNotNull(reservationParis1.getCustomer());
-
     }
 }
