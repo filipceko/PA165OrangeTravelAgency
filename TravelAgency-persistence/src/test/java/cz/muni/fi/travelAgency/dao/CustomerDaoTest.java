@@ -53,7 +53,7 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
     }
 
     /**
-     * Tests customer entity creation and retrieval
+     * Tests find customer entity by providing custgomer id
      */
     @Test
     public void testFindCustomerById() {
