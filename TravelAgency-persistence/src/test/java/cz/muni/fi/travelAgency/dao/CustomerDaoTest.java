@@ -63,6 +63,9 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
         Assert.assertEquals(found.getPhoneNumber(),"776741422");
     }
 
+     /**
+     * Tests get all customers entity from database
+     */
     @Test
     public void testFindAllCustomers() {
         //Add new customer
