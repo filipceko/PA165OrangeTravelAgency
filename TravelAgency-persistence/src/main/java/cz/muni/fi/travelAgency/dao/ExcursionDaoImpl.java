@@ -12,7 +12,7 @@ import java.util.Collection;
 /**
  * Implementation of {@link ExcursionDao}
  *
- * @author xrajivv
+ * @author Rajivv
  */
 @Repository
 public class ExcursionDaoImpl implements ExcursionDao {

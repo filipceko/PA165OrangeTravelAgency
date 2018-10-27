@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * DAO class for {@link Excursion} entity
  *
- * @author xrajivv
+ * @author Rajivv
  */
 public interface ExcursionDao {
 
