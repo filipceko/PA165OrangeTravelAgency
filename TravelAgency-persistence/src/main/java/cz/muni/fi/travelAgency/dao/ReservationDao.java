@@ -4,6 +4,7 @@ import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 
@@ -65,7 +66,7 @@ public interface ReservationDao {
      * @param endDate   of the interval
      * @return collection of reservations with the given date
      */
-    Collection<Reservation> findReservationBetween(Date startDate, Date endDate);
+    Collection<Reservation> findReservationBetween(LocalDate startDate, LocalDate endDate);
 }
 
 

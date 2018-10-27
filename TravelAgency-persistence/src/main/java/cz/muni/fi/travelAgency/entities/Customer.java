@@ -38,7 +38,6 @@ public class Customer {
     private String phoneNumber;
 
     /** Nullable passport number */
-    @Column(unique = true)
     private String passportNumber;
 
     /** Nullable date of birth */
