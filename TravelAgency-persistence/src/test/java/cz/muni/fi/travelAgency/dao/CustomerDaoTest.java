@@ -30,6 +30,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
+/**
+ * Implementation of {@link AbstractTestNGSpringContextTests}
+ * @author Rithy 
+ */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
@@ -46,6 +50,9 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
     private Excursion excursionParis1;
     private Reservation reservationParis1;
 
+     /**
+     * Init and create customer entity 
+     */
     @BeforeClass
     public void InitCustomerTest() {
         customer = new Customer();
@@ -89,11 +96,10 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
     }
 
     /**
-     * Tests customer entity creation and retrieval
+     * Tests find customer entity by providing custgomer id
      */
     @Test
     public void findByIdCustomerTest() {
-
         // Get customer and test find methods
         Assert.assertNotNull(customer.getId());
         Customer found = customerDao.findById(customer.getId());
@@ -106,6 +112,7 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
         Assert.assertEquals(found.getPassportNumber(), "PASSPORT2018");
         Assert.assertEquals(found.getPhoneNumber(),"776741422");
     }
+  
     /**
      * Tests find customer entity by providing custgomer's name
      */
@@ -118,7 +125,6 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
         assertEquals(customer, found);
         assertThrows(IllegalArgumentException.class, () -> customerDao.findByName(null,customer.getSurname()));
     }
-
 
     /**
      * Tests get all customers entity from database
@@ -137,9 +143,7 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
         // Get all customers store in database
         Collection<Customer> allCustomers = customerDao.findAll();
         Assert.assertEquals(allCustomers.size(),2);
-
     }
-
 
     /**
      * Test customer entity update
@@ -194,6 +198,5 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
         reservationParis1 = new Reservation(customer, tripParis1, LocalDate.of(2018, 10, 15));
         Assert.assertNotNull(reservationParis1.getCustomer());
     }
-
 
 }

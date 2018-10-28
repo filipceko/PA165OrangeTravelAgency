@@ -45,7 +45,9 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate) {
-        return em.createQuery("select t from Trip t where t.fromDate = :fromDate and t.toDate = :toDate", Trip.class)
+        return em.createQuery("select t from Trip t where (t.fromDate between :fromDate and :toDate) " +
+                                                    "and (t.toDate between :fromDate and :toDate) order by t.fromDate",
+                Trip.class)
                 .setParameter("fromDate", fromDate)
                 .setParameter("toDate", toDate)
                 .getResultList();
@@ -58,6 +60,6 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public void delete(Trip trip) {
-        em.remove(trip);
+        em.remove(em.merge(trip));
     }
 }

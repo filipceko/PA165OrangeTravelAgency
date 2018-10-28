@@ -4,6 +4,7 @@ import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.time.LocalDate;
 
@@ -76,7 +77,6 @@ public interface ReservationDao {
      * @throws IllegalArgumentException if startDate&endDate is NULL
      */
     Collection<Reservation> findReservationBetween(LocalDate startDate, LocalDate endDate);
-
 }
 
 
