@@ -40,7 +40,7 @@ public interface TripDao {
     Collection<Trip> findByDestination(String destination);
 
     /**
-     * Finds all trips starting on fromDate and ending on toDate.
+     * Finds all trips in interval fromDate and toDate.
      * @param fromDate day when trips start
      * @param toDate   day when trips end
      * @return collection of trips with given dates
