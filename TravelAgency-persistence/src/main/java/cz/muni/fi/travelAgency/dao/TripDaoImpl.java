@@ -58,6 +58,6 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public void delete(Trip trip) {
-        em.remove(trip);
+        em.remove(em.merge(trip));
     }
 }

@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.validation.Validation;
+import javax.xml.validation.Validator;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 
@@ -59,7 +62,7 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public Collection<Reservation> findReservationBetween(Date startDate, Date endDate) {
+    public Collection<Reservation> findReservationBetween(LocalDate startDate, LocalDate endDate) {
         TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate BETWEEN :startDate AND :endDate",
                 Reservation.class);
         query.setParameter("startDate", startDate);
@@ -69,7 +72,12 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public void update(Reservation reservation) {
-        em.merge(reservation);
+        if (reservation == null) throw new IllegalArgumentException("Tried to update NULL!");
+        if (em.find(Reservation.class, reservation.getId()) != null){
+            em.merge(reservation);
+        } else {
+            throw new IllegalArgumentException("Tried to update Reservation that was not saved before.");
+        }
     }
 
     @Override
