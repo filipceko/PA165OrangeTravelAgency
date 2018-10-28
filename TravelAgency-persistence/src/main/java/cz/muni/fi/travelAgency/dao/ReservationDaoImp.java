@@ -13,8 +13,7 @@ import javax.validation.Validation;
 import javax.xml.validation.Validator;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
-
+import java.time.LocalDate;
 /**
  * Implementation of {@link ReservationDao}
  *
@@ -82,6 +81,12 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public void remove(Reservation reservation) {
-        em.remove(em.merge(reservation));
+        if (reservation == null) throw new IllegalArgumentException("Tried to delete NULL!");
+        if (em.find(Reservation.class, reservation.getId()) != null){
+            em.remove(em.merge(reservation));
+        } else {
+            throw new IllegalArgumentException("Tried to Remove Reservation that was not saved before.");
+        }
+
     }
 }
