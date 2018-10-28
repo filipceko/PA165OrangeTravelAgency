@@ -3,6 +3,7 @@ package cz.muni.fi.travelAgency.dao;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,7 @@ import java.util.Collection;
  * @author Rajivv
  */
 @Repository
+@Transactional
 public class ExcursionDaoImpl implements ExcursionDao {
 
     /**
