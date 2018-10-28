@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,6 +41,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
     private Excursion excursionObservatory;
     private Trip parisTrip;
     private Excursion excursionEiffel;
+    private Excursion excursionObservatory2;
 
     @BeforeClass
     public void setUp(){
@@ -70,6 +72,15 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         excursionObservatory.setExcursionDuration(Duration.ofMinutes(120));
         excursionObservatory.setTrip(newYorkTrip);
 
+        Excursion excursionObservatory2 = new Excursion();
+        excursionObservatory2.setDescription("See New York City at your feet with admission to the One World Observatory," +
+                " a 3-story destination on top of the western hemisphere’s tallest building. ");
+        excursionObservatory2.setDestination("NYC One World Observatory");
+        excursionObservatory2.setPrice(new BigDecimal("34.00"));
+        excursionObservatory2.setExcursionDate(LocalDate.of(2018,7,12));
+        excursionObservatory2.setExcursionDuration(Duration.ofMinutes(120));
+        excursionObservatory2.setTrip(newYorkTrip);
+
         Trip parisTrip = new Trip();
         parisTrip.setFromDate(LocalDate.of(2018,9,25));
         parisTrip.setToDate(LocalDate.of(2018,10,15));
@@ -89,6 +100,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         manager.persist(newYorkTrip);
         manager.persist(excursionStatueOfLiberty);
         manager.persist(excursionObservatory);
+        manager.persist(excursionObservatory2);
         manager.persist(excursionEiffel);
 
         manager.getTransaction().commit();
@@ -99,6 +111,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         this.excursionEiffel = excursionEiffel;
         this.excursionObservatory = excursionObservatory;
         this.excursionStatueOfLiberty = excursionStatueOfLiberty;
+        this.excursionObservatory2 = excursionObservatory2;
     }
 
     /**
@@ -154,6 +167,9 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         Excursion eiffel = excursionDao.findById(excursionEiffel.getId());
         assertEquals(excursionEiffel,eiffel);
 
+        Excursion observatory2 = excursionDao.findById(excursionObservatory2.getId());
+        assertEquals(excursionObservatory2,observatory2);
+
         assertNull(excursionDao.findById(23L));
         assertThrows(IllegalArgumentException.class, () -> excursionDao.findById(null));
 
@@ -162,15 +178,27 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findAllTest(){
         Collection<Excursion> retrievedExcursions = excursionDao.findAll();
-        assertEquals(3,retrievedExcursions.size());
+        assertEquals(4,retrievedExcursions.size());
     }
 
     @Test
     public void findByTripTest(){
         Collection<Excursion> retrievedExcursionsNY = excursionDao.findByTrip(newYorkTrip);
-        assertEquals(2,retrievedExcursionsNY.size());
+        assertEquals(3,retrievedExcursionsNY.size());
         Collection<Excursion> retrievedExcursionsParis = excursionDao.findByTrip(parisTrip);
         assertEquals(1,retrievedExcursionsParis.size());
+    }
+
+    @Test
+    public void findByDestinationTest(){
+        Collection<Excursion> retrievedExcursions = excursionDao.findByDestination("NYC One World Observatory");
+        assertEquals(2,retrievedExcursions.size());
+        assertTrue(retrievedExcursions.contains(excursionObservatory));
+        assertTrue(retrievedExcursions.contains(excursionObservatory2));
+
+        retrievedExcursions = excursionDao.findByDestination("Eiffel Tower");
+        assertEquals(1,retrievedExcursions.size());
+        assertTrue(retrievedExcursions.contains(excursionEiffel));
     }
 
     @Test
@@ -188,9 +216,9 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         Excursion testExcursion = new Excursion("Description","Destination",new BigDecimal("10.00"),
                 excursionDate ,Duration.ofMinutes(20),newYorkTrip);
         excursionDao.create(testExcursion);
-        assertEquals(4,excursionDao.findAll().size());
+        assertEquals(5,excursionDao.findAll().size());
         excursionDao.remove(testExcursion);
-        assertEquals(3,excursionDao.findAll().size());
+        assertEquals(4,excursionDao.findAll().size());
         assertThrows(IllegalArgumentException.class, () -> excursionDao.remove(null));
 
     }
