@@ -4,6 +4,8 @@ import cz.muni.fi.travelAgency.PersistenceTestAppContext;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
 import javax.validation.ConstraintViolationException;
+
+import org.junit.AfterClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -138,6 +140,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
                 excursionDate ,Duration.ofMinutes(20),null)));
 
         assertThrows(IllegalArgumentException.class, () -> excursionDao.create(null));
+        excursionDao.remove(testExcursion);
     }
 
     @Test
@@ -181,18 +184,31 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void removeTest(){
-        excursionDao.remove(excursionEiffel);
-        Collection<Excursion> excursions = excursionDao.findAll();
-        assertEquals(2,excursions.size());
-
-        excursionDao.remove(excursionStatueOfLiberty);
-        excursions = excursionDao.findAll();
-        assertEquals(1,excursions.size());
-
-        excursionDao.remove(excursionObservatory);
-        excursions = excursionDao.findAll();
-        assertEquals(0,excursions.size());
-
+        LocalDate excursionDate = LocalDate.of(2018,7,13);
+        Excursion testExcursion = new Excursion("Description","Destination",new BigDecimal("10.00"),
+                excursionDate ,Duration.ofMinutes(20),newYorkTrip);
+        excursionDao.create(testExcursion);
+        assertEquals(4,excursionDao.findAll().size());
+        excursionDao.remove(testExcursion);
+        assertEquals(3,excursionDao.findAll().size());
         assertThrows(IllegalArgumentException.class, () -> excursionDao.remove(null));
+
+    }
+
+    @AfterClass
+    public void tearDown(){
+        excursionDao.remove(excursionEiffel);
+        excursionDao.remove(excursionObservatory);
+        excursionDao.remove(excursionStatueOfLiberty);
+        //Test remove was successful
+        assertNull(excursionDao.findById(excursionEiffel.getId()));
+        assertNull(excursionDao.findById(excursionObservatory.getId()));
+        assertNull(excursionDao.findById(excursionStatueOfLiberty.getId()));
+        //Delete the rest
+        EntityManager manager = managerFactory.createEntityManager();
+        manager.remove(newYorkTrip);
+        manager.remove(parisTrip);
+        manager.getTransaction().commit();
+        manager.close();
     }
 }
