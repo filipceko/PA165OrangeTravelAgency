@@ -14,6 +14,7 @@ import javax.xml.validation.Validator;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.time.LocalDate;
+
 /**
  * Implementation of {@link ReservationDao}
  *
@@ -62,17 +63,32 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public Collection<Reservation> findReservationBetween(LocalDate startDate, LocalDate endDate) {
-        TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate BETWEEN :startDate AND :endDate",
-                Reservation.class);
-        query.setParameter("startDate", startDate);
-        query.setParameter("endDate", endDate);
-        return query.getResultList();
+        if (startDate == null && endDate != null) {
+            TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate <= :endDate", Reservation.class);
+            query.setParameter("endDate", endDate);
+            return query.getResultList();
+        } else if (startDate != null && endDate == null) {
+            TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate >= :startDate", Reservation.class);
+            query.setParameter("startDate", startDate);
+            return query.getResultList();
+        } else if (startDate == null && endDate == null) {
+            TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e ORDER BY e.reserveDate DESC", Reservation.class);
+            return query.getResultList();
+        } else {
+            TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate BETWEEN :startDate AND :endDate",
+                    Reservation.class);
+            query.setParameter("startDate", startDate);
+            query.setParameter("endDate", endDate);
+            return query.getResultList();
+        }
     }
 
     @Override
     public void update(Reservation reservation) {
-        if (reservation == null) throw new IllegalArgumentException("Tried to update NULL!");
-        if (em.find(Reservation.class, reservation.getId()) != null){
+        if (reservation == null) {
+            throw new IllegalArgumentException("Tried to update NULL!");
+        }
+        if (em.find(Reservation.class, reservation.getId()) != null) {
             em.merge(reservation);
         } else {
             throw new IllegalArgumentException("Tried to update Reservation that was not saved before.");
@@ -81,8 +97,10 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public void remove(Reservation reservation) {
-        if (reservation == null) throw new IllegalArgumentException("Tried to delete NULL!");
-        if (em.find(Reservation.class, reservation.getId()) != null){
+        if (reservation == null) {
+            throw new IllegalArgumentException("Tried to delete NULL!");
+        }
+        if (em.find(Reservation.class, reservation.getId()) != null) {
             em.remove(em.merge(reservation));
         } else {
             throw new IllegalArgumentException("Tried to Remove Reservation that was not saved before.");
