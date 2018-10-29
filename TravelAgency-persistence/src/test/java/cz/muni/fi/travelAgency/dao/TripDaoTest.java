@@ -56,7 +56,7 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
         tripDao.create(tripBrno);
     }
 
-    //@AfterClass
+    @AfterClass
     public void tearDownTest() {
         tripDao.delete(tripBrno);
         tripDao.delete(tripBali);

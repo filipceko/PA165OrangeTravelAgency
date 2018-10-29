@@ -90,11 +90,10 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         assertNull(reservationDao.findById(reservation2.getId()));
         //Delete the rest
         EntityManager manager = managerFactory.createEntityManager();
-        manager.remove(manager.merge(excursion1));
-        manager.remove(manager.merge(excursion2));
-        manager.remove(manager.merge(customer1));
-        manager.remove(manager.merge(customer2));
-        manager.remove(manager.merge(trip));
+        manager.getTransaction().begin();
+        manager.createQuery("delete Excursion e");
+        manager.createQuery("delete Customer c").executeUpdate();
+        //manager.createQuery("delete Trip t").executeUpdate();
         manager.getTransaction().commit();
         manager.close();
     }
