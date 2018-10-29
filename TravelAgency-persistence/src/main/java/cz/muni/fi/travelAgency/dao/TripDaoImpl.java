@@ -38,6 +38,9 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public Collection<Trip> findByDestination(String destination) {
+        if (destination == null || destination.length() == 0){
+            throw new IllegalArgumentException("findByName() was called with NULL argument or empty string!");
+        }
         return em.createQuery("select t from Trip t where t.destination = :destination", Trip.class)
                 .setParameter("destination", destination)
                 .getResultList();
