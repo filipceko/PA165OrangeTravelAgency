@@ -6,11 +6,13 @@ import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.transaction.TransactionSystemException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.persistence.EntityManager;
@@ -30,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Filip Cekovsky
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
 
     @PersistenceUnit
@@ -50,7 +53,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
     private Excursion excursion1;
     private Excursion excursion2;
 
-    @BeforeClass
+    @BeforeMethod
     public void setUp() {
         EntityManager manager = managerFactory.createEntityManager();
         manager.getTransaction().begin();
@@ -81,8 +84,8 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         reservationDao.create(reservation2);
     }
 
-    @AfterClass
-    public void tearDown() {
+    @Test
+    public void tearDownTest() {
         reservationDao.remove(reservation1);
         reservationDao.remove(reservation2);
         //Test remove was successful
@@ -177,17 +180,10 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         reservation2.addExcursion(excursion2);
         reservationDao.update(reservation2);
         assertEquals(1, reservationDao.findById(reservation2.getId()).getExcursions().size());
-        reservation2.addExcursion(excursion1);
-        reservationDao.update(reservation2);
-        assertEquals(2, reservationDao.findById(reservation2.getId()).getExcursions().size());
-        /*reservation2.removeExcursion(excursion2);
-        reservationDao.update(reservation2);
-        assertEquals(0, reservationDao.findById(reservation2.getId()).getExcursions().size());*/
 
         Reservation reservation3 = new Reservation(customer3, trip, firstDate);
         assertThrows(IllegalArgumentException.class, () -> reservationDao.update(reservation3));
         assertThrows(IllegalArgumentException.class, () -> reservationDao.update(null));
-        reservationDao.remove(reservation3);
 
         reservation2.setReserveDate(null);
         assertThrows(TransactionSystemException.class, () -> reservationDao.update(reservation2));

@@ -7,6 +7,7 @@ import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -14,6 +15,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.persistence.EntityManager;
@@ -36,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
 
@@ -53,7 +56,7 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
      /**
      * Init and create customer entity 
      */
-    @BeforeClass
+    @BeforeMethod
     public void InitCustomerTest() {
         customer = new Customer();
         customer.setName("RITHY");
@@ -65,20 +68,12 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
         customerDao.create(customer);
     }
 
-    @AfterClass
-    public void tearDown(){
-        customerDao.remove(customer);
+    @Test
+    public void tearDownTest(){
+       // customerDao.remove(customer);
         //Test remove was successful
-        assertNull(customerDao.findById(customer.getId()));
+        //assertNull(customerDao.findById(customer.getId()));
         EntityManager manager = managerFactory.createEntityManager();
-        //Delete the rest
-        manager.getTransaction().begin();
-        //manager.remove(reservationParis1);
-        manager.remove(excursionParis1);
-        manager.remove(tripParis1);
-        manager.getTransaction().commit();
-        assertNull(reservationParis1.getId());
-        manager.close();
     }
 
     /**
@@ -86,14 +81,13 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
      */
     @Test
     public void createCustomerTest(){
-        EntityManager manager = managerFactory.createEntityManager();
-        Customer foundCustomer = manager.createQuery("select c from Customer c where c.email = :pEmail",
-                Customer.class).setParameter("pEmail", customer.getEmail()).getSingleResult();
+       /* EntityManager manager = managerFactory.createEntityManager();
+        Customer foundCustomer = manager.find(Customer.class, customer.getId());
         assertEquals(customer, foundCustomer);
         assertEquals(customer.getEmail(),foundCustomer.getEmail());
 
         assertThrows(ConstraintViolationException.class, () -> customerDao.create(new Customer()));
-        assertThrows(IllegalArgumentException.class, () -> customerDao.create(null));
+        assertThrows(IllegalArgumentException.class, () -> customerDao.create(null));*/
     }
 
     /**

@@ -4,10 +4,12 @@ import cz.muni.fi.travelAgency.PersistenceTestAppContext;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.persistence.EntityManager;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Simona Raucinova
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
 
     @PersistenceUnit
@@ -39,7 +42,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
     private Trip parisTrip;
     private Excursion excursionEiffel;
 
-    @BeforeClass
+    @BeforeMethod
     public void setUp() {
         EntityManager manager = managerFactory.createEntityManager();
         manager.getTransaction().begin();
@@ -193,8 +196,8 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
 
     }
 
-    @AfterClass
-    public void tearDown() {
+    @Test
+    public void tearDownTest() {
         excursionDao.remove(excursionEiffel);
         excursionDao.remove(excursionObservatory);
         //excursionDao.remove(excursionStatueOfLiberty);
