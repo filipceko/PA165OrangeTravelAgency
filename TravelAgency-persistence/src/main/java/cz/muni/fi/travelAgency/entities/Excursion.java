@@ -51,7 +51,7 @@ public class Excursion {
     /** Trip this excursion is related to */
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TRIP_ID", nullable = false)
+    @JoinColumn(nullable = false)
     private Trip trip;
 
     /**

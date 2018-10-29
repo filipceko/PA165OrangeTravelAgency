@@ -9,11 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.validation.Validation;
-import javax.xml.validation.Validator;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.time.LocalDate;
 
 /**
  * Implementation of {@link ReservationDao}
@@ -71,9 +68,8 @@ public class ReservationDaoImp implements ReservationDao {
             TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate >= :startDate", Reservation.class);
             query.setParameter("startDate", startDate);
             return query.getResultList();
-        } else if (startDate == null && endDate == null) {
-            TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e ORDER BY e.reserveDate DESC", Reservation.class);
-            return query.getResultList();
+        } else if (startDate == null) {
+            return findAll();
         } else {
             TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate BETWEEN :startDate AND :endDate",
                     Reservation.class);
@@ -98,10 +94,10 @@ public class ReservationDaoImp implements ReservationDao {
     @Override
     public void remove(Reservation reservation) {
         if (reservation == null) {
-            throw new IllegalArgumentException("Tried to delete NULL!");
+            throw new IllegalArgumentException("Tried to remove NULL!");
         }
         if (em.find(Reservation.class, reservation.getId()) != null) {
-            em.remove(em.merge(reservation));
+            em.createQuery("delete Reservation r where r.id = :id").setParameter("id", reservation.getId()).executeUpdate();
         } else {
             throw new IllegalArgumentException("Tried to Remove Reservation that was not saved before.");
         }

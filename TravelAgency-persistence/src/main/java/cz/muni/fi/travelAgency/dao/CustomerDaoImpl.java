@@ -40,7 +40,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public Customer findByName(String name, String surname) {
-        if (name == null || surname == null){
+        if (name == null || surname == null) {
             throw new IllegalArgumentException("findByName() was called with NULL argument!");
         }
         return manager.createQuery("select c from Customer c where c.name = :name and c.surname = :surname", Customer.class)
@@ -51,10 +51,10 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public void update(Customer customer) {
-        if (customer == null){
-            throw  new IllegalArgumentException("tried to update NULL customer");
+        if (customer == null) {
+            throw new IllegalArgumentException("tried to update NULL customer");
         }
-        if (findById(customer.getId()) == null){
+        if (findById(customer.getId()) == null) {
             throw new IllegalArgumentException("Customer must be saved before editing");
         }
         manager.merge(customer);
@@ -62,6 +62,9 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public void remove(Customer customer) {
+        if (customer == null) {
+            throw new IllegalArgumentException("Tried to remove NULL from the Customers");
+        }
         manager.remove(manager.merge(customer));
     }
 }

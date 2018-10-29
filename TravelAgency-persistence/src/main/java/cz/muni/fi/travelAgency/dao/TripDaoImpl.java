@@ -38,7 +38,7 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public Collection<Trip> findByDestination(String destination) {
-        if (destination == null || destination.length() == 0){
+        if (destination == null || destination.length() == 0) {
             throw new IllegalArgumentException("findByName() was called with NULL argument or empty string!");
         }
         return em.createQuery("select t from Trip t where t.destination = :destination", Trip.class)
@@ -49,7 +49,7 @@ public class TripDaoImpl implements TripDao {
     @Override
     public Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate) {
         return em.createQuery("select t from Trip t where (t.fromDate between :fromDate and :toDate) " +
-                                                    "and (t.toDate between :fromDate and :toDate) order by t.fromDate",
+                        "and (t.toDate between :fromDate and :toDate) order by t.fromDate",
                 Trip.class)
                 .setParameter("fromDate", fromDate)
                 .setParameter("toDate", toDate)
@@ -62,7 +62,7 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
-    public void delete(Trip trip) {
+    public void remove(Trip trip) {
         em.remove(em.merge(trip));
     }
 }

@@ -57,6 +57,6 @@ public interface TripDao {
      * Deletes trip.
      * @param trip to be deleted
      */
-    void delete(Trip trip);
+    void remove(Trip trip);
 
 }

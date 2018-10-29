@@ -4,18 +4,12 @@ import cz.muni.fi.travelAgency.PersistenceTestAppContext;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.transaction.annotation.Transactional;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -28,25 +22,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author Rajivv
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
-@TestExecutionListeners(TransactionalTestExecutionListener.class)
-@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TripDaoTest extends AbstractTestNGSpringContextTests {
-
-    @PersistenceUnit
-    private EntityManagerFactory managerFactory;
-
     @Autowired
     private TripDao tripDao;
 
     private Trip tripBrno;
-    private Trip tripBali;
     private LocalDate firstDate = LocalDate.of(2018, 10, 20);
     private LocalDate secondDate = LocalDate.of(2018, 10, 25);
 
     /**
      * create trip
      */
-    @BeforeClass
+    @BeforeMethod
     public void setUpTest() {
         tripBrno = new Trip();
         tripBrno.setFromDate(firstDate);
@@ -56,19 +44,12 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
         tripDao.create(tripBrno);
     }
 
-    //@AfterClass
-    public void tearDownTest() {
-        tripDao.delete(tripBrno);
-        tripDao.delete(tripBali);
-        //Test remove was successful
-        Assert.assertNull(tripDao.findById(tripBrno.getId()));
-        Assert.assertNull(tripDao.findById(tripBali.getId()));
-    }
-
+    /**
+     * Test creation
+     */
     @Test
     public void createTripTest() {
-        EntityManager em = managerFactory.createEntityManager();
-        Trip foundTrip = em.createQuery("select t from Trip t where t.destination =:destination", Trip.class).setParameter("destination", tripBrno.getDestination()).getSingleResult();
+        Trip foundTrip = tripDao.findById(tripBrno.getId());
         Assert.assertEquals(tripBrno, foundTrip);
         Assert.assertEquals(tripBrno.getDestination(), foundTrip.getDestination());
         assertThrows(ConstraintViolationException.class, () -> tripDao.create(new Trip()));
@@ -121,8 +102,7 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testFindAllTrip() {
-        //create new trip
-        tripBali = new Trip();
+        Trip tripBali = new Trip();
         tripBali.setFromDate(firstDate);
         tripBali.setToDate(secondDate);
         tripBali.setDestination("Ubud");
@@ -147,12 +127,13 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests trip to delete
+     * Tests trip to remove
      */
     @Test
-    public void testDeleteTrip() {
-        //also tested in tearDown
-        assertThrows(ConstraintViolationException.class, () -> tripDao.delete(new Trip()));
-        assertThrows(IllegalArgumentException.class, () -> tripDao.delete(null));
+    public void removeTest() {
+        tripDao.remove(tripBrno);
+        Assert.assertNull(tripDao.findById(tripBrno.getId()));
+        assertThrows(ConstraintViolationException.class, () -> tripDao.remove(new Trip()));
+        assertThrows(IllegalArgumentException.class, () -> tripDao.remove(null));
     }
 }

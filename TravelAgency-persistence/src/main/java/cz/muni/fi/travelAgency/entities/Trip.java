@@ -40,11 +40,11 @@ public class Trip {
     private int capacity;
 
     /** Excursions assigned to trip. */
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.REMOVE)
     private Set<Excursion> excursions = new HashSet<>();
 
     /** Reservations for this trip. */
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip", cascade = CascadeType.REMOVE)
     private Set<Reservation> reservations = new HashSet<>();
 
     /**
