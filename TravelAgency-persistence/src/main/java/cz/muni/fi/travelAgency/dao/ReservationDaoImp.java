@@ -9,11 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.validation.Validation;
-import javax.xml.validation.Validator;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.time.LocalDate;
 
 /**
  * Implementation of {@link ReservationDao}
@@ -97,7 +94,7 @@ public class ReservationDaoImp implements ReservationDao {
     @Override
     public void remove(Reservation reservation) {
         if (reservation == null) {
-            throw new IllegalArgumentException("Tried to delete NULL!");
+            throw new IllegalArgumentException("Tried to remove NULL!");
         }
         if (em.find(Reservation.class, reservation.getId()) != null) {
             em.createQuery("delete Reservation r where r.id = :id").setParameter("id", reservation.getId()).executeUpdate();

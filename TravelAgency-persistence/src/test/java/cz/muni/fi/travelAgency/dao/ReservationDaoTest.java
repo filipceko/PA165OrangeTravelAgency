@@ -10,8 +10,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.transaction.TransactionSystemException;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -19,7 +17,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.validation.ConstraintViolationException;
-
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -29,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Reservation DAO test class
+ *
  * @author Filip Cekovsky
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
@@ -50,9 +48,11 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
     private Customer customer3;
     private Reservation reservation1;
     private Reservation reservation2;
-    private Excursion excursion1;
     private Excursion excursion2;
 
+    /**
+     * Prepare testing environment
+     */
     @BeforeMethod
     public void setUp() {
         EntityManager manager = managerFactory.createEntityManager();
@@ -62,7 +62,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         customer1 = new Customer("Filip", "Cekovsky", "filip@ceko.com");
         customer2 = new Customer("Frodo", "Zemiak", "frodo@zemiak.com");
         customer3 = new Customer("Imrich", "Piskotka", "piskota@sucha.com");
-        excursion1 = new Excursion("Test excursion", "Test", BigDecimal.valueOf(10.00),
+        Excursion excursion1 = new Excursion("Test excursion", "Test", BigDecimal.valueOf(10.00),
                 firstDate, Duration.ZERO, trip);
         excursion2 = new Excursion("Test excursion 2.0", "Tale", BigDecimal.valueOf(11.50),
                 secondDate, Duration.ofHours(5), trip);
@@ -84,21 +84,18 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         reservationDao.create(reservation2);
     }
 
+    /**
+     * Validates remove throws expected exceptions, remove functionality.
+     */
     @Test
-    public void tearDownTest() {
+    public void removeTest() {
         reservationDao.remove(reservation1);
         reservationDao.remove(reservation2);
         //Test remove was successful
         assertNull(reservationDao.findById(reservation1.getId()));
         assertNull(reservationDao.findById(reservation2.getId()));
-        //Delete the rest
-        EntityManager manager = managerFactory.createEntityManager();
-        manager.getTransaction().begin();
-        manager.createQuery("delete Excursion e");
-        manager.createQuery("delete Customer c").executeUpdate();
-        //manager.createQuery("delete Trip t").executeUpdate();
-        manager.getTransaction().commit();
-        manager.close();
+        assertThrows(IllegalArgumentException.class, () -> reservationDao.remove(new Reservation()));
+        assertThrows(IllegalArgumentException.class, () -> reservationDao.remove(null));
     }
 
     /**
@@ -212,16 +209,5 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         assertEquals(2, result.size());
         result = reservationDao.findReservationBetween(null, null);
         assertEquals(2, result.size());
-    }
-
-    /**
-     * Validates remove throws expected exceptions, remove functionality
-     * asserted in tearDown().
-     */
-    @Test
-    private void removeTest() {
-        //also tested in tear down
-        assertThrows(IllegalArgumentException.class, () -> reservationDao.remove(new Reservation()));
-        assertThrows(IllegalArgumentException.class, () -> reservationDao.remove(null));
     }
 }

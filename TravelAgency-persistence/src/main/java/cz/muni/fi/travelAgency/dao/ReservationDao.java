@@ -55,7 +55,7 @@ public interface ReservationDao {
 
     /**
      * Updates given Reservation's data in the DB
-     * @param Reservation to be updated
+     * @param reservation to be updated
      * @throws IllegalArgumentException if parameter is NULL or not saved yet.
      * @throws org.springframework.transaction.TransactionSystemException if constraints are violated
      */
@@ -63,7 +63,7 @@ public interface ReservationDao {
 
     /**
      * Erases data for given Reservation form the DB.
-     * @param Reservation to be erased
+     * @param reservation to be erased
      * @throws IllegalArgumentException when NULL as parameter
      * @throws javax.validation.ConstraintViolationException when parameter is not valid
      */

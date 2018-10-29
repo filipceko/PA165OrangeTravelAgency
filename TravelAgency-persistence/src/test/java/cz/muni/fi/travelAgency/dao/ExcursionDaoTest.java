@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -102,9 +100,6 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         this.excursionStatueOfLiberty = excursionStatueOfLiberty;
     }
 
-    /**
-     * Validates excursion is created as expected and valid exceptions are thrown on error.
-     */
     @Test
     public void createTest() {
         EntityManager manager = managerFactory.createEntityManager();
@@ -192,26 +187,12 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         assertEquals(4, excursionDao.findAll().size());
         excursionDao.remove(testExcursion);
         assertEquals(3, excursionDao.findAll().size());
-        assertThrows(IllegalArgumentException.class, () -> excursionDao.remove(null));
-
-    }
-
-    @Test
-    public void tearDownTest() {
         excursionDao.remove(excursionEiffel);
         excursionDao.remove(excursionObservatory);
-        //excursionDao.remove(excursionStatueOfLiberty);
-        //Test remove was successful
         assertNull(excursionDao.findById(excursionEiffel.getId()));
         assertNull(excursionDao.findById(excursionObservatory.getId()));
-        //assertNull(excursionDao.findById(excursionStatueOfLiberty.getId()));
-        //Delete the rest
-        EntityManager manager = managerFactory.createEntityManager();
-        //assertFalse(newYorkTrip.getExcursions().contains(excursionStatueOfLiberty));
         assertFalse(newYorkTrip.getExcursions().contains(excursionObservatory));
         assertFalse(parisTrip.getExcursions().contains(excursionEiffel));
-        manager.getTransaction().begin();
-        //manager.createQuery("delete Trip t").executeUpdate();
-        manager.close();
+        assertThrows(IllegalArgumentException.class, () -> excursionDao.remove(null));
     }
 }

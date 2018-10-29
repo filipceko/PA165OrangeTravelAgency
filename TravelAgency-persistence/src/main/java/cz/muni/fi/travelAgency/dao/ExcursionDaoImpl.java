@@ -3,12 +3,12 @@ package cz.muni.fi.travelAgency.dao;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.Collection;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of {@link ExcursionDao}
@@ -75,7 +75,7 @@ public class ExcursionDaoImpl implements ExcursionDao {
     @Override
     public void remove(Excursion excursion) {
         if (excursion == null) {
-            throw new IllegalArgumentException("Can not delete NULL excursion");
+            throw new IllegalArgumentException("Can not remove NULL excursion");
         }
         if (findById(excursion.getId()) != null) {
             Trip trip = excursion.getTrip();
@@ -83,7 +83,7 @@ public class ExcursionDaoImpl implements ExcursionDao {
             trip.removeExcursion(excursion);
             eManager.merge(trip);
         } else {
-            throw new IllegalArgumentException("Excursion must be saved before delete");
+            throw new IllegalArgumentException("Excursion must be saved before remove");
         }
     }
 }
