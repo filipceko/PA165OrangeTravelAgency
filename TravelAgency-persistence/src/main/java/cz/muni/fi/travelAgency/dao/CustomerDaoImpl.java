@@ -62,6 +62,9 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public void remove(Customer customer) {
-        manager.remove(manager.merge(customer));
+        if (customer == null){
+            throw new IllegalArgumentException("Tried to remove NULL from the Customers");
+        }
+        manager.createQuery("delete Customer c where c.id = :id").setParameter("id", customer.getId()).executeUpdate();
     }
 }

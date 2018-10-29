@@ -45,7 +45,7 @@ public class Customer {
     private LocalDate dateOfBirth;
 
     /** Set of reservations made by the customer */
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
     private Set<Reservation> reservations = new HashSet<>();
 
     /**

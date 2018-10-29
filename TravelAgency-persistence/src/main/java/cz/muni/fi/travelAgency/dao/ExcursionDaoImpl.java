@@ -78,7 +78,10 @@ public class ExcursionDaoImpl implements ExcursionDao {
             throw new IllegalArgumentException("Can not delete NULL excursion");
         }
         if (findById(excursion.getId()) != null) {
+            Trip trip = excursion.getTrip();
             eManager.remove(eManager.merge(excursion));
+            trip.removeExcursion(excursion);
+            eManager.merge(trip);
         } else {
             throw new IllegalArgumentException("Excursion must be saved before delete");
         }

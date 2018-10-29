@@ -70,13 +70,14 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
         customerDao.remove(customer);
         //Test remove was successful
         assertNull(customerDao.findById(customer.getId()));
-        //Delete the rest
         EntityManager manager = managerFactory.createEntityManager();
+        //Delete the rest
         manager.getTransaction().begin();
-        manager.remove(reservationParis1);
+        //manager.remove(reservationParis1);
         manager.remove(excursionParis1);
         manager.remove(tripParis1);
         manager.getTransaction().commit();
+        assertNull(reservationParis1.getId());
         manager.close();
     }
 
@@ -167,14 +168,8 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests{
      */
     @Test
     public void removeCustomerTest() {
-        Assert.assertNotNull(customerDao.findById(customer.getId()));
-        customerDao.remove(customer);
-        Assert.assertNull(customerDao.findById(customer.getId()));
-
         //also tested in tear down
-        assertThrows(ConstraintViolationException.class, () -> customerDao.remove(new Customer()));
         assertThrows(IllegalArgumentException.class, () -> customerDao.remove(null));
-
     }
 
     /**

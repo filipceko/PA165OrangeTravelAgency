@@ -83,7 +83,8 @@ public class ReservationDaoImp implements ReservationDao {
     public void remove(Reservation reservation) {
         if (reservation == null) throw new IllegalArgumentException("Tried to delete NULL!");
         if (em.find(Reservation.class, reservation.getId()) != null){
-            em.remove(em.merge(reservation));
+            em.createQuery("delete Reservation r where r.id = :id").setParameter("id", reservation.getId()).executeUpdate();
+           // em.createQuery("delete RESERVATIONS_EXCURSIONS r where r.reservation_id = :id").setParameter();
         } else {
             throw new IllegalArgumentException("Tried to Remove Reservation that was not saved before.");
         }

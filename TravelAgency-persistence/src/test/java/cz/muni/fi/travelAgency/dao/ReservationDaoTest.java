@@ -25,6 +25,10 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Reservation DAO test class
+ * @author Filip Cekovsky
+ */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
 public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
 
@@ -45,9 +49,6 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
     private Reservation reservation2;
     private Excursion excursion1;
     private Excursion excursion2;
-
-
-
 
     @BeforeClass
     public void setUp(){
@@ -80,7 +81,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         reservationDao.create(reservation2);
     }
 
-    //@AfterClass
+    @AfterClass
     public void tearDown(){
         reservationDao.remove(reservation1);
         reservationDao.remove(reservation2);
@@ -89,11 +90,11 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         assertNull(reservationDao.findById(reservation2.getId()));
         //Delete the rest
         EntityManager manager = managerFactory.createEntityManager();
-        manager.remove(excursion1);
-        manager.remove(excursion2);
-        manager.remove(customer1);
-        manager.remove(customer2);
-        manager.remove(trip);
+        manager.remove(manager.merge(excursion1));
+        manager.remove(manager.merge(excursion2));
+        manager.remove(manager.merge(customer1));
+        manager.remove(manager.merge(customer2));
+        manager.remove(manager.merge(trip));
         manager.getTransaction().commit();
         manager.close();
     }
@@ -176,9 +177,12 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         reservation2.addExcursion(excursion2);
         reservationDao.update(reservation2);
         assertEquals(1, reservationDao.findById(reservation2.getId()).getExcursions().size());
-        reservation2.removeExcursion(excursion2);
+        reservation2.addExcursion(excursion1);
         reservationDao.update(reservation2);
-        assertEquals(0, reservationDao.findById(reservation2.getId()).getExcursions().size());
+        assertEquals(2, reservationDao.findById(reservation2.getId()).getExcursions().size());
+        /*reservation2.removeExcursion(excursion2);
+        reservationDao.update(reservation2);
+        assertEquals(0, reservationDao.findById(reservation2.getId()).getExcursions().size());*/
 
         Reservation reservation3 = new Reservation(customer3, trip, firstDate);
         assertThrows(IllegalArgumentException.class, () -> reservationDao.update(reservation3));
