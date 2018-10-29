@@ -5,10 +5,10 @@ import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
 import javax.validation.ConstraintViolationException;
 
-import org.junit.AfterClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -195,7 +194,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
 
     }
 
-    @AfterClass
+    //@AfterClass
     public void tearDown(){
         excursionDao.remove(excursionEiffel);
         excursionDao.remove(excursionObservatory);

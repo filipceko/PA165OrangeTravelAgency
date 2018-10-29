@@ -38,8 +38,8 @@ public class Reservation {
     private LocalDate reserveDate;
 
     /** Excursions reserved with this trip */
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "RESERVATIONS_EXCURSIONS")
     private Set<Excursion> excursions = new HashSet<>();
 
     /**

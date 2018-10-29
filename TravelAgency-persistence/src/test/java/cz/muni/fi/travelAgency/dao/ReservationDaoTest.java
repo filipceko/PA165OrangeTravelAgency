@@ -5,11 +5,11 @@ import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
-import org.junit.AfterClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.transaction.TransactionSystemException;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -81,7 +80,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         reservationDao.create(reservation2);
     }
 
-    @AfterClass
+    //@AfterClass
     public void tearDown(){
         reservationDao.remove(reservation1);
         reservationDao.remove(reservation2);
@@ -179,7 +178,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         assertEquals(1, reservationDao.findById(reservation2.getId()).getExcursions().size());
         reservation2.removeExcursion(excursion2);
         reservationDao.update(reservation2);
-//        assertEquals(0, reservationDao.findById(reservation2.getId()).getExcursions().size());
+        assertEquals(0, reservationDao.findById(reservation2.getId()).getExcursions().size());
 
         Reservation reservation3 = new Reservation(customer3, trip, firstDate);
         assertThrows(IllegalArgumentException.class, () -> reservationDao.update(reservation3));
@@ -221,7 +220,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     private void removeTest(){
         //also tested in tear down
-        assertThrows(ConstraintViolationException.class, () -> reservationDao.remove(new Reservation()));
+        assertThrows(IllegalArgumentException.class, () -> reservationDao.remove(new Reservation()));
         assertThrows(IllegalArgumentException.class, () -> reservationDao.remove(null));
     }
 }
