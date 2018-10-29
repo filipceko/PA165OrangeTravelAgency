@@ -56,7 +56,7 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
         tripDao.create(tripBrno);
     }
 
-    @AfterClass
+    //@AfterClass
     public void tearDownTest() {
         tripDao.delete(tripBrno);
         tripDao.delete(tripBali);
@@ -103,6 +103,7 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
         expected.add(tripBrno);
         Assert.assertEquals(expected, found);
         assertThrows(IllegalArgumentException.class, () -> tripDao.findByDestination(null));
+        assertThrows(IllegalArgumentException.class, () -> tripDao.findByDestination(""));
     }
 
     /**
