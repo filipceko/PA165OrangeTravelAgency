@@ -51,14 +51,14 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
     private Excursion excursion2;
 
     @BeforeClass
-    public void setUp(){
+    public void setUp() {
         EntityManager manager = managerFactory.createEntityManager();
         manager.getTransaction().begin();
 
         trip = new Trip(firstDate, secondDate, "Test", 10);
-        customer1 =  new Customer("Filip", "Cekovsky", "filip@ceko.com");
-        customer2 =  new Customer("Frodo", "Zemiak", "frodo@zemiak.com");
-        customer3 = new Customer("Imrich", "Piskotka","piskota@sucha.com");
+        customer1 = new Customer("Filip", "Cekovsky", "filip@ceko.com");
+        customer2 = new Customer("Frodo", "Zemiak", "frodo@zemiak.com");
+        customer3 = new Customer("Imrich", "Piskotka", "piskota@sucha.com");
         excursion1 = new Excursion("Test excursion", "Test", BigDecimal.valueOf(10.00),
                 firstDate, Duration.ZERO, trip);
         excursion2 = new Excursion("Test excursion 2.0", "Tale", BigDecimal.valueOf(11.50),
@@ -82,7 +82,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     @AfterClass
-    public void tearDown(){
+    public void tearDown() {
         reservationDao.remove(reservation1);
         reservationDao.remove(reservation2);
         //Test remove was successful
@@ -99,10 +99,11 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Validates excursions are saved as expected and valid exceptions are thrown on error.
+     * Validates excursions are saved as expected and valid exceptions are
+     * thrown on error.
      */
     @Test
-    public void createTest(){
+    public void createTest() {
         EntityManager manager = managerFactory.createEntityManager();
         Reservation stored = manager.createQuery("select c from Reservation c where c.reserveDate = :date",
                 Reservation.class).setParameter("date", firstDate).getSingleResult();
@@ -119,7 +120,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      * Tests findAll method
      */
     @Test
-    public void findAllTest(){
+    public void findAllTest() {
         Collection<Reservation> found = reservationDao.findAll();
         assertEquals(2, found.size());
     }
@@ -128,7 +129,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      * Validates findById, asserts results and exceptions
      */
     @Test
-    public void findByIdTest(){
+    public void findByIdTest() {
         assertNotNull(reservationDao.findById(reservation1.getId()));
         assertNull(reservationDao.findById(1823L));
         assertNull(reservationDao.findById(-1823L));
@@ -140,7 +141,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      * Validates findByCustomer, asserts results
      */
     @Test
-    public void findByCustomerTest(){
+    public void findByCustomerTest() {
         Collection<Reservation> found = reservationDao.findByCustomer(customer1);
         assertNotNull(found);
         assertEquals(1, found.size());
@@ -154,7 +155,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      * Validates findByTrip, asserts results
      */
     @Test
-    public void findByTripTest(){
+    public void findByTripTest() {
         Collection<Reservation> found = reservationDao.findByTrip(trip);
         assertNotNull(found);
         assertEquals(2, found.size());
@@ -165,7 +166,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      * Validates update(), asserts results and exceptions
      */
     @Test
-    public void updateTest(){
+    public void updateTest() {
         reservation1.setReserveDate(secondDate);
         reservationDao.update(reservation1);
         assertEquals(secondDate, reservationDao.findById(reservation1.getId()).getReserveDate());
@@ -196,9 +197,9 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      * findBetween() functionality validation. Null should represent +- infinity
      */
     @Test
-    private void findBetweenTest(){
-        LocalDate before = LocalDate.of(1888,1,1);
-        LocalDate after = LocalDate.of(2020,1,1);
+    private void findBetweenTest() {
+        LocalDate before = LocalDate.of(1888, 1, 1);
+        LocalDate after = LocalDate.of(2020, 1, 1);
         Collection<Reservation> result = reservationDao.findReservationBetween(firstDate, secondDate);
         assertEquals(2, result.size());
         result = reservationDao.findReservationBetween(firstDate, firstDate);
@@ -211,17 +212,18 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         assertEquals(1, result.size());
         result = reservationDao.findReservationBetween(before, null);
         assertEquals(2, result.size());
-        result = reservationDao.findReservationBetween(null, firstDate);
-        assertEquals(1, result.size());
+        result = reservationDao.findReservationBetween(null, after);
+        assertEquals(2, result.size());
         result = reservationDao.findReservationBetween(null, null);
         assertEquals(2, result.size());
     }
 
     /**
-     * Validates remove throws expected exceptions, remove functionality asserted in tearDown().
+     * Validates remove throws expected exceptions, remove functionality
+     * asserted in tearDown().
      */
     @Test
-    private void removeTest(){
+    private void removeTest() {
         //also tested in tear down
         assertThrows(IllegalArgumentException.class, () -> reservationDao.remove(new Reservation()));
         assertThrows(IllegalArgumentException.class, () -> reservationDao.remove(null));
