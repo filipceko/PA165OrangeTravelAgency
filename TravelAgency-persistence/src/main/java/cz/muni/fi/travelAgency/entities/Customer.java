@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -32,6 +33,10 @@ public class Customer {
     @NotNull
     @Column(nullable = false, unique = true)
     private String email;
+
+    private String passwordHash;
+
+    private boolean admin;
 
     /** Nullable phone number */
     @Column
@@ -103,6 +108,22 @@ public class Customer {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
     /**
