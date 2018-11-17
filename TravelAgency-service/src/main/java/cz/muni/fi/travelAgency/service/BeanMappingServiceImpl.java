@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Implementation of BeanMappingService
+ * @author Simona Raucinova
+ */
 @Service
 public class BeanMappingServiceImpl implements BeanMappingService{
 

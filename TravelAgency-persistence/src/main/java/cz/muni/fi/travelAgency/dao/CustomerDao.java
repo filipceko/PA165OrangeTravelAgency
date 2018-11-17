@@ -43,6 +43,14 @@ public interface CustomerDao {
     Customer findByName(String name, String surname);
 
     /**
+     * Retrieves customer with given email.
+     * @param email of the customer
+     * @return customer with given email or null if none found
+     * @throws IllegalArgumentException if email is NULL
+     */
+    Customer findByEmail(String email);
+
+    /**
      * Updates given customer's data in the DB
      * @param customer to be updated
      * @throws IllegalArgumentException if parameter is NULL or not saved yet.
