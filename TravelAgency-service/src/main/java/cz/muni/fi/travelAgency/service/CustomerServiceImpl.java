@@ -103,6 +103,13 @@ public class CustomerServiceImpl implements CustomerService{
         customerDao.remove(customer);
     }
 
+    /**
+     * Helping method for validation data of registration.
+     *
+     * @param customer to be registered
+     * @param unencryptedPassword unencrypted form of customers password
+     * @return if registration can be completed
+     */
     private boolean validateCustomerRegistration(Customer customer, String unencryptedPassword){
         if(customer == null){
             throw new IllegalArgumentException("Cannot register inserted null customer.");

@@ -58,7 +58,15 @@ public interface CustomerService {
      */
     Customer findCustomerByEmail(String email);
 
+    /**
+     * Updates customer.
+     * @param customer to be updated
+     */
     void updateCustomer(Customer customer);
 
+    /**
+     * Deletes customer.
+     * @param customer to be deleted
+     */
     void deleteCustomer(Customer customer);
 }
