@@ -50,6 +50,16 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
+    public Customer findByEmail(String email){
+        if (email == null){
+            throw new IllegalArgumentException("findByEmail() was called with NULL argument!");
+        }
+
+        return manager.createQuery("select c from Customer c where c.email = :email",Customer.class)
+                .setParameter("email",email).getSingleResult();
+    }
+
+    @Override
     public void update(Customer customer) {
         if (customer == null) {
             throw new IllegalArgumentException("tried to update NULL customer");
