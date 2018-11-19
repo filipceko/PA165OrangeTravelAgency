@@ -39,6 +39,7 @@ public class Trip {
     @Column(nullable = false)
     private int capacity;
 
+    /** Price of the trip */
     @NotNull
     @Column(nullable = false)
     private Double price;
