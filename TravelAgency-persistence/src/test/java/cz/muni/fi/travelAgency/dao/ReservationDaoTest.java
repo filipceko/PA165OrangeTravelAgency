@@ -142,12 +142,12 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void findByCustomerTest() {
-        Collection<Reservation> found = reservationDao.findByCustomer(customer1);
+        Collection<Reservation> found = reservationDao.findByCustomer(customer1.getId());
         assertNotNull(found);
         assertEquals(1, found.size());
-        found = reservationDao.findByCustomer(customer2);
+        found = reservationDao.findByCustomer(customer2.getId());
         assertEquals(1, found.size());
-        assertEquals(0, reservationDao.findByCustomer(customer3).size());
+        assertEquals(0, reservationDao.findByCustomer(customer3.getId()).size());
         assertEquals(0, reservationDao.findByCustomer(null).size());
     }
 
@@ -156,7 +156,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void findByTripTest() {
-        Collection<Reservation> found = reservationDao.findByTrip(trip);
+        Collection<Reservation> found = reservationDao.findByTrip(trip.getId());
         assertNotNull(found);
         assertEquals(2, found.size());
         assertEquals(0, reservationDao.findByTrip(null).size());

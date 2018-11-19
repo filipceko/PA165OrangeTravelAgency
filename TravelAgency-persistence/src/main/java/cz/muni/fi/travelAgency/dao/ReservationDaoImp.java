@@ -1,8 +1,6 @@
 package cz.muni.fi.travelAgency.dao;
 
-import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
-import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,15 +41,15 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public Collection<Reservation> findByCustomer(Customer customer) {
+    public Collection<Reservation> findByCustomer(Long customerId) {
         TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.customer = :customerId",
                 Reservation.class);
-        query.setParameter("customerId", customer);
+        query.setParameter("customerId", customerId);
         return query.getResultList();
     }
 
     @Override
-    public Collection<Reservation> findByTrip(Trip trip) {
+    public Collection<Reservation> findByTrip(Long trip) {
         TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.trip = :tripId",
                 Reservation.class);
         query.setParameter("tripId", trip);
