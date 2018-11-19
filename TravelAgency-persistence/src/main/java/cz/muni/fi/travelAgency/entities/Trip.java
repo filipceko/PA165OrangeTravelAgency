@@ -158,16 +158,16 @@ public class Trip {
     }
 
     /**
-     * TODO
-     * @return
+     * Price getter.
+     * @return price of the Trip.
      */
     public Double getPrice() {
         return price;
     }
 
     /**
-     * TODO
-     * @param price
+     * Price setter.
+     * @param price to set for the trip.
      */
     public void setPrice(Double price) {
         this.price = price;
