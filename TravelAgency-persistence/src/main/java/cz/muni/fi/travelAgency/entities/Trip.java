@@ -39,6 +39,10 @@ public class Trip {
     @Column(nullable = false)
     private int capacity;
 
+    @NotNull
+    @Column(nullable = false)
+    private Double price;
+
     /** Excursions assigned to trip. */
     @OneToMany(mappedBy = "trip", cascade = CascadeType.REMOVE)
     private Set<Excursion> excursions = new HashSet<>();
@@ -151,6 +155,22 @@ public class Trip {
      */
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    /**
+     * TODO
+     * @return
+     */
+    public Double getPrice() {
+        return price;
+    }
+
+    /**
+     * TODO
+     * @param price
+     */
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     /**
