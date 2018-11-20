@@ -40,7 +40,11 @@ public class TripServiceImpl implements TripService {
     }
 
     public Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate){
-        if (fromDate.isAfter(toDate)){
+        if (fromDate == null || toDate == null)
+        {
+            throw new IllegalArgumentException("Date cannot be null.");
+        }
+        else if (fromDate.isAfter(toDate)){
             throw new IllegalArgumentException("From Date cannot after To Date.");
         }
         return tripDao.findByInterval(fromDate,toDate);
