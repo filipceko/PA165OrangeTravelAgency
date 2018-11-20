@@ -35,12 +35,12 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Collection<Reservation> findByCustomer(Long customerId) {
-        return reservationDao.findByCustomer(customerId);
+        return reservationDao.findByCustomerId(customerId);
     }
 
     @Override
     public Collection<Reservation> findByTrip(Long tripId) {
-        return reservationDao.findByTrip(tripId);
+        return reservationDao.findByTripId(tripId);
     }
 
     @Override

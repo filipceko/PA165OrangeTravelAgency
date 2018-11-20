@@ -43,7 +43,7 @@ public interface ReservationDao {
      * @return collection of reservations by the given customer or null if none found
      * @throws IllegalArgumentException if one of name parts is NULL
      */
-    Collection<Reservation> findByCustomer(Long customerId);
+    Collection<Reservation> findByCustomerId(Long customerId);
 
     /**
      * Get Reservation by trip
@@ -51,7 +51,7 @@ public interface ReservationDao {
      * @return collection of reservations with the given trip or null if none found
      * @throws IllegalArgumentException if one of name parts is NULL
      */
-    Collection<Reservation> findByTrip(Long tripId);
+    Collection<Reservation> findByTripId(Long tripId);
 
     /**
      * Updates given Reservation's data in the DB

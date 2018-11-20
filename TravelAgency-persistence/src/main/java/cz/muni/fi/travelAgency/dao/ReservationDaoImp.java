@@ -41,7 +41,7 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public Collection<Reservation> findByCustomer(Long customerId) {
+    public Collection<Reservation> findByCustomerId(Long customerId) {
         TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.customer = :customerId",
                 Reservation.class);
         query.setParameter("customerId", customerId);
@@ -49,10 +49,10 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public Collection<Reservation> findByTrip(Long trip) {
+    public Collection<Reservation> findByTripId(Long tripId) {
         TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.trip = :tripId",
                 Reservation.class);
-        query.setParameter("tripId", trip);
+        query.setParameter("tripId", tripId);
         return query.getResultList();
     }
 
