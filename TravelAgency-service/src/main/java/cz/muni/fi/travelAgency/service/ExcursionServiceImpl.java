@@ -59,8 +59,8 @@ public class ExcursionServiceImpl implements ExcursionService{
     }
 
     @Override
-    public Collection<Excursion> findExcursionByTripId(Long tripId) {
-       return excursionDao.findByTripId(tripId);
+    public Collection<Excursion> findExcursionByTrip(Trip trip) {
+       return excursionDao.findByTrip(trip);
     }
     
 }
