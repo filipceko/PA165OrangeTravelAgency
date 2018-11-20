@@ -190,7 +190,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      * findBetween() functionality validation. Null should represent +- infinity
      */
     @Test
-    private void findBetweenTest() {
+    public void findBetweenTest() {
         LocalDate before = LocalDate.of(1888, 1, 1);
         LocalDate after = LocalDate.of(2020, 1, 1);
         Collection<Reservation> result = reservationDao.findReservationBetween(firstDate, secondDate);

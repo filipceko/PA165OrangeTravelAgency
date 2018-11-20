@@ -17,7 +17,7 @@ import java.util.Collection;
  */
 @Repository
 @Transactional
-public class ReservationDaoImp implements ReservationDao {
+public class ReservationDaoImpl implements ReservationDao {
 
     /**
      * Entity manager for this class.
@@ -62,19 +62,22 @@ public class ReservationDaoImp implements ReservationDao {
             TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate <= :endDate", Reservation.class);
             query.setParameter("endDate", endDate);
             return query.getResultList();
-        } else if (startDate != null && endDate == null) {
+        }
+        if (startDate != null && endDate == null) {
             TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate >= :startDate", Reservation.class);
             query.setParameter("startDate", startDate);
             return query.getResultList();
-        } else if (startDate == null) {
-            return findAll();
-        } else {
-            TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate BETWEEN :startDate AND :endDate",
-                    Reservation.class);
-            query.setParameter("startDate", startDate);
-            query.setParameter("endDate", endDate);
-            return query.getResultList();
         }
+        if (startDate == null) {
+            //both are null
+            return findAll();
+        }
+        //none is null
+        TypedQuery<Reservation> query = em.createQuery("SELECT e FROM Reservation e WHERE e.reserveDate BETWEEN :startDate AND :endDate",
+                Reservation.class);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return query.getResultList();
     }
 
     @Override

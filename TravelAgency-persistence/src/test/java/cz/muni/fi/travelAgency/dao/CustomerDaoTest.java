@@ -35,7 +35,7 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests {
      * Init and create customer entity
      */
     @BeforeMethod
-    public void InitCustomerTest() {
+    public void initCustomerTest() {
         customer = new Customer();
         customer.setName("RITHY");
         customer.setSurname("LY");
