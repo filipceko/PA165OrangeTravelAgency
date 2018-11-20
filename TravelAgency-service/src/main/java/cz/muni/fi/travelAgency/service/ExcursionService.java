@@ -52,7 +52,7 @@ public interface ExcursionService {
     Collection<Excursion> findExcursionByDestination(String destination);
 
     /**
-     * Retrieves all excursions by trip with given id.
+     * Retrieves all excursions by trip
      * @param trip of the excursion
      * @return collection of excursions
      */
