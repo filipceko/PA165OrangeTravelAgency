@@ -138,28 +138,28 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Validates findByCustomer, asserts results
+     * Validates findByCustomerId, asserts results
      */
     @Test
-    public void findByCustomerTest() {
-        Collection<Reservation> found = reservationDao.findByCustomer(customer1);
+    public void findByCustomerIdTest() {
+        Collection<Reservation> found = reservationDao.findByCustomerId(customer1.getId());
         assertNotNull(found);
         assertEquals(1, found.size());
-        found = reservationDao.findByCustomer(customer2);
+        found = reservationDao.findByCustomerId(customer2.getId());
         assertEquals(1, found.size());
-        assertEquals(0, reservationDao.findByCustomer(customer3).size());
-        assertEquals(0, reservationDao.findByCustomer(null).size());
+        assertEquals(0, reservationDao.findByCustomerId(customer3.getId()).size());
+        assertEquals(0, reservationDao.findByCustomerId(null).size());
     }
 
     /**
-     * Validates findByTrip, asserts results
+     * Validates findByTripId, asserts results
      */
     @Test
-    public void findByTripTest() {
-        Collection<Reservation> found = reservationDao.findByTrip(trip);
+    public void findByTripIdTest() {
+        Collection<Reservation> found = reservationDao.findByTripId(trip.getId());
         assertNotNull(found);
         assertEquals(2, found.size());
-        assertEquals(0, reservationDao.findByTrip(null).size());
+        assertEquals(0, reservationDao.findByTripId(null).size());
     }
 
     /**
