@@ -38,6 +38,7 @@
     <modules>
         <module>TravelAgency-persistence</module>
         <module>TravelAgency-service</module>
+        <module>TravelAgency-API</module>
     </modules>
 
 
