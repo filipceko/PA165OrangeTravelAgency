@@ -53,8 +53,8 @@ public interface ExcursionService {
 
     /**
      * Retrieves all excursions by trip with given id.
-     * @param tripId id of trip for retrieve excursion
+     * @param trip of the excursion
      * @return collection of excursions
      */
-    Collection<Excursion> findExcursionByTripId(Long tripId);
+    Collection<Excursion> findExcursionByTrip(Trip trip);
 }
