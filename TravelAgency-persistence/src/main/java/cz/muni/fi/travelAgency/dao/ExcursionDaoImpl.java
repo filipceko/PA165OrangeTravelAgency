@@ -55,9 +55,9 @@ public class ExcursionDaoImpl implements ExcursionDao {
     }
 
     @Override
-    public Collection<Excursion> findByTrip(Trip trip) {
+    public Collection<Excursion> findByTripId(Long tripId) {
         TypedQuery<Excursion> query = eManager.createQuery("SELECT e FROM Excursion e WHERE e.trip = :tripId", Excursion.class);
-        query.setParameter("tripId", trip);
+        query.setParameter("tripId", tripId);
         return query.getResultList();
     }
 

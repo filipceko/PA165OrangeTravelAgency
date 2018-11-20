@@ -162,10 +162,10 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void findByTripTest() {
-        Collection<Excursion> retrievedExcursionsNY = excursionDao.findByTrip(newYorkTrip);
+    public void findByTripIdTest() {
+        Collection<Excursion> retrievedExcursionsNY = excursionDao.findByTripId(newYorkTrip.getId());
         assertEquals(2, retrievedExcursionsNY.size());
-        Collection<Excursion> retrievedExcursionsParis = excursionDao.findByTrip(parisTrip);
+        Collection<Excursion> retrievedExcursionsParis = excursionDao.findByTripId(parisTrip.getId());
         assertEquals(1, retrievedExcursionsParis.size());
     }
 

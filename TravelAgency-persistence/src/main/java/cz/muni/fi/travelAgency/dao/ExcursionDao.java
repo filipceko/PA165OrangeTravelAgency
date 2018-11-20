@@ -44,11 +44,11 @@ public interface ExcursionDao {
 
     /**
      * Retrieves all excursions by Trip.
-     * @param trip of the excursion
+     * @param tripId ID of the trip to retrieve the excursion for
      * @return collection of all excursions by Trip
      * @throws IllegalArgumentException if parameter is NULL or not saved yet
      */
-    Collection<Excursion> findByTrip(Trip trip);
+    Collection<Excursion> findByTripId(Long tripId);
 
     /**
      * Updates given excursion's data in the DB
