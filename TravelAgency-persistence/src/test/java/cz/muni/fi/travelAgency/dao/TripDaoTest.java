@@ -41,6 +41,7 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
         tripBrno.setToDate(secondDate);
         tripBrno.setDestination("Lake");
         tripBrno.setCapacity(10);
+        tripBrno.setPrice(100.20);
         tripDao.create(tripBrno);
     }
 
@@ -107,6 +108,7 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
         tripBali.setToDate(secondDate);
         tripBali.setDestination("Ubud");
         tripBali.setCapacity(5);
+        tripBali.setPrice(50.10);
         tripDao.create(tripBali);
         Collection<Trip> founds = tripDao.findAll();
         Assert.assertEquals(2, founds.size());
