@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.ExcursionDao;
 import cz.muni.fi.travelAgency.entities.Excursion;
+import cz.muni.fi.travelAgency.entities.Trip;
 import java.util.Collection;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
