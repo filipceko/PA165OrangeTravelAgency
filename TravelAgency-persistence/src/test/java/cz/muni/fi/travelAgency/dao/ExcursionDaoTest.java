@@ -50,6 +50,8 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         newYorkTrip.setToDate(LocalDate.of(2018, 7, 15));
         newYorkTrip.setDestination("New York");
         newYorkTrip.setCapacity(25);
+        newYorkTrip.setPrice(100.20);
+        
 
         Excursion excursionStatueOfLiberty = new Excursion();
         excursionStatueOfLiberty.setDescription("Visit the America’s most notable visitor experiences " +
@@ -74,6 +76,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         parisTrip.setToDate(LocalDate.of(2018, 10, 15));
         parisTrip.setDestination("Paris");
         parisTrip.setCapacity(40);
+        parisTrip.setPrice(100.50);
 
         Excursion excursionEiffel = new Excursion();
         excursionEiffel.setDescription("Listen as your host adds colorful history and facts to the sights below as " +
