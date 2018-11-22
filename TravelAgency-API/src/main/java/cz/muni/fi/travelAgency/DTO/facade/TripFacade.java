@@ -1,7 +1,5 @@
 package cz.muni.fi.travelAgency.DTO.facade;
 
-import cz.muni.fi.travelAgency.DTO.CustomerDTO;
-import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import java.time.LocalDate;
 import java.util.List;
@@ -9,15 +7,15 @@ import java.util.List;
 public interface TripFacade {
     /**
      * Create new Trip
-     * @param p
+     * @param trip
      */
-    public void createTrip(TripDTO p);
+    public void createTrip(TripDTO trip);
 
     /**
      * Get Trip by provided trip id
      * @return
      */
-    public TripDTO getTripById();
+    public TripDTO getTripById(long id);
 
     /**
      * Get all trips
@@ -41,18 +39,11 @@ public interface TripFacade {
     public List<TripDTO> getTripByInterval(LocalDate fromDate, LocalDate toDate);
 
     /**
-     * Get Excursion by provided trip
+     * Get Trip by available slots
      * @param trip
      * @return
      */
-    public List<ExcursionDTO> getExcursionByTrip(TripDTO trip);
-
-    /**
-     * Get customers by provided trip
-     * @param trip
-     * @return
-     */
-    public List<CustomerDTO> getCustomerByTripe(TripDTO trip);
+    public List<TripDTO> getAvailableSlots(int amount);
 
     /**
      * Update existing trip
