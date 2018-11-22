@@ -1,45 +1,39 @@
 package cz.muni.fi.travelAgency.DTO;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
- * DTO of Customer.
  * @author Simona Raucinova
  */
-public class CustomerDTO {
+public class CustomerCreateDTO {
 
-    private Long id;
-
+    @NotNull
+    @Size(min = 3, max = 20)
     private String name;
 
+    @NotNull
+    @Size(min = 3, max = 20)
     private String surname;
 
+    @Email
     private String email;
 
-    private String passwordHash;
-
-    private boolean admin;
+    @NotNull
+    @Size(min = 8, max = 30)
+    private String password;
 
     private String phoneNumber;
 
+    @NotNull
     private String passportNumber;
 
+    @NotNull
+    @Past
     private LocalDate dateOfBirth;
-
-    private Set<ReservationDTO> reservations = new HashSet<>();
-
-    public CustomerDTO() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -65,20 +59,12 @@ public class CustomerDTO {
         this.email = email;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhoneNumber() {
@@ -105,31 +91,23 @@ public class CustomerDTO {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Set<ReservationDTO> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(Set<ReservationDTO> reservations) {
-        this.reservations = reservations;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CustomerDTO)) return false;
+        if (!(o instanceof CustomerCreateDTO)) return false;
 
-        CustomerDTO that = (CustomerDTO) o;
+        CustomerCreateDTO that = (CustomerCreateDTO) o;
 
-        if (!getName().equals(that.getName())) return false;
-        if (!getSurname().equals(that.getSurname())) return false;
-        return getEmail().equals(that.getEmail());
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        if (getSurname() != null ? !getSurname().equals(that.getSurname()) : that.getSurname() != null) return false;
+        return getEmail() != null ? getEmail().equals(that.getEmail()) : that.getEmail() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getName().hashCode();
-        result = 31 * result + getSurname().hashCode();
-        result = 31 * result + getEmail().hashCode();
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
         return result;
     }
 }

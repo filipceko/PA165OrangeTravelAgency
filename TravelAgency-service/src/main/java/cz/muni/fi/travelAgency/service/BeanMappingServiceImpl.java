@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Implementation of BeanMappingService
+ * Implementation of {@link BeanMappingService}
  * @author Simona Raucinova
  */
 @Service

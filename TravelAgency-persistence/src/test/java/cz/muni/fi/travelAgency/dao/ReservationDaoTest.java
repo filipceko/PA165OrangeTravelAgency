@@ -58,7 +58,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         EntityManager manager = managerFactory.createEntityManager();
         manager.getTransaction().begin();
 
-        trip = new Trip(firstDate, secondDate, "Test", 10);
+        trip = new Trip(firstDate, secondDate, "Test", 10,100.20);
         customer1 = new Customer("Filip", "Cekovsky", "filip@ceko.com");
         customer2 = new Customer("Frodo", "Zemiak", "frodo@zemiak.com");
         customer3 = new Customer("Imrich", "Piskotka", "piskota@sucha.com");

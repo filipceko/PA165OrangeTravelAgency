@@ -1,4 +1,5 @@
 package cz.muni.fi.travelAgency.DTO;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;

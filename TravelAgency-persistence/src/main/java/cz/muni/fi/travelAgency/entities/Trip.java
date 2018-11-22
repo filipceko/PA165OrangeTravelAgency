@@ -61,9 +61,9 @@ public class Trip {
     /**
      * All fields constructor.
      */
-    public Trip(LocalDate fromDate, LocalDate toDate, String destination, int capacity, Set<Excursion> excursions,
+    public Trip(LocalDate fromDate, LocalDate toDate, String destination, int capacity, Double price, Set<Excursion> excursions,
                 Set<Reservation> reservations) {
-        this(fromDate, toDate, destination, capacity);
+        this(fromDate, toDate, destination, capacity, price);
         this.excursions = excursions;
         this.reservations = reservations;
     }
@@ -71,11 +71,12 @@ public class Trip {
     /**
      * Non-null fields constructor.
      */
-    public Trip(LocalDate fromDate, LocalDate toDate, String destination, int capacity) {
+    public Trip(LocalDate fromDate, LocalDate toDate, String destination, int capacity, Double price) {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.destination = destination;
         this.capacity = capacity;
+        this.price = price;
     }
 
     /**
