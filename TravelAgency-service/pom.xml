@@ -17,6 +17,11 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>cz.muni.fi.PA165</groupId>
+            <artifactId>TravelAgency-API</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
         </dependency>
