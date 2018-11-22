@@ -1,5 +1,6 @@
 package cz.muni.fi.travelAgency.service;
 
+import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Trip;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -49,18 +50,24 @@ public interface TripService {
      * Create Trip.
      * @param trip to be saved
      */
-    public void createTrip(Trip p);
+    public void createTrip(Trip trip);
 
     /**
      * Deletes trip.
      * @param trip to be deleted
      */
-    public void removeTrip(Trip p);
+    public void removeTrip(Trip trip);
 
     /**
      * Updates trip.
      * @param trip to be updated
      */
-    public void updateTrip(Trip p);
+    public void updateTrip(Trip trip);
+
+    /**
+     * Finds all customers which have a reservation for trip.
+     */
+
+    public Collection<Customer> getAllCustomers(Trip trip);
 
 }
