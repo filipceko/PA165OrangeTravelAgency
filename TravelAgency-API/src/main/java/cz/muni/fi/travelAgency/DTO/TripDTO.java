@@ -7,19 +7,12 @@ import java.util.Set;
 public class TripDTO {
 
     private Long id;
-
     private LocalDate fromDate;
-
     private LocalDate toDate;
-
     private String destination;
-
     private int capacity;
-
     private Double price;
-
     private Set<ExcursionDTO> excursions = new HashSet<>();
-
     private Set<ReservationDTO> reservations = new HashSet<>();
 
     public Long getId() {
