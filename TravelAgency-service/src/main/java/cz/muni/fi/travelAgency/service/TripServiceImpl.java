@@ -1,14 +1,18 @@
 package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.TripDao;
+import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
- /**
+/**
  * Implementation of the {@link TripService}. This class is part of the
  * service module of the application that provides the implementation of the
  * business logic.
@@ -93,4 +97,16 @@ public class TripServiceImpl implements TripService {
         tripDao.update(trip);
     }
 
-}
+     @Override
+     public Collection<Customer> getAllCustomers(Trip trip) {
+         Collection<Reservation> reservations = tripDao.findById(trip.getId()).getReservations();
+         Set<Customer> customers = new HashSet<>();
+         for (Reservation reservation : reservations){
+             customers.add(reservation.getCustomer());
+         }
+
+         return customers;
+     }
+
+
+ }

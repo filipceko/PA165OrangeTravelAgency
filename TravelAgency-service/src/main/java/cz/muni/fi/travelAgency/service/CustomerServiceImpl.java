@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.CustomerDao;
 import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.exceptions.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -62,45 +63,49 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public boolean isAdmin(Customer customer) {
-        return customerDao.findById(customer.getId()).isAdmin();
+        try {
+            return customerDao.findById(customer.getId()).isAdmin();
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
+        }
+
     }
 
     @Override
     public Customer findCustomerById(Long customerId) {
-        if (customerId == null){
-            throw new IllegalArgumentException("Cannot find customer with null id.");
+        try {
+            return customerDao.findById(customerId);
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
         }
-        return customerDao.findById(customerId);
     }
 
     @Override
     public Customer findCustomerByEmail(String email) {
-        if (email == null){
-            throw new IllegalArgumentException("Cannot find customer with null email.");
+        try {
+            return customerDao.findByEmail(email);
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
         }
-        return customerDao.findByEmail(email);
+
     }
 
     @Override
     public void updateCustomer(Customer customer) {
-        if (customer == null){
-            throw new IllegalArgumentException("Cannot update null customer.");
+        try {
+            customerDao.update(customer);
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
         }
-        if(customer.getEmail() == null){
-            throw new IllegalArgumentException("Cannot update to customer with null email address.");
-        }
-        if(customer.getPasswordHash() == null){
-            customer.setPasswordHash(customerDao.findById(customer.getId()).getPasswordHash());
-        }
-        customerDao.update(customer);
     }
 
     @Override
     public void deleteCustomer(Customer customer) {
-        if(customer == null){
-            throw new IllegalArgumentException("Cannot delete null customer.");
+        try {
+            customerDao.remove(customer);
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
         }
-        customerDao.remove(customer);
     }
 
     /**
@@ -122,4 +127,6 @@ public class CustomerServiceImpl implements CustomerService{
         }
         return true;
     }
+
+
 }
