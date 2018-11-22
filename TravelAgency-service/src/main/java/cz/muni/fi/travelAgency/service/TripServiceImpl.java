@@ -69,6 +69,10 @@ public class TripServiceImpl implements TripService {
         if(trip == null){
             throw new IllegalArgumentException("Cannot create null Trip.");
         }
+        else if(trip.getFromDate().isAfter(trip.getToDate()))
+        {
+            throw new IllegalArgumentException("Cannot update trip starting date after end date.");
+        }
         tripDao.create(trip);
     }
 
@@ -76,6 +80,9 @@ public class TripServiceImpl implements TripService {
     public void removeTrip(Trip trip) {
         if(trip == null){
             throw new IllegalArgumentException("Cannot delete null Trip.");
+        }
+        else if (trip.getId() == null) {
+            throw new IllegalArgumentException("Trip ID is null");
         }
         tripDao.remove(trip);
     }
