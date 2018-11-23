@@ -1,12 +1,14 @@
 package cz.muni.fi.travelAgency.DTO;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * DTO of Customer.
  * @author Simona Raucinova
  */
-public class CustomerDTO {
+public class CustomerWithReservationsDTO {
 
     private Long id;
 
@@ -26,8 +28,9 @@ public class CustomerDTO {
 
     private LocalDate dateOfBirth;
 
+    private Set<ReservationDTO> reservationDTOS = new HashSet<>();
 
-    public CustomerDTO() {
+    public CustomerWithReservationsDTO() {
     }
 
     public Long getId() {
@@ -102,6 +105,13 @@ public class CustomerDTO {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public Set<ReservationDTO> getReservationDTOS() {
+        return reservationDTOS;
+    }
+
+    public void setReservationDTOS(Set<ReservationDTO> reservationDTOS) {
+        this.reservationDTOS = reservationDTOS;
+    }
 
     @Override
     public boolean equals(Object o) {

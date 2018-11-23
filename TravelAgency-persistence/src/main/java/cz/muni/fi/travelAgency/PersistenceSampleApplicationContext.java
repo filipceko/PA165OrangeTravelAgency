@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories
-@ComponentScan(basePackages = "cz.muni.fi.travelAgency.dao")
+@ComponentScan(basePackages = "cz.muni.fi.travelAgency")
 public class PersistenceSampleApplicationContext {
 
     @Bean
