@@ -32,7 +32,7 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     }
 
     @Override
-    public ExcursionDTO getExcursionWithId(Long excursionId) {
+    public ExcursionDTO findExcursionById(Long excursionId) {
         Excursion excursion = excursionService.findExcursionById(excursionId);
         return (excursion == null) ? null : beanMappingService.mapTo(excursion, ExcursionDTO.class);
     }
@@ -43,15 +43,24 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     }
 
     @Override
-    public Collection<ExcursionDTO> getExcursionByDestination(String destination) {
+    public Collection<ExcursionDTO> findExcursionByDestination(String destination) {
         Collection<Excursion> excursions = excursionService.findExcursionByDestination(destination);
         return beanMappingService.mapTo(excursions, ExcursionDTO.class);
     }
 
     @Override
-    public Collection<ExcursionDTO> getExcursionByTripId(Long tripId) {
+    public Collection<ExcursionDTO> findExcursionByTripId(Long tripId) {
         Collection<Excursion> excursions = excursionService.findExcursionByTripId(tripId);
         return beanMappingService.mapTo(excursions, ExcursionDTO.class);
+    }
+    
+    @Override
+    public void updateExcursion(ExcursionDTO excursionDTO) {
+        if (excursionDTO == null) {
+            throw new IllegalArgumentException("tried to update NULL excursion");
+        }
+        Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
+        excursionService.updateExcursion(mappedExcursion);
     }
 
     @Override
