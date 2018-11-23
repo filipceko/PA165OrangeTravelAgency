@@ -28,7 +28,7 @@ public interface ExcursionService {
      * Updates excursion.
      * @param excursion to be updated
      */
-    void updateExcurison(Excursion excursion);
+    void updateExcursion(Excursion excursion);
 
     /**
      * Delete excursion.
