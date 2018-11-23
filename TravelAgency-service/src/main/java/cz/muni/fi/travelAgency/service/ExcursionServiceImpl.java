@@ -30,7 +30,7 @@ public class ExcursionServiceImpl implements ExcursionService{
     }
 
     @Override
-    public void updateExcurison(Excursion excursion) {
+    public void updateExcursion(Excursion excursion) {
          if (excursion == null) {
             throw new IllegalArgumentException("tried to update NULL excursion");
         }
