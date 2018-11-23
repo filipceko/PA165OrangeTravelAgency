@@ -21,7 +21,7 @@ public interface ExcursionFacade {
      * @param id id of excursion
      * @return excursionDTO with given id
      */
-    public ExcursionDTO getExcursionWithId(Long id);
+    public ExcursionDTO findExcursionById(Long id);
 
     /**
      * Get all excursions.
@@ -34,14 +34,20 @@ public interface ExcursionFacade {
      * @param destination of excursion
      * @return collection of all excursions with given destination
      */
-    public Collection<ExcursionDTO> getExcursionByDestination(String destination);
+    public Collection<ExcursionDTO> findExcursionByDestination(String destination);
 
     /**
      * Retrieves all excursions by TripId.
      * @param tripId of the excursion
      * @return collection of all excursions by Trip
      */
-    public Collection<ExcursionDTO> getExcursionByTripId(Long tripId);
+    public Collection<ExcursionDTO> findExcursionByTripId(Long tripId);
+    
+    /**
+     * Updates excursionDTO.
+     * @param excursion to be updated
+     */
+    void updateExcursion(ExcursionDTO excursion);
 
     /**
      * Remove Excursion.
