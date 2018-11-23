@@ -98,5 +98,4 @@ public class ExcursionDTO {
     public int hashCode() {
         return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getExcursionDuration(), getTrip());
     }
-
 }
