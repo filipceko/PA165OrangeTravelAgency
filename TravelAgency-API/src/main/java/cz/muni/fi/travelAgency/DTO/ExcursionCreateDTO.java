@@ -4,7 +4,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import cz.muni.fi.travelAgency.enums.Currency;
 import java.util.Objects;
 
 /**
@@ -26,10 +25,7 @@ public class ExcursionCreateDTO {
     private BigDecimal price;
 
     @NotNull
-    private Currency currency;
-
-    @NotNull
-    private TripDTO trip;
+    private Long tripId;
 
     public String getDescription() {
         return description;
@@ -40,7 +36,7 @@ public class ExcursionCreateDTO {
     }
 
     public String getDestination() {
-        return description;
+        return destination;
     }
 
     public void setDestination(String destination) {
@@ -55,21 +51,13 @@ public class ExcursionCreateDTO {
         this.price = price;
     }
 
-    public Currency getCurrency() {
-        return currency;
+    public Long getTripId() {
+        return tripId;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
 
-    public TripDTO getTrip() {
-        return trip;
-    }
-
-    public void setTrip(TripDTO trip) {
-        this.trip = trip;
-       
     }
 
     @Override
@@ -80,17 +68,16 @@ public class ExcursionCreateDTO {
         if (!(o instanceof ExcursionCreateDTO)) {
             return false;
         }
-        ExcursionCreateDTO excursion = (ExcursionCreateDTO) o;
-        return Objects.equals(getDescription(), excursion.getDescription())
-                && Objects.equals(getPrice(), excursion.getPrice())
-                && Objects.equals(getCurrency(), excursion.getCurrency())
-                && Objects.equals(getDestination(), excursion.getDestination())
-                && Objects.equals(getTrip(), excursion.getTrip());
+        ExcursionCreateDTO that = (ExcursionCreateDTO) o;
+        return Objects.equals(getDescription(), that.getDescription())
+                && Objects.equals(getPrice(), that.getPrice())
+                && Objects.equals(getDestination(), that.getDestination())
+                && Objects.equals(getTripId(), that.getTripId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDestination(), getPrice(), getCurrency(), getDescription(), getTrip());
+        return Objects.hash(getDestination(), getPrice(), getDescription(), getTripId());
     }
 
 }

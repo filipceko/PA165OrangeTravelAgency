@@ -1,7 +1,6 @@
 package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.entities.Excursion;
-import cz.muni.fi.travelAgency.entities.Trip;
 import java.util.Collection;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public interface ExcursionService {
      * Updates excursion.
      * @param excursion to be updated
      */
-    void updateExcurison(Excursion excursion);
+    void updateExcursion(Excursion excursion);
 
     /**
      * Delete excursion.
@@ -53,8 +52,8 @@ public interface ExcursionService {
 
     /**
      * Retrieves all excursions by trip
-     * @param trip of the excursion
+     * @param tripId of the excursion
      * @return collection of excursions
      */
-    Collection<Excursion> findExcursionByTrip(Trip trip);
+    Collection<Excursion> findExcursionByTripId(Long tripId);
 }

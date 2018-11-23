@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- *
+ * DTO class of Excursion.
  * @author Rajivv
  */
 public class ExcursionDTO {
@@ -17,7 +17,7 @@ public class ExcursionDTO {
     private BigDecimal price;
     private LocalDate excursionDate;
     private Duration excursionDuration;
-    private TripDTO trip;
+    private Long tripId;
 
     public ExcursionDTO() {
     }
@@ -70,12 +70,12 @@ public class ExcursionDTO {
         this.excursionDuration = excursionDuration;
     }
 
-    public TripDTO getTrip() {
-        return trip;
+    public Long getTripId() {
+        return tripId;
     }
 
-    public void setTrip(TripDTO trip) {
-        this.trip = trip;
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
     }
 
     @Override
@@ -86,16 +86,16 @@ public class ExcursionDTO {
         if (!(o instanceof ExcursionDTO)) {
             return false;
         }
-        ExcursionDTO excursion = (ExcursionDTO) o;
-        return Objects.equals(getDestination(), excursion.getDestination())
-                && Objects.equals(getPrice(), excursion.getPrice())
-                && Objects.equals(getExcursionDate(), excursion.getExcursionDate())
-                && Objects.equals(getExcursionDuration(), excursion.getExcursionDuration())
-                && Objects.equals(getTrip(), excursion.getTrip());
+        ExcursionDTO that = (ExcursionDTO) o;
+        return Objects.equals(getDestination(), that.getDestination())
+                && Objects.equals(getPrice(), that.getPrice())
+                && Objects.equals(getExcursionDate(), that.getExcursionDate())
+                && Objects.equals(getExcursionDuration(), that.getExcursionDuration())
+                && Objects.equals(getTripId(), that.getTripId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getExcursionDuration(), getTrip());
+        return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getExcursionDuration(), getTripId());
     }
 }

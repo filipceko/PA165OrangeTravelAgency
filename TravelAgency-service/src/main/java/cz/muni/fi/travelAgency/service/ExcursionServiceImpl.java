@@ -2,7 +2,6 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.ExcursionDao;
 import cz.muni.fi.travelAgency.entities.Excursion;
-import cz.muni.fi.travelAgency.entities.Trip;
 import java.util.Collection;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class ExcursionServiceImpl implements ExcursionService{
     }
 
     @Override
-    public void updateExcurison(Excursion excursion) {
+    public void updateExcursion(Excursion excursion) {
          if (excursion == null) {
             throw new IllegalArgumentException("tried to update NULL excursion");
         }
@@ -60,8 +59,8 @@ public class ExcursionServiceImpl implements ExcursionService{
     }
 
     @Override
-    public Collection<Excursion> findExcursionByTrip(Trip trip) {
-       return excursionDao.findByTrip(trip);
+    public Collection<Excursion> findExcursionByTripId(Long tripId) {
+       return excursionDao.findByTripId(tripId);
     }
     
 }

@@ -2,9 +2,7 @@ package cz.muni.fi.travelAgency.facade;
 
 import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
-import cz.muni.fi.travelAgency.DTO.TripDTO;
-import cz.muni.fi.travelAgency.enums.Currency;
-import java.util.List;
+import java.util.Collection;
 
 /**
  *
@@ -12,13 +10,49 @@ import java.util.List;
  */
 public interface ExcursionFacade {
 
-    public Long createExcursion(ExcursionCreateDTO excursion);
-    public void getTotalPrice(Long id, Currency currency);
-    public void deleteExcursion(Long excursionId);
-    public ExcursionDTO getExcursionWithId(Long id);
-    public List<ExcursionDTO> getAllExcurisons();
-    public List<ExcursionDTO> getExcursionByDestination(String destination);
-    public List<ExcursionDTO> getExcursionByTrip(TripDTO trip);
+    /**
+     * create new excursion.
+     * @param excursionCreateDTO
+     */
+    public Long createExcursion(ExcursionCreateDTO excursionCreateDTO);
+
+    /**
+     * Retrieves excursion with given id.
+     * @param id id of excursion
+     * @return excursionDTO with given id
+     */
+    public ExcursionDTO findExcursionById(Long id);
+
+    /**
+     * Get all excursions.
+     * @return collection of all excursions
+     */
+    public Collection<ExcursionDTO> getAllExcurisons();
+
+    /**
+     * Retrieves excursionDTO with given destination.
+     * @param destination of excursion
+     * @return collection of all excursions with given destination
+     */
+    public Collection<ExcursionDTO> findExcursionByDestination(String destination);
+
+    /**
+     * Retrieves all excursions by TripId.
+     * @param tripId of the excursion
+     * @return collection of all excursions by Trip
+     */
+    public Collection<ExcursionDTO> findExcursionByTripId(Long tripId);
+    
+    /**
+     * Updates excursionDTO.
+     * @param excursion to be updated
+     */
+    void updateExcursion(ExcursionDTO excursion);
+
+    /**
+     * Remove Excursion.
+     * @param excursionId to be removed
+     */
     public void removeExcursion(Long excursionId);
 
 }
