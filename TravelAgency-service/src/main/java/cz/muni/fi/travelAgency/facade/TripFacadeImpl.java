@@ -1,7 +1,7 @@
-package cz.muni.fi.travelAgency.service.facade;
+package cz.muni.fi.travelAgency.facade;
 
 import cz.muni.fi.travelAgency.DTO.TripDTO;
-import cz.muni.fi.travelAgency.DTO.facade.TripFacade;
+import cz.muni.fi.travelAgency.facade.TripFacade;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.TripService;
