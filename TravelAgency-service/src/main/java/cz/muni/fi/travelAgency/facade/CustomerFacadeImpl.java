@@ -28,6 +28,9 @@ public class CustomerFacadeImpl implements CustomerFacade{
 
     @Override
     public void registerCustomer(CustomerDTO customer, String unencryptedPassword) {
+        if(customer == null || unencryptedPassword == null || customer.getEmail() == null){
+            throw new IllegalArgumentException("Either customer, password or customer's email is null");
+        }
         Customer customerEntity = beanMappingService.mapTo(customer, Customer.class);
         customerService.registerCustomer(customerEntity, unencryptedPassword);
         customer.setId(customerEntity.getId());

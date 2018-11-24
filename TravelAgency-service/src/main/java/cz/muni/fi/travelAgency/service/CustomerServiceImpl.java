@@ -92,6 +92,9 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public void updateCustomer(Customer customer) {
+        if (customer == null){
+            throw new IllegalArgumentException("Cannot update null customer");
+        }
         try {
             customerDao.update(customer);
         } catch (IllegalArgumentException exp){
@@ -101,6 +104,9 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public void deleteCustomer(Customer customer) {
+        if (customer == null){
+            throw new IllegalArgumentException("Cannot delete null customer");
+        }
         try {
             customerDao.remove(customer);
         } catch (IllegalArgumentException exp){
