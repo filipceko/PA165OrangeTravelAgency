@@ -26,14 +26,13 @@ public class TripFacadeImpl implements TripFacade {
     private BeanMappingService beanMappingService;
 
     @Override
-    public long createTrip(TripDTO trip)
+    public void createTrip(TripDTO trip)
     {
         if (trip == null) {
             throw new IllegalArgumentException("TripDTO is null.");
         }
         Trip mappedTrip = beanMappingService.mapTo(trip, Trip.class);
         tripService.createTrip(mappedTrip);
-        return mappedTrip.getId();
     }
 
     @Override
