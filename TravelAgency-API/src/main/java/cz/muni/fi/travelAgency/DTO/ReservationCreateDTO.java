@@ -3,6 +3,7 @@ package cz.muni.fi.travelAgency.DTO;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -106,5 +107,20 @@ public class ReservationCreateDTO {
      */
     public void removeExcursion(ExcursionDTO excursion) {
         excursions.remove(excursion);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReservationCreateDTO)) return false;
+        ReservationCreateDTO that = (ReservationCreateDTO) o;
+        return Objects.equals(getCustomer(), that.getCustomer()) &&
+                Objects.equals(getTrip(), that.getTrip()) &&
+                Objects.equals(getExcursions(), that.getExcursions());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCustomer(), getTrip(), getExcursions());
     }
 }
