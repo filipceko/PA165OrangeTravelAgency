@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.facade;
 
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 public interface TripFacade {
@@ -9,7 +10,7 @@ public interface TripFacade {
      * Create new Trip
      * @param trip
      */
-    public void createTrip(TripDTO trip);
+    public long createTrip(TripDTO trip);
 
     /**
      * Get Trip by provided trip id
@@ -43,7 +44,7 @@ public interface TripFacade {
      * @param trip
      * @return
      */
-    public List<TripDTO> getAvailableSlots(int amount);
+    public Collection<TripDTO> getTripBySlot(int amount);
 
     /**
      * Update existing trip
