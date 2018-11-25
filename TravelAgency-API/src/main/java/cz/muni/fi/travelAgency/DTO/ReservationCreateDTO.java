@@ -76,10 +76,10 @@ public class ReservationCreateDTO {
     /**
      * Excursions getter.
      *
-     * @return Unmodifiable Set of selected excursions
+     * @return Set of selected excursions
      */
     public Set<ExcursionDTO> getExcursions() {
-        return Collections.unmodifiableSet(excursions);
+        return excursions;
     }
 
     /**
