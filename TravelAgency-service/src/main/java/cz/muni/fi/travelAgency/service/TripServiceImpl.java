@@ -4,6 +4,7 @@ import cz.muni.fi.travelAgency.dao.TripDao;
 import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
+import cz.muni.fi.travelAgency.exceptions.DataAccessException;
 import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -27,7 +28,11 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Trip findById(Long id) {
-        return tripDao.findById(id);
+        try {
+            return tripDao.findById(id);
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
     @Override
@@ -40,7 +45,12 @@ public class TripServiceImpl implements TripService {
         if (destination == null || destination.isEmpty()){
             throw new IllegalArgumentException("Cannot find Trip with null destination or empty string.");
         }
-        return tripDao.findByDestination(destination);
+        try {
+            return tripDao.findByDestination(destination);
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
+        }
+
     }
 
     public Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate){
@@ -51,15 +61,19 @@ public class TripServiceImpl implements TripService {
         else if (fromDate.isAfter(toDate)){
             throw new IllegalArgumentException("From Date cannot after To Date.");
         }
-        return tripDao.findByInterval(fromDate,toDate);
+        try {
+            return tripDao.findByInterval(fromDate,toDate);
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
-    public Collection<Trip> findByAvailableSlots(int amount){
+    public Collection<Trip> findTripBySlot(int amount){
         if (amount < 0){
             throw new IllegalArgumentException("Invalid amount of slots.");
         }
         Collection<Trip> allTrip = tripDao.findAll();
-        Collection<Trip> foundTrip = Collections.EMPTY_LIST;
+        Set<Trip> foundTrip = new HashSet<>();
         for (Trip t : allTrip) {
             if (t.getCapacity() >= amount){
                foundTrip.add(t);
@@ -77,7 +91,11 @@ public class TripServiceImpl implements TripService {
         {
             throw new IllegalArgumentException("Cannot update trip starting date after end date.");
         }
-        tripDao.create(trip);
+        try {
+            tripDao.create(trip);
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
     @Override
@@ -88,12 +106,20 @@ public class TripServiceImpl implements TripService {
         else if (trip.getId() == null) {
             throw new IllegalArgumentException("Trip ID is null");
         }
-        tripDao.remove(trip);
+        try {
+            tripDao.remove(trip);
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
     @Override
     public void updateTrip(Trip trip) {
-        if(trip.getDestination().isEmpty() || trip.getDestination() == null)
+        if (trip == null)
+        {
+            throw new IllegalArgumentException("Cannot update trip with destination not set or null.");
+        }
+        else if(trip.getDestination().isEmpty() || trip.getDestination() == null)
         {
             throw new IllegalArgumentException("Cannot update trip with destination not set or null.");
         }
@@ -101,7 +127,11 @@ public class TripServiceImpl implements TripService {
         {
             throw new IllegalArgumentException("Cannot update trip starting date after end date.");
         }
-        tripDao.update(trip);
+        try {
+            tripDao.update(trip);
+        } catch (IllegalArgumentException exp){
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
      @Override
