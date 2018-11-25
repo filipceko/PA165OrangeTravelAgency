@@ -85,4 +85,16 @@ public class ReservationDTO extends ReservationCreateDTO {
     public void setReserveDate(@NotNull LocalDate reserveDate) {
         this.reserveDate = reserveDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReservationDTO)) return false;
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
