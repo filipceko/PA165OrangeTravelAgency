@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @ContextConfiguration(classes = ServiceConfiguration.class)
@@ -59,6 +60,10 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         tripBrno = beanMappingService.mapTo(tripDTO, Trip.class);
         Assert.assertEquals(tripBrno.getDestination(),"Lake Island");
         Assert.assertEquals(tripBrno.getCapacity(),10);
+        Mockito.when(tripService.findById(tripDTO.getId())).thenReturn(tripBrno);
+        TripDTO tripCreated = tripFacade.getTripById(tripDTO.getId());
+        Assert.assertNotNull(tripCreated);
+        Assert.assertEquals(tripCreated.getDestination(),destination);
     }
 
     @Test
@@ -77,10 +82,16 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
 
     @Test
     public void removeTripTest() {
-        tripFacade.removeTrip(tripDTO);
-        tripBrno = beanMappingService.mapTo(tripDTO,Trip.class);
-        tripService.removeTrip(tripBrno);
+        tripBrno = beanMappingService.mapTo(tripDTO, Trip.class);
+        Mockito.when(tripService.findById(tripDTO.getId())).thenReturn(tripBrno).thenReturn(null);
+        TripDTO findTrip = tripFacade.getTripById(tripDTO.getId());
+        Assert.assertNotNull(findTrip);
 
+        tripBrno = beanMappingService.mapTo(findTrip, Trip.class);
+        tripFacade.removeTrip(findTrip);
+        tripService.removeTrip(tripBrno);
+        findTrip = tripFacade.getTripById(tripDTO.getId());
+        Assert.assertNull(findTrip);
     }
 
     @Test
@@ -98,7 +109,7 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         trip1.setFromDate(firstDate);
         trip1.setToDate(secondDate);
         trip1.setDestination(destination);
-        trip1.setCapacity(2);
+        trip1.setCapacity(5);
         trip1.setPrice(100.20);
 
         Trip trip2 = new Trip();
@@ -106,7 +117,7 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         trip2.setFromDate(firstDate);
         trip2.setToDate(secondDate);
         trip2.setDestination("Prague");
-        trip2.setCapacity(4);
+        trip2.setCapacity(5);
         trip2.setPrice(120.20);
 
         Trip trip3 = new Trip();
@@ -114,14 +125,17 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         trip3.setFromDate(firstDate);
         trip3.setToDate(secondDate);
         trip3.setDestination("Paris");
-        trip3.setCapacity(15);
+        trip3.setCapacity(2);
         trip3.setPrice(320.20);
-        List<Trip> allTrips = Arrays.asList(trip1,trip2,trip3);
-        Mockito.when(tripService.findTripBySlot(5)).thenReturn(allTrips);
 
-        List<TripDTO> findTripFacade = new ArrayList<>(tripFacade.getTripBySlot(5));
-        List<Trip> findTrips = beanMappingService.mapTo(findTripFacade,Trip.class);
-        Assert.assertEquals(3,findTrips.size());
+        List<Trip> allTrips = Arrays.asList(trip1,trip2,trip3);
+        Mockito.when(tripService.findAll()).thenReturn(allTrips);
+        Collection<Trip> getTrips = new ArrayList<>(tripService.findByDestination("Prague"));
+        List<Trip> entitiesFromfacade = beanMappingService.mapTo(getTrips,Trip.class);
+        Assert.assertEquals(1,getTrips.size());
+
+
+
     }
 
 }
