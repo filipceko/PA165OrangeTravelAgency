@@ -10,7 +10,7 @@ public interface TripFacade {
      * Create new Trip
      * @param trip
      */
-    public long createTrip(TripDTO trip);
+    public void createTrip(TripDTO trip);
 
     /**
      * Get Trip by provided trip id
