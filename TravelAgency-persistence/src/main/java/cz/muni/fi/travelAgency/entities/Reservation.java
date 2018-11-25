@@ -15,37 +15,48 @@ import java.util.*;
 @Table(name = "RESERVATION")
 public class Reservation {
 
-    /** Unique ID set by the DB */
+    /**
+     * Unique ID set by the DB
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Customer who made this reservation */
+    /**
+     * Customer who made this reservation
+     */
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CUSTOMER_ID", nullable = false)
     private Customer customer;
 
-    /** Trip this reservation is related to */
+    /**
+     * Trip this reservation is related to
+     */
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TRIP_ID", nullable = false)
     private Trip trip;
 
-    /** Date this reservation was made on */
+    /**
+     * Date this reservation was made on
+     */
     @NotNull
     @Column(nullable = false)
     private LocalDate reserveDate;
 
-    /** Excursions reserved with this trip */
+    /**
+     * Excursions reserved with this trip
+     */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "RESERVATIONS_EXCURSIONS")
-    private Set<Excursion> excursions = new HashSet<>();
+    private Collection<Excursion> excursions = new HashSet<>();
 
     /**
      * Basic non-parametric constructor.
      */
-    public Reservation(){}
+    public Reservation() {
+    }
 
     /**
      * All fields constructor.
@@ -68,6 +79,7 @@ public class Reservation {
 
     /**
      * ID getter.
+     *
      * @return ID
      */
     public Long getId() {
@@ -76,6 +88,7 @@ public class Reservation {
 
     /**
      * ID setter, should be used by the DB.
+     *
      * @param id of the reservation
      */
     public void setId(Long id) {
@@ -91,6 +104,7 @@ public class Reservation {
 
     /**
      * Customer setter.
+     *
      * @param customer who made the reservation
      */
     public void setCustomer(Customer customer) {
@@ -107,6 +121,7 @@ public class Reservation {
 
     /**
      * Related trip setter.
+     *
      * @param trip related to this reservation
      */
     public void setTrip(Trip trip) {
@@ -123,6 +138,7 @@ public class Reservation {
 
     /**
      * Reservation date setter.
+     *
      * @param reserveDate the Date this reservation was made
      */
     public void setReserveDate(LocalDate reserveDate) {
@@ -132,20 +148,22 @@ public class Reservation {
     /**
      * @return excursions booked with this reservation
      */
-    public Set<Excursion> getExcursions() {
-        return Collections.unmodifiableSet(excursions);
+    public Collection<Excursion> getExcursions() {
+        return Collections.unmodifiableCollection(excursions);
     }
 
     /**
      * Booked excursions setter.
+     *
      * @param excursions booked with this reservation
      */
-    public void setExcursions(Set<Excursion> excursions) {
+    public void setExcursions(Collection<Excursion> excursions) {
         this.excursions = excursions;
     }
 
     /**
      * Adds excursion for this reservation.
+     *
      * @param excursion to be added
      */
     public void addExcursion(Excursion excursion) {
@@ -154,6 +172,7 @@ public class Reservation {
 
     /**
      * Removes one of the excursions from this reservations
+     *
      * @param excursion to be removed
      */
     public void removeExcursion(Excursion excursion) {
