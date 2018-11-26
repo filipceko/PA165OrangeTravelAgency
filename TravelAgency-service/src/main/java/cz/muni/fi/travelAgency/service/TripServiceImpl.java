@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.TripDao;
 import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.exceptions.DataAccessException;
@@ -9,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Implementation of the {@link TripService}. This class is part of the
@@ -62,9 +61,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate) {
-        if (fromDate == null || toDate == null) {
-            throw new IllegalArgumentException("Date cannot be null.");
-        } else if (fromDate.isAfter(toDate)) {
+        if (fromDate != null && toDate != null && (fromDate.isAfter(toDate))) {
             throw new IllegalArgumentException("From Date cannot after To Date.");
         }
         try {
@@ -96,8 +93,11 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void createTrip(Trip trip) {
-        if(trip == null){
-            throw new IllegalArgumentException("tried to create NULL trip");
+        if (trip == null) {
+            throw new IllegalArgumentException("Cannot create null Trip.");
+        }
+        if (trip.getFromDate().isAfter(trip.getToDate())) {
+            throw new IllegalArgumentException("Cannot update trip starting date after end date.");
         }
         try {
             tripDao.create(trip);
@@ -148,9 +148,7 @@ public class TripServiceImpl implements TripService {
         for (Reservation reservation : reservations) {
             customers.add(reservation.getCustomer());
         }
-
         return customers;
     }
-
 
 }

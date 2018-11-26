@@ -6,12 +6,14 @@ import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Collection;
 
 /**
  * Implemetation of {@link TripFacade}.
+ *
  * @author Rithy Ly
  */
 @Service
@@ -25,8 +27,7 @@ public class TripFacadeImpl implements TripFacade {
     private BeanMappingService beanMappingService;
 
     @Override
-    public void createTrip(TripDTO trip)
-    {
+    public void createTrip(TripDTO trip) {
         if (trip == null) {
             throw new IllegalArgumentException("TripDTO is null.");
         }
@@ -54,30 +55,30 @@ public class TripFacadeImpl implements TripFacade {
     }
 
     @Override
-    public Collection<TripDTO> getTripBySlot(int amount){
+    public Collection<TripDTO> getTripBySlot(int amount) {
         Collection<Trip> trips = tripService.findTripBySlot(amount);
         return beanMappingService.mapTo(trips, TripDTO.class);
     }
 
     @Override
-    public TripDTO getTripById(long id){
+    public TripDTO getTripById(long id) {
         Trip trip = tripService.findById(id);
         return (trip == null) ? null : beanMappingService.mapTo(trip, TripDTO.class);
     }
 
     @Override
-    public Collection<TripDTO> getAllTrips(){
+    public Collection<TripDTO> getAllTrips() {
         return beanMappingService.mapTo(tripService.findAll(), TripDTO.class);
     }
 
     @Override
-    public Collection<TripDTO> getTripByDestination(String destination){
+    public Collection<TripDTO> getTripByDestination(String destination) {
         return beanMappingService.mapTo(tripService.findByDestination(destination), TripDTO.class);
     }
 
     @Override
     public Collection<TripDTO> getTripByInterval(LocalDate fromDate, LocalDate toDate) {
-        return beanMappingService.mapTo(tripService.findByInterval(fromDate,toDate), TripDTO.class);
+        return beanMappingService.mapTo(tripService.findByInterval(fromDate, toDate), TripDTO.class);
     }
 
 }
