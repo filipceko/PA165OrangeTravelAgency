@@ -44,7 +44,7 @@ public interface TripService {
      * @param amount number of slots available
      * @return collection of trips with given dates
      */
-    public Collection<Trip> findByAvailableSlots(int amount);
+    public Collection<Trip> findTripBySlot(int amount);
 
     /**
      * Create Trip.

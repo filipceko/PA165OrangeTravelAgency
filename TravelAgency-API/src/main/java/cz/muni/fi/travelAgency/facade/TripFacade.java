@@ -50,7 +50,7 @@ public interface TripFacade {
      * @param amount
      * @return
      */
-    public Collection<TripDTO> getAvailableSlots(int amount);
+    public Collection<TripDTO> getTripBySlot(int amount);
 
     /**
      * Update existing trip

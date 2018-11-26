@@ -4,6 +4,7 @@ import cz.muni.fi.travelAgency.dao.TripDao;
 import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
+import cz.muni.fi.travelAgency.exceptions.DataAccessException;
 import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -27,12 +28,20 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Trip findById(Long id) {
-        return tripDao.findById(id);
+        try {
+            return tripDao.findById(id);
+        } catch (Exception e){
+            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+        }
     }
 
     @Override
     public Collection<Trip> findAll() {
-        return tripDao.findAll();
+        try {
+            return tripDao.findAll();
+        } catch (Exception e){
+            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+        }
     }
 
     @Override
@@ -40,9 +49,14 @@ public class TripServiceImpl implements TripService {
         if (destination == null || destination.isEmpty()){
             throw new IllegalArgumentException("Cannot find Trip with null destination or empty string.");
         }
-        return tripDao.findByDestination(destination);
+        try {
+            return tripDao.findByDestination(destination);
+        } catch (Exception e){
+            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+        }
     }
 
+    @Override
     public Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate){
         if (fromDate == null || toDate == null)
         {
@@ -51,57 +65,49 @@ public class TripServiceImpl implements TripService {
         else if (fromDate.isAfter(toDate)){
             throw new IllegalArgumentException("From Date cannot after To Date.");
         }
-        return tripDao.findByInterval(fromDate,toDate);
+        try {
+            return tripDao.findByInterval(fromDate,toDate);
+        } catch (Exception e){
+            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+        }
     }
 
-    public Collection<Trip> findByAvailableSlots(int amount){
+    @Override
+    public Collection<Trip> findTripBySlot(int amount){
         if (amount < 0){
             throw new IllegalArgumentException("Invalid amount of slots.");
         }
-        Collection<Trip> allTrip = tripDao.findAll();
-        Collection<Trip> foundTrip = Collections.EMPTY_LIST;
-        for (Trip t : allTrip) {
-            if (t.getCapacity() >= amount){
-               foundTrip.add(t);
+        Collection<Trip> allTrips = tripDao.findAll();
+        Set<Trip> foundTrips = new HashSet<>();
+        for (Trip trip : allTrips) {
+            if (trip.getCapacity() >= amount){
+                foundTrips.add(trip);
             }
         }
-        return foundTrip;
+        return foundTrips;
     }
 
     @Override
     public void createTrip(Trip trip) {
-        if(trip == null){
-            throw new IllegalArgumentException("Cannot create null Trip.");
+        try {
+            tripDao.create(trip);
+        } catch (Exception e){
+            throw new DataAccessException("Could not create Trip in persistence layer", e);
         }
-        else if(trip.getFromDate().isAfter(trip.getToDate()))
-        {
-            throw new IllegalArgumentException("Cannot update trip starting date after end date.");
-        }
-        tripDao.create(trip);
     }
 
     @Override
     public void removeTrip(Trip trip) {
-        if(trip == null){
-            throw new IllegalArgumentException("Cannot delete null Trip.");
-        }
-        else if (trip.getId() == null) {
-            throw new IllegalArgumentException("Trip ID is null");
-        }
         tripDao.remove(trip);
     }
 
     @Override
     public void updateTrip(Trip trip) {
-        if(trip.getDestination().isEmpty() || trip.getDestination() == null)
-        {
-            throw new IllegalArgumentException("Cannot update trip with destination not set or null.");
+        try {
+            tripDao.update(trip);
+        } catch (Exception e){
+            throw new DataAccessException("Could not update Trip in persistence layer", e);
         }
-        else if(trip.getFromDate().isAfter(trip.getToDate()))
-        {
-            throw new IllegalArgumentException("Cannot update trip starting date after end date.");
-        }
-        tripDao.update(trip);
     }
 
      @Override

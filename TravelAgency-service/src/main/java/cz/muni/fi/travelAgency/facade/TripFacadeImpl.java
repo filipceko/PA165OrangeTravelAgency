@@ -5,14 +5,20 @@ import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.inject.Inject;
+import org.springframework.stereotype.Service;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Collection;
 
+/**
+ * Implemetation of {@link TripFacade}.
+ * @author Rithy Ly
+ */
+@Service
+@Transactional
 public class TripFacadeImpl implements TripFacade {
 
-    @Inject
+    @Autowired
     private TripService tripService;
 
     @Autowired
@@ -21,6 +27,9 @@ public class TripFacadeImpl implements TripFacade {
     @Override
     public void createTrip(TripDTO trip)
     {
+        if (trip == null) {
+            throw new IllegalArgumentException("TripDTO is null.");
+        }
         Trip mappedTrip = beanMappingService.mapTo(trip, Trip.class);
         tripService.createTrip(mappedTrip);
     }
@@ -44,8 +53,9 @@ public class TripFacadeImpl implements TripFacade {
     }
 
     @Override
-    public Collection<TripDTO> getAvailableSlots(int amount){
-        return beanMappingService.mapTo(tripService.findByAvailableSlots(amount), TripDTO.class);
+    public Collection<TripDTO> getTripBySlot(int amount){
+        Collection<Trip> trips = tripService.findTripBySlot(amount);
+        return beanMappingService.mapTo(trips, TripDTO.class);
     }
 
     @Override
@@ -68,4 +78,5 @@ public class TripFacadeImpl implements TripFacade {
     public Collection<TripDTO> getTripByInterval(LocalDate fromDate, LocalDate toDate) {
         return beanMappingService.mapTo(tripService.findByInterval(fromDate,toDate), TripDTO.class);
     }
+
 }
