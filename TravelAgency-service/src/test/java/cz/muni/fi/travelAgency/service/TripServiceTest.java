@@ -1,21 +1,26 @@
 package cz.muni.fi.travelAgency.service;
 
-        import cz.muni.fi.travelAgency.config.ServiceConfiguration;
-        import cz.muni.fi.travelAgency.dao.TripDao;
-        import cz.muni.fi.travelAgency.entities.Trip;
-        import org.mockito.*;
-        import org.springframework.test.context.ContextConfiguration;
-        import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-        import org.testng.Assert;
-        import org.testng.annotations.BeforeClass;
-        import org.testng.annotations.BeforeMethod;
-        import org.testng.annotations.Test;
+import cz.muni.fi.travelAgency.config.ServiceConfiguration;
+import cz.muni.fi.travelAgency.dao.TripDao;
+import cz.muni.fi.travelAgency.entities.Trip;
+import org.mockito.*;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-        import java.time.LocalDate;
-        import java.util.ArrayList;
-        import java.util.Arrays;
-        import java.util.List;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+/**
+ * Simple Trip service tests using Mockito.
+ *
+ * @author Rithy Ly
+ */
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class TripServiceTest extends AbstractTestNGSpringContextTests {
 
@@ -24,17 +29,29 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     private LocalDate secondDate = LocalDate.of(2017, 11, 25);
     private final String destination = "Lake Island";
 
+    /**
+     * Mocked trip data access object for testing.
+     */
     @Mock
     private TripDao tripDao;
 
+    /**
+     * Service tested with mocked injections.
+     */
     @InjectMocks
     private final TripService tripService = new TripServiceImpl();
 
+    /**
+     * Set's up the Mockito injections.
+     */
     @BeforeClass
     public void initMockito(){
         MockitoAnnotations.initMocks(this);
     }
 
+    /**
+     * Setts up the Trip with required fields.
+     */
     @BeforeMethod
     public void setUpTest(){
         trip = new Trip();
@@ -44,11 +61,20 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         trip.setDestination(destination);
         trip.setCapacity(10);
         trip.setPrice(100.20);
-        tripService.createTrip(trip);
-        Assert.assertEquals(trip.getDestination(),"Lake Island");
-        Assert.assertEquals(trip.getCapacity(),10);
     }
 
+    /**
+     * Tests create calls create on the DAO.
+     */
+    @Test
+    public void createTripTest(){
+        tripService.createTrip(trip);
+        Mockito.verify(tripDao).create(trip);
+    }
+
+    /**
+     * Tests valid result is returned.
+     */
     @Test
     public void getAvailableSlotsTripTest() {
         Trip trip1 = new Trip();
@@ -81,6 +107,9 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(1,getTrips.size());
     }
 
+    /**
+     * Tests valid result is returned.
+     */
     @Test
     public void getAllTripTest() {
         Trip trip1 = new Trip();
@@ -117,10 +146,12 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(getTrips.get(2),trip3);
     }
 
+    /**
+     * Tests update on DAO is called.
+     */
     @Test
     public void updateTripTest() {
         Assert.assertEquals(trip.getDestination(),"Lake Island");
-
         trip.setDestination("New Lake Island");
         trip.setCapacity(15);
         trip.setPrice(150.20);
@@ -128,12 +159,18 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         Mockito.verify(tripDao, Mockito.times(1)).update(trip);
     }
 
+    /**
+     * Tests remove on DAO is called.
+     */
     @Test
     public void removeTripTest(){
         tripService.removeTrip(trip);
         Mockito.verify(tripDao, Mockito.times(1)).remove(trip);
     }
 
+    /**
+     * Tests valid result is returned.
+     */
     @Test
     public  void findByIdTest(){
         Mockito.when(tripDao.findById(trip.getId())).thenReturn(trip);
