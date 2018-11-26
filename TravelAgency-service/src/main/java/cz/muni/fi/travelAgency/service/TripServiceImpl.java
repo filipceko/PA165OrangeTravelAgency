@@ -149,6 +149,9 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Map<Trip, Collection<Excursion>> tripsForMoney(Double money) {
+        if (money <= 0){
+            throw new IllegalArgumentException("Money must be more than zero");
+        }
         TreeSet<Excursion> availableExcursions = new TreeSet<>(Comparator.comparing(Excursion::getPrice));
         TreeSet<Trip> allTrips = new TreeSet<>(Comparator.comparing(Trip::getPrice));
         allTrips.addAll(findTripBySlot(1));

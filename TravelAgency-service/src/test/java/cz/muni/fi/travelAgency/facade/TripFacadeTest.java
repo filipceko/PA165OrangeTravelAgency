@@ -1,7 +1,9 @@
 package cz.muni.fi.travelAgency.facade;
 
+import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
+import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.TripService;
@@ -31,10 +33,8 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
     private final String destination = "Lake Island";
     private TripDTO tripDTO;
     private Trip tripBrno;
-    private TripDTO tripDTO;
     private LocalDate firstDate = LocalDate.of(2017, 11, 20);
     private LocalDate secondDate = LocalDate.of(2017, 11, 25);
-    private final String destination = "Lake Island";
 
     /**
      * Mocked trip to test with
@@ -190,5 +190,19 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
         Collection<TripDTO> availableTrips = tripFacade.getTripBySlot(amount);
         Collection<Trip> result = beanMappingService.mapTo(availableTrips, Trip.class);
         Assert.assertEquals(result.size(), 2);
+    }
+
+    /**
+     * Tests CheapTravelDTO is returned and valid
+     */
+    @Test
+    public void tripsForMoneyTest() {
+        Map<Trip, Collection<Excursion>> map = new HashMap<>();
+        map.put(tripBrno, new HashSet<>());
+        Mockito.when(tripService.tripsForMoney(Mockito.anyDouble())).thenReturn(map);
+        CheapTravelDTO result = tripFacade.tripsForMoney(50.00);
+        TripDTO mappedTrip = beanMappingService.mapTo(tripBrno, TripDTO.class);
+        Assert.assertTrue(result.getTrips().contains(mappedTrip));
+        Assert.assertTrue(result.getExcursions().isEmpty());
     }
 }
