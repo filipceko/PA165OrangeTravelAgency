@@ -1,7 +1,9 @@
 package cz.muni.fi.travelAgency.facade;
 
 import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
+import cz.muni.fi.travelAgency.DTO.CustomerDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
+import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.TripService;
@@ -85,5 +87,18 @@ public class TripFacadeImpl implements TripFacade {
     @Override
     public CheapTravelDTO tripsForMoney(Double money) {
         return beanMappingService.mapToCheapTravel(tripService.tripsForMoney(money));
+    }
+
+    @Override
+    public Collection<TripDTO> getAvailableFutureTrip() {
+        Collection<Trip> trips = tripService.findAvailableFutureTrip();
+        return beanMappingService.mapTo(trips, TripDTO.class);
+    }
+
+    @Override
+    public Collection<CustomerDTO> getAllCustomers(TripDTO trip) {
+        Trip mappedTrip = beanMappingService.mapTo(trip, Trip.class);
+        Collection<Customer> customers = tripService.getAllCustomers(mappedTrip);
+        return beanMappingService.mapTo(customers, CustomerDTO.class);
     }
 }

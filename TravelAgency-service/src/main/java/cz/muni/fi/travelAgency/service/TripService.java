@@ -7,7 +7,6 @@ import cz.muni.fi.travelAgency.entities.Trip;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * An interface that defines a service access to the {@link Trip} entity.
@@ -15,6 +14,7 @@ import java.util.Set;
  * @author Rithy Ly
  */
 public interface TripService {
+
     /**
      * Finds a trip with given id.
      *
@@ -81,6 +81,7 @@ public interface TripService {
      *
      * @param trip to get the customers for
      * @return Collection of customers who booked the trip
+     * @author Simona Raucinova
      */
     Collection<Customer> getAllCustomers(Trip trip);
 
@@ -92,4 +93,11 @@ public interface TripService {
      * @return Map of trips with excursions
      */
     Map<Trip, Collection<Excursion>> tripsForMoney(Double money);
+
+    /**
+     * Finds all trips available in the future.
+     *
+     * @return collection of available future trips
+     */
+    Collection<Trip> findAvailableFutureTrip();
 }

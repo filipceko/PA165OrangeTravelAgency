@@ -2,8 +2,10 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.dao.TripDao;
+import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
-import cz.muni.fi.travelAgency.exceptions.DataAccessException;
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -16,9 +18,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
+import static org.mockito.Mockito.when;
 
 /**
  * Simple Trip service tests using Mockito.
@@ -28,15 +30,15 @@ import java.util.List;
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class TripServiceTest extends AbstractTestNGSpringContextTests {
 
-    private final String destination = "Lake Island";
     /**
      * Service tested with mocked injections.
      */
     @InjectMocks
     private final TripService tripService = new TripServiceImpl();
+    private final String destination = "Lake Island";
     private Trip trip;
-    private LocalDate firstDate = LocalDate.of(2017, 11, 20);
-    private LocalDate secondDate = LocalDate.of(2017, 11, 25);
+    private LocalDate firstDate = LocalDate.of(2018, 11, 27);
+    private LocalDate secondDate = LocalDate.of(2018, 11, 29);
     /**
      * Mocked trip data access object for testing.
      */
@@ -135,6 +137,33 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
      * Tests valid result is returned.
      */
     @Test
+    public void findAvailableFutureTrip() {
+        Trip trip1 = new Trip();
+        trip1.setId(11L);
+        trip1.setFromDate(firstDate);
+        trip1.setToDate(secondDate);
+        trip1.setDestination(destination);
+        trip1.setCapacity(5);
+        trip1.setPrice(100.20);
+
+        Trip trip2 = new Trip();
+        trip2.setId(12L);
+        trip2.setFromDate(firstDate);
+        trip2.setToDate(secondDate);
+        trip2.setDestination("Prague");
+        trip2.setCapacity(4);
+        trip2.setPrice(120.20);
+
+        List<Trip> allTrips = Arrays.asList(trip1, trip2);
+        Mockito.when(tripDao.findAll()).thenReturn(allTrips);
+        List<Trip> getTrips = new ArrayList<>(tripService.findAvailableFutureTrip());
+        Assert.assertEquals(2, getTrips.size());
+    }
+
+    /**
+     * Tests valid result is returned.
+     */
+    @Test
     public void getAllTripTest() {
         Trip trip1 = new Trip();
         trip1.setId(11L);
@@ -162,6 +191,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
 
         List<Trip> allTrips = Arrays.asList(trip1, trip2, trip3);
         Mockito.when(tripDao.findAll()).thenReturn(allTrips);
+
         List<Trip> getTrips = new ArrayList<>(tripService.findAll());
         Assert.assertEquals(3, getTrips.size());
         Assert.assertEquals(getTrips.size(), 3);
@@ -192,7 +222,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     public void findByIdThrowsTest() {
         Mockito.when(tripDao.findById(1L)).thenThrow(IllegalArgumentException.class);
         tripService.findById(1L);
@@ -209,16 +239,27 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     public void findByDestinationThrowsTest() {
         Mockito.when(tripDao.findByDestination("search")).thenThrow(IllegalArgumentException.class);
         tripService.findByDestination("search");
     }
 
     /**
+     * <<<<<<< HEAD
+     * =======
+     * Tests service validates the argument.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByIntervalNullTest() {
+        tripService.findByInterval(null, null);
+    }
+
+    /**
+     * >>>>>>> master
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     public void findByIntervalThrowsTest() {
         Mockito.when(tripDao.findByInterval(firstDate, secondDate)).thenThrow(IllegalArgumentException.class);
         tripService.findByInterval(firstDate, secondDate);
@@ -231,7 +272,6 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     public void findTripBySlotErrorTest() {
         tripService.findTripBySlot(-1);
     }
-
 
     /**
      * Tests service validates the argument.
@@ -278,7 +318,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void updateThrowsTest() {
         trip.setId(100L);
         Mockito.doThrow(IllegalArgumentException.class).when(tripDao).update(Mockito.any(Trip.class));
@@ -286,7 +326,73 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    void tripsForMoneyViolateTest(){
+    void tripsForMoneyViolateTest() {
         tripService.tripsForMoney(0.0);
+    }
+
+    /**
+     * @author Simona Raucinova
+     */
+    @Test
+    public void getAllCustomers() {
+        Set<Reservation> reservations = createReservations(createCustomers(), trip);
+        for (Reservation reservation : reservations) {
+            trip.addReservation(reservation);
+        }
+        when(tripDao.findById(1L)).thenReturn(trip);
+        Collection<Customer> returnedCustomers = tripService.getAllCustomers(trip);
+        Set<Customer> returnedCustomerSet = new HashSet<>(returnedCustomers);
+        Assert.assertEquals(createCustomers(), returnedCustomerSet);
+        Assert.assertEquals(returnedCustomers.size(), 3);
+    }
+
+    /**
+     * @author Simona Raucinova
+     */
+    private Set<Reservation> createReservations(Set<Customer> customers, Trip trip) {
+        Set<Reservation> reservations = new HashSet<>();
+        long counter = 0L;
+        for (Customer customer : customers) {
+            counter++;
+            Reservation reservation = new Reservation();
+            reservation.setExcursions(new HashSet<>());
+            reservation.setTrip(trip);
+            reservation.setCustomer(customer);
+            reservation.setId(counter);
+            reservation.setReserveDate(LocalDate.of(2018, 11, 25));
+            reservations.add(reservation);
+        }
+
+        return reservations;
+    }
+
+    /**
+     * @author Simona Raucinova
+     */
+    private Set<Customer> createCustomers() {
+        Set<Customer> customers = new HashSet<>();
+
+        Customer customer1 = new Customer();
+        customer1.setId(1L);
+        customer1.setName("Karol");
+        customer1.setSurname("Kovac");
+        customer1.setEmail("karol@pa165.com");
+        customers.add(customer1);
+
+        Customer customer2 = new Customer();
+        customer2.setId(2L);
+        customer2.setName("Matej");
+        customer2.setSurname("Svoboda");
+        customer2.setEmail("matej@pa165.com");
+        customers.add(customer2);
+
+        Customer customer3 = new Customer();
+        customer3.setId(3L);
+        customer3.setName("Jan");
+        customer3.setSurname("Novak");
+        customer3.setEmail("novak@pa165.com");
+        customers.add(customer3);
+
+        return customers;
     }
 }

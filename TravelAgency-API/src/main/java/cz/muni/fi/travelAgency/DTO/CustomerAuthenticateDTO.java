@@ -1,11 +1,18 @@
 package cz.muni.fi.travelAgency.DTO;
 
 /**
+ * DTO for authentication of customer.
  * @author Simona Raucinova
  */
 public class CustomerAuthenticateDTO {
 
+    /**
+     * Id of customer.
+     */
     private Long customerId;
+    /**
+     * Customer's password.
+     */
     private String password;
 
     public Long getCustomerId() {

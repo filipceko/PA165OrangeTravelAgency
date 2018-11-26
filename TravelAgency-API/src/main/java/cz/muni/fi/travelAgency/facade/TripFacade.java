@@ -1,6 +1,7 @@
 package cz.muni.fi.travelAgency.facade;
 
 import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
+import cz.muni.fi.travelAgency.DTO.CustomerDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.Collection;
  * @author Rithy Ly
  */
 public interface TripFacade {
+
     /**
      * Create new Trip
      *
@@ -59,6 +61,13 @@ public interface TripFacade {
     Collection<TripDTO> getTripBySlot(int amount);
 
     /**
+     * Finds all trips available in the future.
+     *
+     * @return collection of available future trips
+     */
+    public Collection<TripDTO> getAvailableFutureTrip();
+
+    /**
      * Update existing trip
      *
      * @param trip
@@ -75,8 +84,16 @@ public interface TripFacade {
     /**
      * Retrieves a biggest sub-set of non-fully booked trips and excursions available
      * for given amount of money
+     *
      * @param money available amount
      * @return DTO carrying selected Trips and Excursions
      */
     CheapTravelDTO tripsForMoney(Double money);
+
+    /**
+     * Finds all customers which have a reservation for trip.
+     *
+     * @author Simona Raucinova
+     */
+    Collection<CustomerDTO> getAllCustomers(TripDTO trip);
 }

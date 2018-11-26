@@ -2,7 +2,7 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.ReservationDao;
 import cz.muni.fi.travelAgency.entities.Reservation;
-import cz.muni.fi.travelAgency.exceptions.DataAccessException;
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -27,7 +27,7 @@ public class ReservationServiceImpl implements ReservationService {
         try {
             reservationDao.create(reservation);
         } catch (Exception e){
-            throw new DataAccessException("Could not create Reservation in persistence layer", e);
+            throw new DataAccessLayerException("Could not create Reservation in persistence layer", e);
         }
 
     }
@@ -37,7 +37,7 @@ public class ReservationServiceImpl implements ReservationService {
         try {
             return reservationDao.findAll();
         } catch (Exception e){
-            throw new DataAccessException("Could not get Reservations from the persistence layer", e);
+            throw new DataAccessLayerException("Could not get Reservations from the persistence layer", e);
         }
     }
 
@@ -49,7 +49,7 @@ public class ReservationServiceImpl implements ReservationService {
         try {
             return reservationDao.findById(id);
         } catch (Exception e){
-            throw new DataAccessException("Could not get Reservations from the persistence layer", e);
+            throw new DataAccessLayerException("Could not get Reservations from the persistence layer", e);
         }
     }
 
@@ -61,7 +61,7 @@ public class ReservationServiceImpl implements ReservationService {
         try {
             return reservationDao.findByCustomerId(customerId);
         } catch (Exception e){
-            throw new DataAccessException("Could not get Reservations from the persistence layer", e);
+            throw new DataAccessLayerException("Could not get Reservations from the persistence layer", e);
         }
     }
 
@@ -73,7 +73,7 @@ public class ReservationServiceImpl implements ReservationService {
         try {
             return reservationDao.findByTripId(tripId);
         } catch (Exception e){
-            throw new DataAccessException("Could not get Reservations from the persistence layer", e);
+            throw new DataAccessLayerException("Could not get Reservations from the persistence layer", e);
         }
     }
 
@@ -88,7 +88,7 @@ public class ReservationServiceImpl implements ReservationService {
         try {
             reservationDao.update(data);
         } catch (Exception e){
-            throw new DataAccessException("Could not update Reservation in persistence layer", e);
+            throw new DataAccessLayerException("Could not update Reservation in persistence layer", e);
         }
     }
 
@@ -103,7 +103,7 @@ public class ReservationServiceImpl implements ReservationService {
         try {
             reservationDao.remove(reservation);
         } catch (Exception e) {
-            throw new DataAccessException("Could not remove Reservation from the persistence layer", e);
+            throw new DataAccessLayerException("Could not remove Reservation from the persistence layer", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class ReservationServiceImpl implements ReservationService {
         try {
             return reservationDao.findReservationBetween(from, to);
         } catch (Exception e){
-            throw new DataAccessException("Could not get Reservations from the persistence layer", e);
+            throw new DataAccessLayerException("Could not get Reservations from the persistence layer", e);
         }
     }
 }

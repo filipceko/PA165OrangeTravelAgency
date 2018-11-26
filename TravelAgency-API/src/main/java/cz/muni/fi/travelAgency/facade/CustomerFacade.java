@@ -5,6 +5,10 @@ import cz.muni.fi.travelAgency.DTO.CustomerDTO;
 
 import java.util.List;
 
+/**
+ * Interface for customer facade.
+ * @author Simona Raucinova
+ */
 public interface CustomerFacade {
 
     /**
