@@ -81,4 +81,10 @@ public class TripFacadeImpl implements TripFacade {
         return beanMappingService.mapTo(tripService.findByInterval(fromDate, toDate), TripDTO.class);
     }
 
+    @Override
+    public Collection<TripDTO> getAvailableFutureTrip() {
+        Collection<Trip> trips = tripService.findAvailableFutureTrip();
+        return beanMappingService.mapTo(trips, TripDTO.class);
+    }
+
 }

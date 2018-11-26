@@ -26,8 +26,8 @@ import java.util.List;
 public class TripServiceTest extends AbstractTestNGSpringContextTests {
 
     private Trip trip;
-    private LocalDate firstDate = LocalDate.of(2017, 11, 20);
-    private LocalDate secondDate = LocalDate.of(2017, 11, 25);
+    private LocalDate firstDate = LocalDate.of(2018, 11, 27);
+    private LocalDate secondDate = LocalDate.of(2018, 11, 29);
     private final String destination = "Lake Island";
 
     /**
@@ -46,7 +46,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
      * Set's up the Mockito injections.
      */
     @BeforeClass
-    public void initMockito(){
+    public void initMockito() {
         MockitoAnnotations.initMocks(this);
     }
 
@@ -54,7 +54,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
      * Setts up the Trip with required fields.
      */
     @BeforeMethod
-    public void setUpTest(){
+    public void setUpTest() {
         Mockito.reset(tripDao);
         trip = new Trip();
         trip.setId(1L);
@@ -69,7 +69,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
      * Tests create calls create on the DAO.
      */
     @Test
-    public void createTripTest(){
+    public void createTripTest() {
         tripService.createTrip(trip);
         Mockito.verify(tripDao).create(trip);
     }
@@ -90,7 +90,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
      * Tests remove on DAO is called.
      */
     @Test
-    public void removeTripTest(){
+    public void removeTripTest() {
         tripService.removeTrip(trip);
         Mockito.verify(tripDao, Mockito.times(1)).remove(trip);
     }
@@ -124,10 +124,37 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         trip3.setCapacity(3);
         trip3.setPrice(320.20);
 
-        List<Trip> allTrips = Arrays.asList(trip1,trip2,trip3);
+        List<Trip> allTrips = Arrays.asList(trip1, trip2, trip3);
         Mockito.when(tripDao.findAll()).thenReturn(allTrips);
         List<Trip> getTrips = new ArrayList<>(tripService.findTripBySlot(5));
-        Assert.assertEquals(1,getTrips.size());
+        Assert.assertEquals(1, getTrips.size());
+    }
+
+    /**
+     * Tests valid result is returned.
+     */
+    @Test
+    public void findAvailableFutureTrip() {
+        Trip trip1 = new Trip();
+        trip1.setId(11L);
+        trip1.setFromDate(firstDate);
+        trip1.setToDate(secondDate);
+        trip1.setDestination(destination);
+        trip1.setCapacity(5);
+        trip1.setPrice(100.20);
+
+        Trip trip2 = new Trip();
+        trip2.setId(12L);
+        trip2.setFromDate(firstDate);
+        trip2.setToDate(secondDate);
+        trip2.setDestination("Prague");
+        trip2.setCapacity(4);
+        trip2.setPrice(120.20);
+
+        List<Trip> allTrips = Arrays.asList(trip1, trip2);
+        Mockito.when(tripDao.findAll()).thenReturn(allTrips);
+        List<Trip> getTrips = new ArrayList<>(tripService.findAvailableFutureTrip());
+        Assert.assertEquals(2, getTrips.size());
     }
 
     /**
@@ -159,25 +186,25 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         trip3.setCapacity(3);
         trip3.setPrice(320.20);
 
-        List<Trip> allTrips = Arrays.asList(trip1,trip2,trip3);
+        List<Trip> allTrips = Arrays.asList(trip1, trip2, trip3);
         Mockito.when(tripDao.findAll()).thenReturn(allTrips);
         List<Trip> getTrips = new ArrayList<>(tripService.findAll());
-        Assert.assertEquals(3,getTrips.size());
+        Assert.assertEquals(3, getTrips.size());
         Assert.assertEquals(getTrips.size(), 3);
-        Assert.assertEquals(getTrips.get(0),trip1);
-        Assert.assertEquals(getTrips.get(1),trip2);
-        Assert.assertEquals(getTrips.get(2),trip3);
+        Assert.assertEquals(getTrips.get(0), trip1);
+        Assert.assertEquals(getTrips.get(1), trip2);
+        Assert.assertEquals(getTrips.get(2), trip3);
     }
 
     /**
      * Tests valid result is returned.
      */
     @Test
-    public  void findByIdTest(){
+    public void findByIdTest() {
         Mockito.when(tripDao.findById(trip.getId())).thenReturn(trip);
         Trip foundTrip = tripService.findById(trip.getId());
-        Assert.assertEquals(foundTrip,trip);
-        Assert.assertEquals(foundTrip.getDestination(),trip.getDestination());
+        Assert.assertEquals(foundTrip, trip);
+        Assert.assertEquals(foundTrip.getDestination(), trip.getDestination());
     }
 
     /**
@@ -219,7 +246,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByIntervalNullTest() {
-        tripService.findByInterval(null,null);
+        tripService.findByInterval(null, null);
     }
 
     /**
@@ -227,8 +254,8 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test(expectedExceptions = DataAccessException.class)
     public void findByIntervalThrowsTest() {
-        Mockito.when(tripDao.findByInterval(firstDate,secondDate)).thenThrow(IllegalArgumentException.class);
-        tripService.findByInterval(firstDate,secondDate);
+        Mockito.when(tripDao.findByInterval(firstDate, secondDate)).thenThrow(IllegalArgumentException.class);
+        tripService.findByInterval(firstDate, secondDate);
     }
 
     /**
@@ -238,7 +265,6 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     public void findTripBySlotErrorTest() {
         tripService.findTripBySlot(-1);
     }
-
 
     /**
      * Tests service validates the argument.

@@ -13,13 +13,12 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
- * Implementation of the {@link TripService}. This class is part of the
- * service module of the application that provides the implementation of the
- * business logic.
+ * Implementation of the {@link TripService}. This class is part of the service
+ * module of the application that provides the implementation of the business
+ * logic.
  *
  * @author Rithy Ly
  */
-
 @Service
 public class TripServiceImpl implements TripService {
 
@@ -28,7 +27,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Trip findById(Long id) {
-        if (id == null){
+        if (id == null) {
             throw new IllegalArgumentException("Tried to find Trip by NULL");
         }
         try {
@@ -108,10 +107,10 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void removeTrip(Trip trip) {
-        if (trip == null){
+        if (trip == null) {
             throw new IllegalArgumentException("Tried to delete NULL trip");
         }
-        if (trip.getId() == null){
+        if (trip.getId() == null) {
             throw new IllegalArgumentException("Tried to delete trip without ID");
         }
         tripDao.remove(trip);
@@ -119,18 +118,14 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void updateTrip(Trip trip) {
-        if(trip == null){
+        if (trip == null) {
             throw new IllegalArgumentException("Cannot update trip with destination not set or null.");
         }
-        if(trip.getDestination() == null || trip.getDestination().isEmpty())
-        {
+        if (trip.getDestination() == null || trip.getDestination().isEmpty()) {
             throw new IllegalArgumentException("Cannot update trip with destination not set or null.");
-        }
-        else if(trip.getFromDate().isAfter(trip.getToDate()))
-        {
+        } else if (trip.getFromDate().isAfter(trip.getToDate())) {
             throw new IllegalArgumentException("Cannot update trip starting date after end date.");
-        }
-        else if (trip.getId() == null){
+        } else if (trip.getId() == null) {
             throw new IllegalArgumentException("Tried to update trip without ID");
         }
         try {
@@ -149,6 +144,23 @@ public class TripServiceImpl implements TripService {
             customers.add(reservation.getCustomer());
         }
         return customers;
+    }
+
+    @Override
+    public Collection<Trip> findAvailableFutureTrip() {
+        Collection<Trip> allTrips;
+        try {
+            allTrips = tripDao.findAll();
+        } catch (Exception e) {
+            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+        }
+        Set<Trip> foundTrips = new HashSet<>();
+        allTrips.stream().filter((trip) -> (trip.getCapacity() > 0 && trip.getFromDate()
+                .isAfter(LocalDate.now()))).forEach((trip) -> {
+            foundTrips.add(trip);
+        });
+        return foundTrips;
+
     }
 
 }
