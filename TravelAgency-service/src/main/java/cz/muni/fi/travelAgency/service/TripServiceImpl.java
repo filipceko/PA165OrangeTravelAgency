@@ -119,7 +119,10 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void updateTrip(Trip trip) {
-        if(trip.getDestination().isEmpty() || trip.getDestination() == null)
+        if(trip == null){
+            throw new IllegalArgumentException("Cannot update trip with destination not set or null.");
+        }
+        if(trip.getDestination() == null || trip.getDestination().isEmpty())
         {
             throw new IllegalArgumentException("Cannot update trip with destination not set or null.");
         }
