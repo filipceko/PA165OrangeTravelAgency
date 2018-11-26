@@ -1,5 +1,6 @@
 package cz.muni.fi.travelAgency.facade;
 
+import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 
 import java.time.LocalDate;
@@ -11,21 +12,21 @@ public interface TripFacade {
      *
      * @param trip
      */
-    public void createTrip(TripDTO trip);
+    void createTrip(TripDTO trip);
 
     /**
      * Get Trip by provided trip id
      *
      * @return
      */
-    public TripDTO getTripById(long id);
+    TripDTO getTripById(long id);
 
     /**
      * Get all trips
      *
      * @return
      */
-    public Collection<TripDTO> getAllTrips();
+    Collection<TripDTO> getAllTrips();
 
     /**
      * Get Trips by provided destination
@@ -33,7 +34,7 @@ public interface TripFacade {
      * @param destination
      * @return
      */
-    public Collection<TripDTO> getTripByDestination(String destination);
+    Collection<TripDTO> getTripByDestination(String destination);
 
     /**
      * Get Trips by provided from date and to date
@@ -42,7 +43,7 @@ public interface TripFacade {
      * @param toDate
      * @return
      */
-    public Collection<TripDTO> getTripByInterval(LocalDate fromDate, LocalDate toDate);
+    Collection<TripDTO> getTripByInterval(LocalDate fromDate, LocalDate toDate);
 
     /**
      * Get Trip by available slots
@@ -50,19 +51,27 @@ public interface TripFacade {
      * @param amount
      * @return
      */
-    public Collection<TripDTO> getTripBySlot(int amount);
+    Collection<TripDTO> getTripBySlot(int amount);
 
     /**
      * Update existing trip
      *
      * @param trip
      */
-    public void updateTrip(TripDTO trip);
+    void updateTrip(TripDTO trip);
 
     /**
      * Remove Trip
      *
      * @param trip
      */
-    public void removeTrip(TripDTO trip);
+    void removeTrip(TripDTO trip);
+
+    /**
+     * Retrieves a biggest sub-set of non-fully booked trips and excursions available
+     * for given amount of money
+     * @param money available amount
+     * @return DTO carrying selected Trips and Excursions
+     */
+    CheapTravelDTO tripsForMoney(Double money);
 }

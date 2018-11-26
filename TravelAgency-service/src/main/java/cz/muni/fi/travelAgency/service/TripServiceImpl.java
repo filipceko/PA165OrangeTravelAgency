@@ -129,4 +129,28 @@ public class TripServiceImpl implements TripService {
         return customers;
     }
 
- }
+    @Override
+    public Map<Trip, Collection<Excursion>> tripsForMoney(Double money) {
+        TreeSet<Excursion> availableExcursions = new TreeSet<>(Comparator.comparing(Excursion::getPrice));
+        TreeSet<Trip> allTrips = new TreeSet<>(Comparator.comparing(Trip::getPrice));
+        allTrips.addAll(findTripBySlot(1));
+        Double moneyLeft = money;
+        Map<Trip, Collection<Excursion>> result = new HashMap<>();
+        for (Trip trip : allTrips) {
+            if ((moneyLeft - trip.getPrice()) < 0) {
+                break;
+            }
+            moneyLeft = moneyLeft - trip.getPrice();
+            availableExcursions.addAll(trip.getExcursions());
+            result.put(trip, new HashSet<>());
+        }
+        for (Excursion excursion : availableExcursions) {
+            if (moneyLeft - excursion.getPrice() < 0) {
+                break;
+            }
+            moneyLeft = moneyLeft - excursion.getPrice();
+            result.get(excursion.getTrip()).add(excursion);
+        }
+        return result;
+    }
+}

@@ -1,5 +1,10 @@
 package cz.muni.fi.travelAgency.service;
 
+import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
+import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
+import cz.muni.fi.travelAgency.DTO.TripDTO;
+import cz.muni.fi.travelAgency.entities.Excursion;
+import cz.muni.fi.travelAgency.entities.Trip;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,5 +60,19 @@ public class BeanMappingServiceImpl implements BeanMappingService {
     @Override
     public <T> T mapTo(Object u, Class<T> mapToClass) {
         return mapper.map(u, mapToClass);
+    }
+
+    @Override
+    public CheapTravelDTO mapToCheapTravel(Map<Trip, Collection<Excursion>> entitiesMap) {
+        CheapTravelDTO result = new CheapTravelDTO();
+        Collection<Trip> trips = entitiesMap.keySet();
+        result.setTrips(mapTo(trips, TripDTO.class));
+        Collection<Collection<Excursion>> excursions = entitiesMap.values();
+        Set<Excursion> allExcursions = new HashSet<>();
+        for (Collection<Excursion> excursionsOfTrip : excursions){
+            allExcursions.addAll(excursionsOfTrip);
+        }
+        result.setExcursions(mapTo(allExcursions, ExcursionDTO.class));
+        return result;
     }
 }

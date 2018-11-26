@@ -84,4 +84,12 @@ public interface TripService {
      */
     Collection<Customer> getAllCustomers(Trip trip);
 
+    /**
+     * Finds as much trips as possible with as much
+     * excursions as possible for given amount of money.
+     *
+     * @param money we want to spend
+     * @return Map of trips with excursions
+     */
+    Map<Trip, Collection<Excursion>> tripsForMoney(Double money);
 }

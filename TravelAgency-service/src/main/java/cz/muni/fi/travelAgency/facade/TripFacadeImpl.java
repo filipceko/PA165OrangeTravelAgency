@@ -1,5 +1,6 @@
 package cz.muni.fi.travelAgency.facade;
 
+import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
@@ -80,4 +81,8 @@ public class TripFacadeImpl implements TripFacade {
         return beanMappingService.mapTo(tripService.findByInterval(fromDate, toDate), TripDTO.class);
     }
 
+    @Override
+    public CheapTravelDTO tripsForMoney(Double money) {
+        return beanMappingService.mapToCheapTravel(tripService.tripsForMoney(money));
+    }
 }

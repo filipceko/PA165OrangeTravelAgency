@@ -1,9 +1,13 @@
 package cz.muni.fi.travelAgency.service;
 
+import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
+import cz.muni.fi.travelAgency.entities.Excursion;
+import cz.muni.fi.travelAgency.entities.Trip;
 import org.dozer.Mapper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -59,4 +63,12 @@ public interface BeanMappingService {
      * @return mapped object
      */
     <T> T mapTo(Object u, Class<T> mapToClass);
+
+    /**
+     * Maps a map to {@link CheapTravelDTO}.
+     *
+     * @param entitiesMap map of elements
+     * @return constructed DTO
+     */
+    CheapTravelDTO mapToCheapTravel(Map<Trip, Collection<Excursion>> entitiesMap);
 }
