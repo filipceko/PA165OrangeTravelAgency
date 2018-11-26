@@ -114,7 +114,7 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         List<Trip> allTrips = Arrays.asList(trip1,trip2,trip3);
 
         Mockito.when(tripService.findAll()).thenReturn(allTrips);
-        Collection<TripDTO> getAllTripsFacade = tripFacade.getAllTrips();
+        List<TripDTO> getAllTripsFacade = new ArrayList<>(tripFacade.getAllTrips());
         List<Trip> getAllTrips = beanMappingService.mapTo(getAllTripsFacade,Trip.class);
         Assert.assertEquals(getAllTrips.size(), 3);
         Assert.assertEquals(getAllTrips.get(0),trip1);
