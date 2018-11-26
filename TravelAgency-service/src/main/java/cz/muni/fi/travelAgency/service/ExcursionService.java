@@ -14,30 +14,35 @@ public interface ExcursionService {
 
     /**
      * Get all excursions.
+     *
      * @return collection of all excursions
      */
     Collection<Excursion> getAllExcursions();
 
     /**
      * Created excursion.
+     *
      * @param excursion to be created
      */
     void createExcursion(Excursion excursion);
 
     /**
      * Updates excursion.
+     *
      * @param excursion to be updated
      */
     void updateExcursion(Excursion excursion);
 
     /**
      * Delete excursion.
+     *
      * @param excursion to be deleted
      */
     void deleteExcursion(Excursion excursion);
 
     /**
      * Retrieves excursion with given id.
+     *
      * @param excursionId id of excursion
      * @return excursion with given id
      */
@@ -45,6 +50,7 @@ public interface ExcursionService {
 
     /**
      * Retrieves excursion with given destination.
+     *
      * @param destination of excursion
      * @return collection of excursions with given destination
      */
@@ -52,6 +58,7 @@ public interface ExcursionService {
 
     /**
      * Retrieves all excursions by trip
+     *
      * @param tripId of the excursion
      * @return collection of excursions
      */

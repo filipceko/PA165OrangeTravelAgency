@@ -2,10 +2,10 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.ExcursionDao;
 import cz.muni.fi.travelAgency.entities.Excursion;
+import cz.muni.fi.travelAgency.exceptions.DataAccessException;
 import java.util.Collection;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
-
 
 /**
  * Implementation of the {@link ExcursionService}. This class is part of the
@@ -15,52 +15,89 @@ import org.springframework.stereotype.Service;
  * @author Rajivv
  */
 @Service
-public class ExcursionServiceImpl implements ExcursionService{
+public class ExcursionServiceImpl implements ExcursionService {
+
     @Inject
     private ExcursionDao excursionDao;
 
     @Override
     public Collection<Excursion> getAllExcursions() {
-        return excursionDao.findAll();
+        try {
+            return excursionDao.findAll();
+        } catch (IllegalArgumentException exp) {
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
     @Override
     public void createExcursion(Excursion excursion) {
-        excursionDao.create(excursion);
+        if (excursion == null) {
+            throw new IllegalArgumentException("tried to create NULL excursion");
+        }
+        try {
+            excursionDao.create(excursion);
+        } catch (IllegalArgumentException exp) {
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
     @Override
     public void updateExcursion(Excursion excursion) {
-         if (excursion == null) {
+        if (excursion == null) {
             throw new IllegalArgumentException("tried to update NULL excursion");
         }
-        excursionDao.update(excursion);
+        try {
+            excursionDao.update(excursion);
+        } catch (IllegalArgumentException exp) {
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
     @Override
     public void deleteExcursion(Excursion excursion) {
-       if (excursion == null) {
+        if (excursion == null) {
             throw new IllegalArgumentException("Can not remove NULL excursion");
         }
-        excursionDao.remove(excursion);
+        try {
+            excursionDao.remove(excursion);
+        } catch (IllegalArgumentException exp) {
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
     @Override
     public Excursion findExcursionById(Long excursionId) {
-       return excursionDao.findById(excursionId);
+        if (excursionId == null) {
+            throw new IllegalArgumentException("Find Excursion by Id was called with NULL argument");
+        }
+        try {
+            return excursionDao.findById(excursionId);
+        } catch (IllegalArgumentException exp) {
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
     @Override
     public Collection<Excursion> findExcursionByDestination(String destination) {
-       if (destination == null) {
-            throw new IllegalArgumentException("Find By Destination was called with NULL argument");
+        if (destination == null) {
+            throw new IllegalArgumentException("Find Excursion by Destination was called with NULL argument");
         }
-        return excursionDao.findByDestination(destination);
+        try {
+            return excursionDao.findByDestination(destination);
+        } catch (IllegalArgumentException exp) {
+            throw new DataAccessException(exp.getMessage());
+        }
     }
 
     @Override
     public Collection<Excursion> findExcursionByTripId(Long tripId) {
-       return excursionDao.findByTripId(tripId);
+        if (tripId == null) {
+            throw new IllegalArgumentException("Find Excursion by tripId was called with NULL argument");
+        }
+        try {
+            return excursionDao.findByTripId(tripId);
+        } catch (IllegalArgumentException exp) {
+            throw new DataAccessException(exp.getMessage());
+        }
     }
-    
 }

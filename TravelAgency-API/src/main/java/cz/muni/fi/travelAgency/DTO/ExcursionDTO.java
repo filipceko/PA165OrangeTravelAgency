@@ -1,25 +1,54 @@
 package cz.muni.fi.travelAgency.DTO;
 
-import java.math.BigDecimal;
+import javax.validation.constraints.NotNull;
+
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.Objects;
 
 /**
- * DTO class of Excursion.
+ * Excursion Data Transfer Object representing all the information about a
+ * single excursion
+ *
  * @author Rajivv
  */
-public class ExcursionDTO {
+public class ExcursionDTO extends ExcursionCreateDTO {
 
+    /**
+     * ID of the excursion
+     */
     private Long id;
-    private String description;
-    private String destination;
-    private BigDecimal price;
-    private LocalDate excursionDate;
-    private Duration excursionDuration;
-    private Long tripId;
 
+    /**
+     * Simple non-parametric constructor
+     */
     public ExcursionDTO() {
+    }
+
+    /**
+     * constructor based on {@link ExcursionCreateDTO} as parent object
+     *
+     * @param parent ExcursionCreateDTO that was used to create this excursion
+     * @param id this excursion obtained
+     */
+    public ExcursionDTO(ExcursionCreateDTO parent, Long id) {
+        super(parent.getDescription(), parent.getDestination(), parent.getPrice(), parent.getExcursionDate(), parent.getExcursionDuration(), parent.getTrip());
+        this.id = id;
+    }
+
+    /**
+     * Parametric constructor with trip and with ID
+     *
+     * @param description of this excursion
+     * @param destination of this excursion
+     * @param price of this excursion
+     * @param trip the excursion is for
+     * @param excursionDate of this excursion
+     * @param excursionDuration of this excursion
+     * @param id of this excursion
+     */
+    public ExcursionDTO(@NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, @NotNull TripDTO trip, Long id) {
+        super(description, destination, price, excursionDate, excursionDuration, trip);
+        this.id = id;
     }
 
     public Long getId() {
@@ -28,54 +57,6 @@ public class ExcursionDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public LocalDate getExcursionDate() {
-        return excursionDate;
-    }
-
-    public void setExcursionDate(LocalDate excursionDate) {
-        this.excursionDate = excursionDate;
-    }
-
-    public Duration getExcursionDuration() {
-        return excursionDuration;
-    }
-
-    public void setExcursionDuration(Duration excursionDuration) {
-        this.excursionDuration = excursionDuration;
-    }
-
-    public Long getTripId() {
-        return tripId;
-    }
-
-    public void setTripId(Long tripId) {
-        this.tripId = tripId;
     }
 
     @Override
@@ -87,15 +68,11 @@ public class ExcursionDTO {
             return false;
         }
         ExcursionDTO that = (ExcursionDTO) o;
-        return Objects.equals(getDestination(), that.getDestination())
-                && Objects.equals(getPrice(), that.getPrice())
-                && Objects.equals(getExcursionDate(), that.getExcursionDate())
-                && Objects.equals(getExcursionDuration(), that.getExcursionDuration())
-                && Objects.equals(getTripId(), that.getTripId());
+        return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getExcursionDuration(), getTripId());
+        return super.hashCode();
     }
 }
