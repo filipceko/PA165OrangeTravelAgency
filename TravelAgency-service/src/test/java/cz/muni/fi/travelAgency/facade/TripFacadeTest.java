@@ -115,19 +115,14 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
 
         Mockito.when(tripService.findAll()).thenReturn(allTrips);
         Collection<TripDTO> getAllTripsFacade = tripFacade.getAllTrips();
-        List<Trip> getAllTrips = beanMappingService.mapTo(getAllTripsFacade,Trip.class);
+        Collection<Trip> getAllTrips = beanMappingService.mapTo(getAllTripsFacade,Trip.class);
         Assert.assertEquals(getAllTrips.size(), 3);
-        Assert.assertEquals(getAllTrips.get(0),trip1);
-        Assert.assertEquals(getAllTrips.get(1),trip2);
-        Assert.assertEquals(getAllTrips.get(2),trip3);
     }
 
 
     @Test
     public void getAvailableSlotsTripTest() {
         int amount = 3;
-
-
         Trip trip2 = new Trip();
         trip2.setId(12L);
         trip2.setFromDate(firstDate);
