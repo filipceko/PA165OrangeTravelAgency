@@ -35,9 +35,9 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
     private final String destination = "Lake Island";
     private TripDTO tripDTO;
     private Trip tripBrno;
-    private LocalDate firstDate = LocalDate.of(2017, 11, 20);
-    private LocalDate secondDate = LocalDate.of(2017, 11, 25);
-
+  
+    private LocalDate firstDate = LocalDate.of(2018, 11, 27);
+    private LocalDate secondDate = LocalDate.of(2018, 11, 29);
 
     /**
      * Mocked trip to test with
@@ -195,6 +195,31 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(result.size(), 2);
     }
 
+    @Test
+    public void getAvailableFutureTripTest() {
+        Trip trip4 = new Trip();
+        trip4.setId(11L);
+        trip4.setFromDate(firstDate);
+        trip4.setToDate(secondDate);
+        trip4.setDestination(destination);
+        trip4.setCapacity(5);
+        trip4.setPrice(100.20);
+
+        Trip trip5 = new Trip();
+        trip5.setId(12L);
+        trip5.setFromDate(firstDate);
+        trip5.setToDate(secondDate);
+        trip5.setDestination("Prague");
+        trip5.setCapacity(4);
+        trip5.setPrice(120.20);
+        
+        Collection<Trip> allTrips = Arrays.asList(trip4, trip5);
+        Mockito.when(tripService.findAvailableFutureTrip()).thenReturn(allTrips);
+        Collection<TripDTO> availableFutureTrips = tripFacade.getAvailableFutureTrip();
+        Collection<Trip> getResult = beanMappingService.mapTo(availableFutureTrips, Trip.class);
+        Assert.assertEquals(2, getResult.size());
+    }
+
     /**
      * @author Simona Raucinova
      */
@@ -262,5 +287,4 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
 
         return reservationDTOS;
     }
-
 }

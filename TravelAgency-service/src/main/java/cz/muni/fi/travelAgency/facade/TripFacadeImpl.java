@@ -84,6 +84,12 @@ public class TripFacadeImpl implements TripFacade {
     }
 
     @Override
+    public Collection<TripDTO> getAvailableFutureTrip() {
+        Collection<Trip> trips = tripService.findAvailableFutureTrip();
+        return beanMappingService.mapTo(trips, TripDTO.class);
+    }
+
+    @Override
     public Collection<CustomerDTO> getAllCustomers(TripDTO trip) {
         Trip mappedTrip = beanMappingService.mapTo(trip, Trip.class);
         Collection<Customer> customers = tripService.getAllCustomers(mappedTrip);

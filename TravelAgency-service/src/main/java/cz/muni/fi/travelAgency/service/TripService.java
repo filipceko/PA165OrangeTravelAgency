@@ -15,6 +15,7 @@ import java.util.Set;
  * @author Rithy Ly
  */
 public interface TripService {
+
     /**
      * Finds a trip with given id.
      *
@@ -42,7 +43,7 @@ public interface TripService {
      * Finds all trips in interval fromDate and toDate.
      *
      * @param fromDate day when trips start
-     * @param toDate   day when trips end
+     * @param toDate day when trips end
      * @return collection of trips with given dates
      */
     Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate);
@@ -85,4 +86,11 @@ public interface TripService {
      * @author Simona Raucinova
      */
     Collection<Customer> getAllCustomers(Trip trip);
+
+    /**
+     * Finds all trips available in the future.
+     *
+     * @return collection of available future trips
+     */
+    Collection<Trip> findAvailableFutureTrip();
 }

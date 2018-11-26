@@ -12,6 +12,7 @@ import java.util.Collection;
  * @author Rithy Ly
  */
 public interface TripFacade {
+
     /**
      * Create new Trip
      *
@@ -57,6 +58,13 @@ public interface TripFacade {
      * @return
      */
     public Collection<TripDTO> getTripBySlot(int amount);
+
+    /**
+     * Finds all trips available in the future.
+     *
+     * @return collection of available future trips
+     */
+    public Collection<TripDTO> getAvailableFutureTrip();
 
     /**
      * Update existing trip
