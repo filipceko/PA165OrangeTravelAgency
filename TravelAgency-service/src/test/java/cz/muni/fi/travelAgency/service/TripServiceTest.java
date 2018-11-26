@@ -39,8 +39,8 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     private final TripService tripService = new TripServiceImpl();
     private final String destination = "Lake Island";
     private Trip trip;
-    private LocalDate firstDate = LocalDate.of(2018, 11, 27);
-    private LocalDate secondDate = LocalDate.of(2018, 11, 29);
+    private LocalDate firstDate = LocalDate.now().plusDays(5);
+    private LocalDate secondDate = LocalDate.now().plusDays(7);
     /**
      * Mocked trip data access object for testing.
      */
@@ -159,7 +159,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         List<Trip> allTrips = Arrays.asList(trip1, trip2);
         Mockito.when(tripDao.findAll()).thenReturn(allTrips);
         List<Trip> getTrips = new ArrayList<>(tripService.findAvailableFutureTrip());
-        Assert.assertEquals(2, getTrips.size());
+        Assert.assertEquals(getTrips.size(), 2);
     }
 
     /**
@@ -416,7 +416,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests tripFormMoney when there are no excursions
      *
-     * @autrhor Filip Cekovsky
+     * @author Filip Cekovsky
      */
     @Test
     void tripForMonetOnlyTripsTest() {
