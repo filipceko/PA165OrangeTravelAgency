@@ -126,13 +126,7 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
     @Test
     public void getAvailableSlotsTripTest() {
         int amount = 3;
-        Trip trip1 = new Trip();
-        trip1.setId(11L);
-        trip1.setFromDate(firstDate);
-        trip1.setToDate(secondDate);
-        trip1.setDestination("London");
-        trip1.setCapacity(1);
-        trip1.setPrice(100.20);
+
 
         Trip trip2 = new Trip();
         trip2.setId(12L);
@@ -147,14 +141,13 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         trip3.setFromDate(firstDate);
         trip3.setToDate(secondDate);
         trip3.setDestination("Paris");
-        trip3.setCapacity(8);
+        trip3.setCapacity(1);
         trip3.setPrice(320.20);
-        Collection<Trip> listTrips = Arrays.asList(trip1,trip2,trip3);
+        Collection<Trip> listTrips = Arrays.asList(trip2,trip3);
         Mockito.when(tripService.findTripBySlot(amount)).thenReturn(listTrips);
 
         Collection<TripDTO> availableTrips = tripFacade.getTripBySlot(amount);
         Collection<Trip> result = beanMappingService.mapTo(availableTrips,Trip.class);
         Assert.assertEquals(result.size(), 2);
-        Mockito.verify(tripService).findTripBySlot(2);
     }
 }
