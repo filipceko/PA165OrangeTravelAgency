@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Implemetation of {@link TripFacade}.
@@ -66,17 +65,17 @@ public class TripFacadeImpl implements TripFacade {
     }
 
     @Override
-    public List<TripDTO> getAllTrips(){
+    public Collection<TripDTO> getAllTrips(){
         return beanMappingService.mapTo(tripService.findAll(), TripDTO.class);
     }
 
     @Override
-    public List<TripDTO> getTripByDestination(String destination){
+    public Collection<TripDTO> getTripByDestination(String destination){
         return beanMappingService.mapTo(tripService.findByDestination(destination), TripDTO.class);
     }
 
     @Override
-    public List<TripDTO> getTripByInterval(LocalDate fromDate, LocalDate toDate) {
+    public Collection<TripDTO> getTripByInterval(LocalDate fromDate, LocalDate toDate) {
         return beanMappingService.mapTo(tripService.findByInterval(fromDate,toDate), TripDTO.class);
     }
 

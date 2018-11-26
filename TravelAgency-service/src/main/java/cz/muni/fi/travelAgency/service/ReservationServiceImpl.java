@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.ReservationDao;
 import cz.muni.fi.travelAgency.entities.Reservation;
+import cz.muni.fi.travelAgency.exceptions.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -20,41 +21,98 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void create(Reservation reservation) {
-        reservationDao.create(reservation);
+        if(reservation == null){
+            throw new IllegalArgumentException("tried to create NULL reservation");
+        }
+        try {
+            reservationDao.create(reservation);
+        } catch (Exception e){
+            throw new DataAccessException("Could not create Reservation in persistence layer", e);
+        }
+
     }
 
     @Override
     public Collection<Reservation> findAll() {
-        return reservationDao.findAll();
+        try {
+            return reservationDao.findAll();
+        } catch (Exception e){
+            throw new DataAccessException("Could not get Reservations from the persistence layer", e);
+        }
     }
 
     @Override
     public Reservation findById(Long id) {
-        return reservationDao.findById(id);
+        if (id == null){
+            throw new IllegalArgumentException("Tried to find Reservation by NULL");
+        }
+        try {
+            return reservationDao.findById(id);
+        } catch (Exception e){
+            throw new DataAccessException("Could not get Reservations from the persistence layer", e);
+        }
     }
 
     @Override
     public Collection<Reservation> findByCustomer(Long customerId) {
-        return reservationDao.findByCustomerId(customerId);
+        if (customerId == null){
+            throw new IllegalArgumentException("Tried to find Reservation by NULL customer ID");
+        }
+        try {
+            return reservationDao.findByCustomerId(customerId);
+        } catch (Exception e){
+            throw new DataAccessException("Could not get Reservations from the persistence layer", e);
+        }
     }
 
     @Override
     public Collection<Reservation> findByTrip(Long tripId) {
-        return reservationDao.findByTripId(tripId);
+        if (tripId == null){
+            throw new IllegalArgumentException("Tried to find Reservation by NULL trip ID");
+        }
+        try {
+            return reservationDao.findByTripId(tripId);
+        } catch (Exception e){
+            throw new DataAccessException("Could not get Reservations from the persistence layer", e);
+        }
     }
 
     @Override
     public void update(Reservation data) {
-        reservationDao.update(data);
+        if (data == null){
+            throw new IllegalArgumentException("Tried to update NULL Reservation");
+        }
+        if (data.getId() == null){
+            throw new IllegalArgumentException("Tried to update reservation without ID");
+        }
+        try {
+            reservationDao.update(data);
+        } catch (Exception e){
+            throw new DataAccessException("Could not update Reservation in persistence layer", e);
+        }
     }
 
     @Override
     public void remove(Reservation reservation) {
-        reservationDao.remove(reservation);
+        if (reservation == null){
+            throw new IllegalArgumentException("Tried to delete NULL Reservation");
+        }
+        if (reservation.getId() == null){
+            throw new IllegalArgumentException("Tried to delete reservation without ID");
+        }
+        try {
+            reservationDao.remove(reservation);
+        } catch (Exception e) {
+            throw new DataAccessException("Could not remove Reservation from the persistence layer", e);
+        }
     }
 
     @Override
     public Collection<Reservation> findReservationsBetween(LocalDate from, LocalDate to) {
-        return reservationDao.findReservationBetween(from, to);
+        try {
+            return reservationDao.findReservationBetween(from, to);
+        } catch (Exception e){
+            throw new DataAccessException("Could not get Reservations from the persistence layer", e);
+        }
     }
 }
