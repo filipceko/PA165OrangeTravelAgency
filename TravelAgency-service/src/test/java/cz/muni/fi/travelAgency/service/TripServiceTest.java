@@ -1,7 +1,10 @@
 package cz.muni.fi.travelAgency.service;
 
+import cz.muni.fi.travelAgency.DTO.CustomerDTO;
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.dao.TripDao;
+import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.mockito.*;
 import org.springframework.test.context.ContextConfiguration;
@@ -12,9 +15,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
+import static org.mockito.Mockito.when;
 
 /**
  * Simple Trip service tests using Mockito.
@@ -102,7 +105,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         trip3.setPrice(320.20);
 
         List<Trip> allTrips = Arrays.asList(trip1,trip2,trip3);
-        Mockito.when(tripDao.findAll()).thenReturn(allTrips);
+        when(tripDao.findAll()).thenReturn(allTrips);
         List<Trip> getTrips = new ArrayList<>(tripService.findTripBySlot(5));
         Assert.assertEquals(1,getTrips.size());
     }
@@ -137,7 +140,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         trip3.setPrice(320.20);
 
         List<Trip> allTrips = Arrays.asList(trip1,trip2,trip3);
-        Mockito.when(tripDao.findAll()).thenReturn(allTrips);
+        when(tripDao.findAll()).thenReturn(allTrips);
         List<Trip> getTrips = new ArrayList<>(tripService.findAll());
         Assert.assertEquals(3,getTrips.size());
         Assert.assertEquals(getTrips.size(), 3);
@@ -172,10 +175,77 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
      * Tests valid result is returned.
      */
     @Test
-    public  void findByIdTest(){
-        Mockito.when(tripDao.findById(trip.getId())).thenReturn(trip);
+    public void findByIdTest(){
+        when(tripDao.findById(trip.getId())).thenReturn(trip);
         Trip foundTrip = tripService.findById(trip.getId());
         Assert.assertEquals(foundTrip,trip);
         Assert.assertEquals(foundTrip.getDestination(),trip.getDestination());
     }
+
+    /**
+     * @author Simona Raucinova
+     */
+    @Test
+    public void getAllCustomers(){
+        Set<Reservation> reservations = createReservations(createCustomers(),trip);
+        for(Reservation reservation : reservations){
+            trip.addReservation(reservation);
+        }
+        when(tripDao.findById(1L)).thenReturn(trip);
+        Collection<Customer> returnedCustomers = tripService.getAllCustomers(trip);
+        Set<Customer> returnedCustomerSet = new HashSet<>(returnedCustomers);
+        Assert.assertEquals(createCustomers(),returnedCustomerSet);
+        Assert.assertEquals(returnedCustomers.size(),3);
+    }
+
+    /**
+     * @author Simona Raucinova
+     */
+    private Set<Reservation> createReservations(Set<Customer> customers, Trip trip){
+        Set<Reservation> reservations = new HashSet<>();
+        long counter = 0L;
+        for (Customer customer : customers){
+            counter++;
+            Reservation reservation = new Reservation();
+            reservation.setExcursions(new HashSet<>());
+            reservation.setTrip(trip);
+            reservation.setCustomer(customer);
+            reservation.setId(counter);
+            reservation.setReserveDate(LocalDate.of(2018,11,25));
+            reservations.add(reservation);
+        }
+
+        return reservations;
+    }
+
+    /**
+     * @author Simona Raucinova
+     */
+    private Set<Customer> createCustomers(){
+        Set<Customer> customers = new HashSet<>();
+
+        Customer customer1 = new Customer();
+        customer1.setId(1L);
+        customer1.setName("Karol");
+        customer1.setSurname("Kovac");
+        customer1.setEmail("karol@pa165.com");
+        customers.add(customer1);
+
+        Customer customer2 = new Customer();
+        customer2.setId(2L);
+        customer2.setName("Matej");
+        customer2.setSurname("Svoboda");
+        customer2.setEmail("matej@pa165.com");
+        customers.add(customer2);
+
+        Customer customer3 = new Customer();
+        customer3.setId(3L);
+        customer3.setName("Jan");
+        customer3.setSurname("Novak");
+        customer3.setEmail("novak@pa165.com");
+        customers.add(customer3);
+
+        return customers;
+    }
+
 }

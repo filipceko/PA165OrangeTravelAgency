@@ -66,8 +66,8 @@ public interface TripService {
 
     /**
      * Finds all customers which have a reservation for trip.
+     * @author Simona Raucinova
      */
-
     public Collection<Customer> getAllCustomers(Trip trip);
 
 }

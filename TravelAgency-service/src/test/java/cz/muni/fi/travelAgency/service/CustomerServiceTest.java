@@ -3,7 +3,7 @@ package cz.muni.fi.travelAgency.service;
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.dao.CustomerDao;
 import cz.muni.fi.travelAgency.entities.Customer;
-import cz.muni.fi.travelAgency.exceptions.DataAccessException;
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -151,13 +151,15 @@ public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
         customerService.registerCustomer(customer,null);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     public void testUpdateNull(){
+        Mockito.doThrow(IllegalArgumentException.class).when(customerDao).update(null);
         customerService.updateCustomer(null);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     public void testDeleteNull(){
+        Mockito.doThrow(IllegalArgumentException.class).when(customerDao).remove(null);
         customerService.deleteCustomer(null);
     }
 

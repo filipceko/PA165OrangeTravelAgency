@@ -5,7 +5,7 @@ import cz.muni.fi.travelAgency.dao.ReservationDao;
 import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
-import cz.muni.fi.travelAgency.exceptions.DataAccessException;
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -91,18 +91,18 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessLayerException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void createThrowsTest() {
         Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).create(reservation2);
         reservationService.create(reservation2);
     }
 
     /**
-     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessLayerException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void createThrows2Test() {
         Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).create(reservation2);
         reservationService.create(reservation2);
@@ -126,9 +126,9 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessLayerException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void findAllThrowsTest() {
         Mockito.when(reservationDao.findAll()).thenThrow(IllegalArgumentException.class);
         reservationService.findAll();
@@ -156,9 +156,9 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessLayerException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void findByIdThrowsTest() {
         Mockito.when(reservationDao.findById(15L)).thenThrow(IllegalArgumentException.class);
         reservationService.findById(15L);
@@ -188,9 +188,9 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessLayerException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void findByCustomerThrowsTest() {
         Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).findByCustomerId(Mockito.anyLong());
         reservationService.findByCustomer(15L);
@@ -220,9 +220,9 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessLayerException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void findByTripThrowsTest() {
         Mockito.when(reservationDao.findByTripId(Mockito.anyLong())).thenThrow(IllegalArgumentException.class);
         reservationService.findByTrip(27L);
@@ -260,9 +260,9 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessLayerException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void updateThrowsTest() {
         reservation1.setId(85L);
         Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).update(Mockito.any(Reservation.class));
@@ -300,9 +300,9 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessLayerException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void removeThrowsTest() {
         reservation1.setId(24L);
         Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).remove(reservation1);
@@ -371,9 +371,9 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessLayerException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void findBetweenThrowsTest() {
         Mockito.when(reservationDao.findReservationBetween(Mockito.any(), Mockito.any())).thenThrow(IllegalArgumentException.class);
         reservationService.findReservationsBetween(null, LocalDate.now());

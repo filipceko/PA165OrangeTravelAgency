@@ -1,5 +1,6 @@
 package cz.muni.fi.travelAgency.facade;
 
+import cz.muni.fi.travelAgency.DTO.CustomerDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 
 import java.time.LocalDate;
@@ -65,4 +66,10 @@ public interface TripFacade {
      * @param trip
      */
     public void removeTrip(TripDTO trip);
+
+    /**
+     * Finds all customers which have a reservation for trip.
+     * @author Simona Raucinova
+     */
+    public Collection<CustomerDTO> getAllCustomers(TripDTO trip);
 }
