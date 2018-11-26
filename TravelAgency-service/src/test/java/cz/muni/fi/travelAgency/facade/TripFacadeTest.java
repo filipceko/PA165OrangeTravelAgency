@@ -15,31 +15,53 @@ import org.testng.annotations.Test;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.*;
-
+/**
+ * Tests for ReservationFacade.
+ *
+ * @author Rithy Ly
+ */
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class TripFacadeTest extends AbstractTestNGSpringContextTests{
 
-    private TripDTO tripDTO;
+    /**
+     * Trip for testing purposes.
+     */
     private Trip tripBrno;
+    private TripDTO tripDTO;
     private LocalDate firstDate = LocalDate.of(2017, 11, 20);
     private LocalDate secondDate = LocalDate.of(2017, 11, 25);
     private final String destination = "Lake Island";
 
+    /**
+     * Mocked trip to test with
+     */
     @Mock
     private TripService tripService;
 
+    /**
+     * Tested facade with mocked injections.
+     */
     @InjectMocks
     private TripFacade tripFacade = new TripFacadeImpl();
 
+    /**
+     * Spy injected to the Facade
+     */
     @Spy
     @Inject
     private BeanMappingService beanMappingService;
 
+    /**
+     * Sets up mockito before running tests.
+     */
     @BeforeClass
     public void InitClass() {
         MockitoAnnotations.initMocks(this);
     }
 
+    /**
+     * Initializes the Reservations used for testing
+     */
     @BeforeMethod
     public void SetupTripDTO(){
         tripDTO = new TripDTO();
@@ -51,6 +73,9 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         tripDTO.setPrice(100.20);
     }
 
+    /**
+     * Create test
+     */
     @Test
     public void createTripTest(){
         tripFacade.createTrip(tripDTO);
@@ -58,6 +83,9 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         Mockito.verify(tripService).createTrip(tripBrno);
     }
 
+    /**
+     * Update test
+     */
     @Test
     public void updateTripTest() {
         tripDTO.setFromDate(firstDate);
@@ -70,6 +98,9 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         Mockito.verify(tripService).updateTrip(tripBrno);
     }
 
+    /**
+     * Remove test
+     */
     @Test
     public void removeTripTest() {
         Assert.assertNotNull(tripDTO);
@@ -77,6 +108,9 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         Mockito.verify(tripService).removeTrip(Mockito.any(Trip.class));
     }
 
+    /**
+     * Get by ID test
+     */
     @Test
     public void findByIdTest(){
         Assert.assertNotNull(tripDTO);
@@ -86,6 +120,9 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         Assert.assertEquals(tripFromFacade.getDestination(),destination);
     }
 
+    /**
+     * Get by all test
+     */
     @Test
     public void findByAllTest(){
         Trip trip1 = new Trip();
@@ -119,7 +156,9 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         Assert.assertEquals(getAllTrips.size(), 3);
     }
 
-
+    /**
+     * Get by available slots test
+     */
     @Test
     public void getAvailableSlotsTripTest() {
         int amount = 3;
