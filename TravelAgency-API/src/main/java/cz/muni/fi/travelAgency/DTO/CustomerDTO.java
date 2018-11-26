@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * DTO of Customer.
+ * DTO for Customer.
  * @author Simona Raucinova
  */
 public class CustomerDTO {
