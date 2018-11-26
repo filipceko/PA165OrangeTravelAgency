@@ -14,10 +14,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class TripFacadeTest extends AbstractTestNGSpringContextTests{
@@ -58,8 +55,6 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
     public void createTripTest(){
         tripFacade.createTrip(tripDTO);
         tripBrno = beanMappingService.mapTo(tripDTO, Trip.class);
-        Assert.assertEquals(tripBrno.getDestination(),destination);
-        Assert.assertEquals(tripBrno.getCapacity(),10);
         Mockito.verify(tripService).createTrip(tripBrno);
     }
 
@@ -72,8 +67,6 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         tripDTO.setPrice(150.20);
         tripFacade.updateTrip(tripDTO);
         tripBrno = beanMappingService.mapTo(tripDTO, Trip.class);
-        Assert.assertEquals(tripBrno.getDestination(),"New Lake Island");
-        Assert.assertEquals(tripBrno.getCapacity(),15);
         Mockito.verify(tripService).updateTrip(tripBrno);
     }
 
@@ -81,12 +74,12 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
     public void removeTripTest() {
         Assert.assertNotNull(tripDTO);
         tripFacade.removeTrip(tripDTO);
-        tripBrno = beanMappingService.mapTo(tripDTO, Trip.class);
-        Mockito.verify(tripService).removeTrip(tripBrno);
+        Mockito.verify(tripService).removeTrip(Mockito.any(Trip.class));
     }
 
     @Test
-    public void testFindById(){
+    public void findByIdTest(){
+        Assert.assertNotNull(tripDTO);
         tripBrno = beanMappingService.mapTo(tripDTO, Trip.class);
         Mockito.when(tripService.findById(tripDTO.getId())).thenReturn(tripBrno);
         TripDTO tripFromFacade = tripFacade.getTripById(tripDTO.getId());
@@ -94,7 +87,7 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
     }
 
     @Test
-    public void getAvailableSlotsTripTest() {
+    public void findByAllTest(){
         Trip trip1 = new Trip();
         trip1.setId(11L);
         trip1.setFromDate(firstDate);
@@ -120,10 +113,48 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         trip3.setPrice(320.20);
         List<Trip> allTrips = Arrays.asList(trip1,trip2,trip3);
 
-        Mockito.when(tripService.findTripBySlot(2)).thenReturn(allTrips);
-        Collection<TripDTO> fromfacade = new ArrayList<>(tripFacade.getTripBySlot(2));
-        Collection<Trip> entitiesFromfacade = beanMappingService.mapTo(fromfacade,Trip.class);
-        Mockito.verify(tripService).findTripBySlot(3);
+        Mockito.when(tripService.findAll()).thenReturn(allTrips);
+        Collection<TripDTO> getAllTripsFacade = tripFacade.getAllTrips();
+        List<Trip> getAllTrips = beanMappingService.mapTo(getAllTripsFacade,Trip.class);
+        Assert.assertEquals(getAllTrips.size(), 3);
+        Assert.assertEquals(getAllTrips.get(0),trip1);
+        Assert.assertEquals(getAllTrips.get(1),trip2);
+        Assert.assertEquals(getAllTrips.get(2),trip3);
+    }
 
+
+    @Test
+    public void getAvailableSlotsTripTest() {
+        int amount = 3;
+        Trip trip1 = new Trip();
+        trip1.setId(11L);
+        trip1.setFromDate(firstDate);
+        trip1.setToDate(secondDate);
+        trip1.setDestination("London");
+        trip1.setCapacity(1);
+        trip1.setPrice(100.20);
+
+        Trip trip2 = new Trip();
+        trip2.setId(12L);
+        trip2.setFromDate(firstDate);
+        trip2.setToDate(secondDate);
+        trip2.setDestination("Prague");
+        trip2.setCapacity(6);
+        trip2.setPrice(120.20);
+
+        Trip trip3 = new Trip();
+        trip3.setId(13L);
+        trip3.setFromDate(firstDate);
+        trip3.setToDate(secondDate);
+        trip3.setDestination("Paris");
+        trip3.setCapacity(8);
+        trip3.setPrice(320.20);
+        Collection<Trip> listTrips = Arrays.asList(trip1,trip2,trip3);
+        Mockito.when(tripService.findTripBySlot(amount)).thenReturn(listTrips);
+
+        Collection<TripDTO> availableTrips = tripFacade.getTripBySlot(amount);
+        Collection<Trip> result = beanMappingService.mapTo(availableTrips,Trip.class);
+        Assert.assertEquals(result.size(), 2);
+        Mockito.verify(tripService).findTripBySlot(2);
     }
 }
