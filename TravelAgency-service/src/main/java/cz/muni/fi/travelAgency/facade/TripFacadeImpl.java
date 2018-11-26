@@ -32,6 +32,7 @@ public class TripFacadeImpl implements TripFacade {
         }
         Trip mappedTrip = beanMappingService.mapTo(trip, Trip.class);
         tripService.createTrip(mappedTrip);
+        trip.setId(mappedTrip.getId());
     }
 
     @Override
