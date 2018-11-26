@@ -2,7 +2,7 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.CustomerDao;
 import cz.muni.fi.travelAgency.entities.Customer;
-import cz.muni.fi.travelAgency.exceptions.DataAccessException;
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -65,8 +65,8 @@ public class CustomerServiceImpl implements CustomerService{
     public boolean isAdmin(Customer customer) {
         try {
             return customerDao.findById(customer.getId()).isAdmin();
-        } catch (IllegalArgumentException exp){
-            throw new DataAccessException(exp.getMessage());
+        } catch (Exception exp){
+            throw new DataAccessLayerException(exp.getMessage(),exp.getCause());
         }
 
     }
@@ -75,8 +75,8 @@ public class CustomerServiceImpl implements CustomerService{
     public Customer findCustomerById(Long customerId) {
         try {
             return customerDao.findById(customerId);
-        } catch (IllegalArgumentException exp){
-            throw new DataAccessException(exp.getMessage());
+        } catch (Exception exp){
+            throw new DataAccessLayerException(exp.getMessage(),exp.getCause());
         }
     }
 
@@ -84,33 +84,27 @@ public class CustomerServiceImpl implements CustomerService{
     public Customer findCustomerByEmail(String email) {
         try {
             return customerDao.findByEmail(email);
-        } catch (IllegalArgumentException exp){
-            throw new DataAccessException(exp.getMessage());
+        } catch (Exception exp){
+            throw new DataAccessLayerException(exp.getMessage(),exp.getCause());
         }
 
     }
 
     @Override
     public void updateCustomer(Customer customer) {
-        if (customer == null){
-            throw new IllegalArgumentException("Cannot update null customer");
-        }
         try {
             customerDao.update(customer);
-        } catch (IllegalArgumentException exp){
-            throw new DataAccessException(exp.getMessage());
+        } catch (Exception exp){
+            throw new DataAccessLayerException(exp.getMessage(),exp.getCause());
         }
     }
 
     @Override
     public void deleteCustomer(Customer customer) {
-        if (customer == null){
-            throw new IllegalArgumentException("Cannot delete null customer");
-        }
         try {
             customerDao.remove(customer);
-        } catch (IllegalArgumentException exp){
-            throw new DataAccessException(exp.getMessage());
+        } catch (Exception exp){
+            throw new DataAccessLayerException(exp.getMessage(),exp.getCause());
         }
     }
 

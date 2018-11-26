@@ -1,6 +1,8 @@
 package cz.muni.fi.travelAgency.facade;
 
+import cz.muni.fi.travelAgency.DTO.CustomerDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
+import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.TripService;
@@ -79,6 +81,13 @@ public class TripFacadeImpl implements TripFacade {
     @Override
     public Collection<TripDTO> getTripByInterval(LocalDate fromDate, LocalDate toDate) {
         return beanMappingService.mapTo(tripService.findByInterval(fromDate, toDate), TripDTO.class);
+    }
+
+    @Override
+    public Collection<CustomerDTO> getAllCustomers(TripDTO trip) {
+        Trip mappedTrip = beanMappingService.mapTo(trip, Trip.class);
+        Collection<Customer> customers = tripService.getAllCustomers(mappedTrip);
+        return beanMappingService.mapTo(customers,CustomerDTO.class);
     }
 
 }

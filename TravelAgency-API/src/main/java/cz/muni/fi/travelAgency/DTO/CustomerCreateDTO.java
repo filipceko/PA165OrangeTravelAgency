@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import java.time.LocalDate;
 
 /**
+ * DTO for creation of customer.
  * @author Simona Raucinova
  */
 public class CustomerCreateDTO {
