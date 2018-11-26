@@ -5,54 +5,62 @@ import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import java.util.Collection;
 
 /**
+ * Excursion facade interface
  *
  * @author Rajivv
  */
 public interface ExcursionFacade {
 
     /**
-     * create new excursion.
-     * @param excursionCreateDTO
+     * create new excursion handed over and update's it's ID.
+     *
+     * @param excursionDTO to be created
      */
-    public Long createExcursion(ExcursionCreateDTO excursionCreateDTO);
+    void createExcursion(ExcursionDTO excursionDTO);
 
     /**
      * Retrieves excursion with given id.
+     *
      * @param id id of excursion
      * @return excursionDTO with given id
      */
-    public ExcursionDTO findExcursionById(Long id);
+    ExcursionDTO findExcursionById(Long id);
 
     /**
-     * Get all excursions.
+     * Retrieves all excursions.
+     *
      * @return collection of all excursions
      */
-    public Collection<ExcursionDTO> getAllExcurisons();
+    Collection<ExcursionDTO> getAllExcursions();
 
     /**
      * Retrieves excursionDTO with given destination.
+     *
      * @param destination of excursion
      * @return collection of all excursions with given destination
      */
-    public Collection<ExcursionDTO> findExcursionByDestination(String destination);
+    Collection<ExcursionDTO> findExcursionByDestination(String destination);
 
     /**
      * Retrieves all excursions by TripId.
+     *
      * @param tripId of the excursion
      * @return collection of all excursions by Trip
      */
-    public Collection<ExcursionDTO> findExcursionByTripId(Long tripId);
-    
+    Collection<ExcursionDTO> findExcursionByTripId(Long tripId);
+
     /**
      * Updates excursionDTO.
-     * @param excursion to be updated
+     *
+     * @param excursionDTO to be updated
      */
-    void updateExcursion(ExcursionDTO excursion);
+    void updateExcursion(ExcursionDTO excursionDTO);
 
     /**
      * Remove Excursion.
-     * @param excursionId to be removed
+     *
+     * @param excursionDTO to be removed
      */
-    public void removeExcursion(Long excursionId);
+    void deleteExcursion(ExcursionDTO excursionDTO);
 
 }

@@ -3,7 +3,6 @@ package cz.muni.fi.travelAgency.entities;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -17,38 +16,52 @@ import java.util.Objects;
 @Table(name = "EXCURSION")
 public class Excursion {
 
-    /** Unique ID set by the DB */
+    /**
+     * Unique ID set by the DB
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Description of the Excursion */
+    /**
+     * Description of the Excursion
+     */
     @NotNull
     @Column(nullable = false)
     private String description;
 
-    /** Destination of the Excursion */
+    /**
+     * Destination of the Excursion
+     */
     @NotNull
     @Column(nullable = false)
     private String destination;
 
-    /** Price of the Excursion */
+    /**
+     * Price of the Excursion
+     */
     @DecimalMin("0.0")
     @NotNull
     @Column(nullable = false)
-    private BigDecimal price;
+    private Double price;
 
-    /** Date of the Excursion */
+    /**
+     * Date of the Excursion
+     */
     @NotNull
     @Column(nullable = false)
     private LocalDate excursionDate;
 
-    /** Duration of the Excursion */
+    /**
+     * Duration of the Excursion
+     */
     @NotNull
     @Column(nullable = false)
     private Duration excursionDuration;
 
-    /** Trip this excursion is related to */
+    /**
+     * Trip this excursion is related to
+     */
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
@@ -63,7 +76,7 @@ public class Excursion {
     /**
      * All non-null fields constructor
      */
-    public Excursion(String description, String destination, BigDecimal price, LocalDate excursionDate, Duration excursionDuration, Trip trip) {
+    public Excursion(String description, String destination, Double price, LocalDate excursionDate, Duration excursionDuration, Trip trip) {
         this.description = description;
         this.destination = destination;
         this.price = price;
@@ -82,6 +95,7 @@ public class Excursion {
 
     /**
      * Sets the ID, should be used primary by the DB
+     *
      * @param id of the entity
      */
     public void setId(Long id) {
@@ -97,6 +111,7 @@ public class Excursion {
 
     /**
      * Name setter
+     *
      * @param description of the excursion
      */
     public void setDescription(String description) {
@@ -112,6 +127,7 @@ public class Excursion {
 
     /**
      * Destination setter
+     *
      * @param destination of the excursion
      */
     public void setDestination(String destination) {
@@ -121,15 +137,16 @@ public class Excursion {
     /**
      * @return price of the excursion
      */
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
     /**
      * Price setter
+     *
      * @param price non-null price
      */
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -156,6 +173,7 @@ public class Excursion {
 
     /**
      * Duration setter
+     *
      * @param excursionDuration non-null excursionDuration
      */
     public void setExcursionDuration(Duration excursionDuration) {
@@ -164,6 +182,7 @@ public class Excursion {
 
     /**
      * Retrieves all trip for this excursion
+     *
      * @return set of trip
      */
     public Trip getTrip() {
@@ -172,6 +191,7 @@ public class Excursion {
 
     /**
      * Sets trip to this excursion entity
+     *
      * @param trip set of Trip
      */
     public void setTrip(Trip trip) {

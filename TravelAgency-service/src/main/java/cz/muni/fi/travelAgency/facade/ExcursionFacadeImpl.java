@@ -1,6 +1,5 @@
 package cz.muni.fi.travelAgency.facade;
 
-import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
@@ -12,23 +11,30 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implemetation of {@link ExcursionFacade}.
+ *
  * @author Rajivv
  */
 @Service
 @Transactional
 public class ExcursionFacadeImpl implements ExcursionFacade {
 
+    /**
+     * Excursion service.
+     */
     @Autowired
     private ExcursionService excursionService;
 
+    /**
+     * Mapper responsible for mapping DTOs to Entities.
+     */
     @Autowired
     private BeanMappingService beanMappingService;
 
     @Override
-    public Long createExcursion(ExcursionCreateDTO excursionCreateDTO) {
-        Excursion mappedExcursion = beanMappingService.mapTo(excursionCreateDTO, Excursion.class);
+    public void createExcursion(ExcursionDTO excursionDTO) {
+        Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
         excursionService.createExcursion(mappedExcursion);
-        return mappedExcursion.getId();
+        excursionDTO.setId(mappedExcursion.getId());
     }
 
     @Override
@@ -38,7 +44,7 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     }
 
     @Override
-    public Collection<ExcursionDTO> getAllExcurisons() {
+    public Collection<ExcursionDTO> getAllExcursions() {
         return beanMappingService.mapTo(excursionService.getAllExcursions(), ExcursionDTO.class);
     }
 
@@ -53,19 +59,29 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
         Collection<Excursion> excursions = excursionService.findExcursionByTripId(tripId);
         return beanMappingService.mapTo(excursions, ExcursionDTO.class);
     }
-    
+
     @Override
     public void updateExcursion(ExcursionDTO excursionDTO) {
         if (excursionDTO == null) {
             throw new IllegalArgumentException("tried to update NULL excursion");
+        }
+        if (excursionDTO.getId() == null) {
+            throw new IllegalArgumentException("tried to update excursion without ID");
         }
         Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
         excursionService.updateExcursion(mappedExcursion);
     }
 
     @Override
-    public void removeExcursion(Long excursionId) {
-        excursionService.deleteExcursion(excursionService.findExcursionById(excursionId));
+    public void deleteExcursion(ExcursionDTO excursionDTO) {
+        if (excursionDTO == null) {
+            throw new IllegalArgumentException("Tried to delete null excursion");
+        }
+        if (excursionDTO.getId() == null) {
+            throw new IllegalArgumentException("tried to delete excursion without ID");
+        }
+        Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
+        excursionService.deleteExcursion(mappedExcursion);
     }
 
 }
