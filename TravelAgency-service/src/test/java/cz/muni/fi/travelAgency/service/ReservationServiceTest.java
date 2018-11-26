@@ -5,6 +5,7 @@ import cz.muni.fi.travelAgency.dao.ReservationDao;
 import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
+import cz.muni.fi.travelAgency.exceptions.DataAccessException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -41,9 +42,12 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     private ReservationDao reservationDao;
 
     /**
-     * Instance of reservation used for testing.
+     * Instances of reservation used for testing.
      */
-    private Reservation reservation;
+    private Reservation reservation1;
+    private Reservation reservation2;
+    private Reservation reservation3;
+    private Reservation reservation4;
 
     /**
      * Set's up the Mockito injections.
@@ -58,9 +62,15 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
      */
     @BeforeMethod
     public void initTest() {
-        Customer customer = new Customer("Janko", "Hrasko", "janko@hrasko.com");
-        Trip trip = new Trip(LocalDate.now(), LocalDate.now().plusDays(5L), "Paris", 5, 80.0);
-        reservation = new Reservation(customer, trip, LocalDate.now());
+        Mockito.reset(reservationDao);
+        Customer customer1 = new Customer("Janko", "Hrasko", "janko@hrasko.com");
+        Customer customer2 = new Customer("Jozko", "Mrkvicka", "jozef@mrkva.com");
+        Trip trip1 = new Trip(LocalDate.now(), LocalDate.now().plusDays(5L), "Paris", 5, 80.0);
+        Trip trip2 = new Trip(LocalDate.now(), LocalDate.now().plusDays(5L), "Hong Kong", 17, 1200.0);
+        reservation1 = new Reservation(customer1, trip1, LocalDate.now().plusDays(3));
+        reservation2 = new Reservation(customer1, trip2, LocalDate.now().plusDays(2));
+        reservation3 = new Reservation(customer2, trip1, LocalDate.now().plusDays(1));
+        reservation4 = new Reservation(customer2, trip2, LocalDate.now());
     }
 
     /**
@@ -68,8 +78,25 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void createTest() {
-        reservationService.create(reservation);
-        Mockito.verify(reservationDao).create(reservation);
+        reservationService.create(reservation1);
+        Mockito.verify(reservationDao).create(reservation1);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void createNullTest() {
+        reservationService.create(null);
+    }
+
+    @Test(expectedExceptions = DataAccessException.class)
+    void createThrowsTest() {
+        Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).create(reservation2);
+        reservationService.create(reservation2);
+    }
+
+    @Test(expectedExceptions = DataAccessException.class)
+    void createThrows2Test() {
+        Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).create(reservation2);
+        reservationService.create(reservation2);
     }
 
     /**
@@ -78,11 +105,22 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findByIdTest() {
         Long id = 1L;
-        reservation.setId(id);
-        Mockito.when(reservationDao.findById(id)).thenReturn(reservation);
+        reservation1.setId(id);
+        Mockito.when(reservationDao.findById(id)).thenReturn(reservation1);
         Reservation result = reservationService.findById(id);
-        Assert.assertEquals(reservation, result);
-        Assert.assertEquals(id, reservation.getId());
+        Assert.assertEquals(reservation1, result);
+        Assert.assertEquals(id, reservation1.getId());
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByNullTest() {
+        reservationService.findById(null);
+    }
+
+    @Test(expectedExceptions = DataAccessException.class)
+    void findByIdThrowsTest() {
+        Mockito.when(reservationDao.findById(15L)).thenThrow(IllegalArgumentException.class);
+        reservationService.findById(15L);
     }
 
     /**
@@ -91,11 +129,25 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findByCustomerTest() {
         Set<Reservation> expected = new HashSet<>();
-        expected.add(reservation);
+        expected.add(reservation1);
+        expected.add(reservation2);
         Mockito.when(reservationDao.findByCustomerId(Mockito.anyLong())).thenReturn(expected);
         Collection<Reservation> result = reservationService.findByCustomer(10L);
-        Assert.assertEquals(result.size(), 1);
-        Assert.assertTrue(result.contains(reservation));
+        Assert.assertEquals(result.size(), 2);
+        Assert.assertTrue(result.contains(reservation1));
+        Assert.assertTrue(result.contains(reservation2));
+    }
+
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByNullCustomerTest() {
+        reservationService.findByCustomer(null);
+    }
+
+    @Test(expectedExceptions = DataAccessException.class)
+    void findByCustomerThrowsTest() {
+        Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).findByCustomerId(Mockito.anyLong());
+        reservationService.findByCustomer(15L);
     }
 
     /**
@@ -104,11 +156,24 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findByTripTest() {
         Set<Reservation> expected = new HashSet<>();
-        expected.add(reservation);
+        expected.add(reservation2);
+        expected.add(reservation4);
         Mockito.when(reservationDao.findByTripId(Mockito.anyLong())).thenReturn(expected);
-        Collection<Reservation> result = reservationService.findByCustomer(15L);
-        Assert.assertEquals(result.size(), 1);
-        Assert.assertTrue(result.contains(reservation));
+        Collection<Reservation> result = reservationService.findByTrip(25L);
+        Assert.assertEquals(result.size(), 2);
+        Assert.assertTrue(result.contains(reservation2));
+        Assert.assertTrue(result.contains(reservation4));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByNullTripTest() {
+        reservationService.findByTrip(null);
+    }
+
+    @Test(expectedExceptions = DataAccessException.class)
+    void findByTripThrowsTest() {
+        Mockito.when(reservationDao.findByTripId(Mockito.anyLong())).thenThrow(IllegalArgumentException.class);
+        reservationService.findByTrip(27L);
     }
 
     /**
@@ -116,10 +181,31 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void updateTest() {
-        reservation.setId(13L);
-        reservation.setReserveDate(LocalDate.now().plusDays(2));
-        reservationService.update(reservation);
-        Mockito.verify(reservationDao, Mockito.times(1)).update(reservation);
+        reservation3.setId(13L);
+        reservation3.setReserveDate(LocalDate.now().plusDays(2));
+        reservationService.update(reservation3);
+        Mockito.verify(reservationDao, Mockito.times(1)).update(reservation3);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void updateNullTest() {
+        reservationService.update(null);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void updateNoIdTest() {
+        try {
+            reservationService.update(reservation4);
+        } finally {
+            Mockito.verify(reservationDao, Mockito.never()).update(Mockito.any());
+        }
+    }
+
+    @Test(expectedExceptions = DataAccessException.class)
+    void updateThrowsTest() {
+        reservation1.setId(85L);
+        Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).update(Mockito.any(Reservation.class));
+        reservationService.update(reservation1);
     }
 
     /**
@@ -127,9 +213,30 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void removeTest() {
-        reservation.setId(14L);
-        reservationService.remove(reservation);
-        Mockito.verify(reservationDao, Mockito.times(1)).remove(reservation);
+        reservation3.setId(14L);
+        reservationService.remove(reservation3);
+        Mockito.verify(reservationDao, Mockito.times(1)).remove(reservation3);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void removeNullTest() {
+        reservationService.remove(null);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void removeNoIdTest() {
+        try {
+            reservationService.update(reservation2);
+        } finally {
+            Mockito.verify(reservationDao, Mockito.never()).update(Mockito.any());
+        }
+    }
+
+    @Test(expectedExceptions = DataAccessException.class)
+    void removeThrowsTest() {
+        reservation1.setId(24L);
+        Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).remove(reservation1);
+        reservationService.remove(reservation1);
     }
 
     /**
@@ -138,12 +245,65 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findReservationBetweenTest() {
         Collection<Reservation> expected = new HashSet<>();
-        expected.add(reservation);
+        expected.add(reservation1);
+        expected.add(reservation2);
+        expected.add(reservation3);
+        expected.add(reservation4);
         Mockito.when(reservationDao.findReservationBetween(Mockito.any(LocalDate.class), Mockito.any(LocalDate.class)))
                 .thenReturn(expected);
-        Collection<Reservation> result = reservationService.findReservationsBetween(LocalDate.now().minusDays(2),
+        Collection<Reservation> result = reservationService.findReservationsBetween(LocalDate.now().minusDays(4),
                 LocalDate.now().plusDays(15));
-        Assert.assertEquals(result.size(), 1);
-        Assert.assertTrue(result.contains(reservation));
+        Assert.assertEquals(result.size(), 4);
+        Assert.assertTrue(result.contains(reservation1));
+        Assert.assertTrue(result.contains(reservation2));
+        Assert.assertTrue(result.contains(reservation3));
+        Assert.assertTrue(result.contains(reservation4));
     }
+
+    /**
+     * Tests valid result is returned.
+     */
+    @Test
+    public void findReservationBetweenNullsTest() {
+        // null, null
+        Collection<Reservation> expected1 = new HashSet<>();
+        expected1.add(reservation1);
+        expected1.add(reservation2);
+        expected1.add(reservation3);
+        expected1.add(reservation4);
+        Mockito.when(reservationDao.findReservationBetween(null, null)).thenReturn(expected1);
+        Collection<Reservation> result1 = reservationService.findReservationsBetween(null, null);
+        Assert.assertEquals(result1.size(), 4);
+        Assert.assertTrue(result1.contains(reservation1));
+        Assert.assertTrue(result1.contains(reservation2));
+        Assert.assertTrue(result1.contains(reservation3));
+        Assert.assertTrue(result1.contains(reservation4));
+        // from, null
+        Collection<Reservation> expected2 = new HashSet<>();
+        expected2.add(reservation3);
+        expected2.add(reservation4);
+        LocalDate from = LocalDate.now().minusDays(2);
+        Mockito.when(reservationDao.findReservationBetween(from, null)).thenReturn(expected2);
+        Collection<Reservation> result2 = reservationService.findReservationsBetween(from, null);
+        Assert.assertEquals(result2.size(), 2);
+        Assert.assertTrue(result2.contains(reservation3));
+        Assert.assertTrue(result2.contains(reservation4));
+        // null, to
+        Collection<Reservation> expected3 = new HashSet<>();
+        expected3.add(reservation1);
+        expected3.add(reservation2);
+        LocalDate to = LocalDate.now().minusDays(3);
+        Mockito.when(reservationDao.findReservationBetween(null, to)).thenReturn(expected3);
+        Collection<Reservation> result3 = reservationService.findReservationsBetween(null, to);
+        Assert.assertEquals(result3.size(), 2);
+        Assert.assertTrue(result3.contains(reservation1));
+        Assert.assertTrue(result3.contains(reservation2));
+    }
+
+    @Test(expectedExceptions = DataAccessException.class)
+    void findBetweenThrowsTest() {
+        Mockito.when(reservationDao.findReservationBetween(Mockito.any(), Mockito.any())).thenThrow(IllegalArgumentException.class);
+        reservationService.findReservationsBetween(null, LocalDate.now());
+    }
+
 }
