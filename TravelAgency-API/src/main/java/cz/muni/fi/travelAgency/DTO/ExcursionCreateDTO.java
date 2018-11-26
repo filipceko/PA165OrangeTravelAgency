@@ -3,6 +3,7 @@ package cz.muni.fi.travelAgency.DTO;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -70,6 +71,7 @@ public class ExcursionCreateDTO {
      * @param excursionDuration of this excursion
      * @param trip the excursion was made for
      */
+    
     public ExcursionCreateDTO(@NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, @NotNull TripDTO trip) {
         this.description = description;
         this.destination = destination;

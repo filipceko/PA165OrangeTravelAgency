@@ -1,6 +1,7 @@
 package cz.muni.fi.travelAgency.DTO;
 
 import javax.validation.constraints.NotNull;
+
 import java.time.Duration;
 import java.time.LocalDate;
 

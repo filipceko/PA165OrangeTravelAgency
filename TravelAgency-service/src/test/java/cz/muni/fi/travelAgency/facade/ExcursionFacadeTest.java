@@ -1,4 +1,4 @@
-package facade;
+package cz.muni.fi.travelAgency.facade;
 
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
