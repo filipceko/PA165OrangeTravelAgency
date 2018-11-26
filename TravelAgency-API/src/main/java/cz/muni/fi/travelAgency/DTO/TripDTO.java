@@ -1,3 +1,4 @@
+
 package cz.muni.fi.travelAgency.DTO;
 
 import java.time.LocalDate;
@@ -6,16 +7,59 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Trip Data Transfer Object representing all the information about a single trip
+ *
+ * @author Rithy Ly
+ */
 public class TripDTO {
 
+    /**
+     * ID of the trip
+     */
     private Long id;
+
+    /**
+     * Staring Date of the trip was made;
+     */
     private LocalDate fromDate;
+
+    /**
+     * Ending Date of the trip was made;
+     */
     private LocalDate toDate;
+
+    /**
+     * Description of the trip was made;
+     */
     private String destination;
+
+    /**
+     * Capacity of the trip was made;
+     */
     private int capacity;
+
+    /**
+     * Price of the trip was made;
+     */
     private Double price;
+
+    /**
+     * Excursions of the trip was made;
+     */
     private Collection<ExcursionDTO> excursions = new HashSet<>();
+
+    /**
+     * Reservations of the trip was made;
+     */
     private Collection<ReservationDTO> reservations = new HashSet<>();
+
+    /**
+     * Simple non-parametric constructor
+     */
+    public TripDTO() {
+
+    }
 
     public Long getId() {
         return id;
