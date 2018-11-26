@@ -21,6 +21,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void create(Reservation reservation) {
+        if(reservation == null){
+            throw new IllegalArgumentException("tried to create NULL reservation");
+        }
         try {
             reservationDao.create(reservation);
         } catch (Exception e){
@@ -40,6 +43,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation findById(Long id) {
+        if (id == null){
+            throw new IllegalArgumentException("Tried to find Reservation by NULL");
+        }
         try {
             return reservationDao.findById(id);
         } catch (Exception e){
@@ -49,6 +55,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Collection<Reservation> findByCustomer(Long customerId) {
+        if (customerId == null){
+            throw new IllegalArgumentException("Tried to find Reservation by NULL customer ID");
+        }
         try {
             return reservationDao.findByCustomerId(customerId);
         } catch (Exception e){
@@ -58,6 +67,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Collection<Reservation> findByTrip(Long tripId) {
+        if (tripId == null){
+            throw new IllegalArgumentException("Tried to find Reservation by NULL trip ID");
+        }
         try {
             return reservationDao.findByTripId(tripId);
         } catch (Exception e){
@@ -67,6 +79,12 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void update(Reservation data) {
+        if (data == null){
+            throw new IllegalArgumentException("Tried to update NULL Reservation");
+        }
+        if (data.getId() == null){
+            throw new IllegalArgumentException("Tried to update reservation without ID");
+        }
         try {
             reservationDao.update(data);
         } catch (Exception e){
@@ -76,6 +94,12 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void remove(Reservation reservation) {
+        if (reservation == null){
+            throw new IllegalArgumentException("Tried to delete NULL Reservation");
+        }
+        if (reservation.getId() == null){
+            throw new IllegalArgumentException("Tried to delete reservation without ID");
+        }
         try {
             reservationDao.remove(reservation);
         } catch (Exception e) {
