@@ -1,6 +1,8 @@
 package cz.muni.fi.travelAgency.DTO;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * DTO of Customer.
@@ -25,6 +27,8 @@ public class CustomerDTO {
     private String passportNumber;
 
     private LocalDate dateOfBirth;
+
+    private Set<ReservationDTO> reservationDTOS = new HashSet<>();
 
 
     public CustomerDTO() {
@@ -102,6 +106,13 @@ public class CustomerDTO {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public Set<ReservationDTO> getReservationDTOS() {
+        return reservationDTOS;
+    }
+
+    public void setReservationDTOS(Set<ReservationDTO> reservationDTOS) {
+        this.reservationDTOS = reservationDTOS;
+    }
 
     @Override
     public boolean equals(Object o) {
