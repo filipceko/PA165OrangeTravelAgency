@@ -1,6 +1,7 @@
 package cz.muni.fi.travelAgency.DTO;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,8 +14,8 @@ public class TripDTO {
     private String destination;
     private int capacity;
     private Double price;
-    private Set<ExcursionDTO> excursions = new HashSet<>();
-    private Set<ReservationDTO> reservations = new HashSet<>();
+    private Collection<ExcursionDTO> excursions = new HashSet<>();
+    private Collection<ReservationDTO> reservations = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -64,19 +65,19 @@ public class TripDTO {
         this.price = price;
     }
 
-    public Set<ExcursionDTO> getExcursions() {
+    public Collection<ExcursionDTO> getExcursions() {
         return excursions;
     }
 
-    public void setExcursions(Set<ExcursionDTO> excursions) {
+    public void setExcursions(Collection<ExcursionDTO> excursions) {
         this.excursions = excursions;
     }
 
-    public Set<ReservationDTO> getReservations() {
+    public Collection<ReservationDTO> getReservations() {
         return reservations;
     }
 
-    public void setReservations(Set<ReservationDTO> reservations) {
+    public void setReservations(Collection<ReservationDTO> reservations) {
         this.reservations = reservations;
     }
 
