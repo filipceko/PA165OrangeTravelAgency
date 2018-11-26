@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Implementation of the {@link TripService}. This class is part of the service
@@ -35,7 +33,7 @@ public class TripServiceImpl implements TripService {
         try {
             return tripDao.findById(id);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DataAccessLayerException("Could not get Trip from the persistence layer", e);
         }
     }
@@ -44,7 +42,7 @@ public class TripServiceImpl implements TripService {
     public Collection<Trip> findAll() {
         try {
             return tripDao.findAll();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DataAccessLayerException("Could not get Trip from the persistence layer", e);
         }
     }
@@ -56,7 +54,7 @@ public class TripServiceImpl implements TripService {
         }
         try {
             return tripDao.findByDestination(destination);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DataAccessLayerException("Could not get Trip from the persistence layer", e);
         }
     }
@@ -67,8 +65,8 @@ public class TripServiceImpl implements TripService {
             throw new IllegalArgumentException("From Date cannot after To Date.");
         }
         try {
-            return tripDao.findByInterval(fromDate,toDate);
-        } catch (Exception e){
+            return tripDao.findByInterval(fromDate, toDate);
+        } catch (Exception e) {
             throw new DataAccessLayerException("Could not get Trip from the persistence layer", e);
         }
     }
@@ -103,7 +101,7 @@ public class TripServiceImpl implements TripService {
         }
         try {
             tripDao.create(trip);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DataAccessLayerException("Could not create Trip in persistence layer", e);
         }
     }
@@ -133,7 +131,7 @@ public class TripServiceImpl implements TripService {
         }
         try {
             tripDao.update(trip);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DataAccessLayerException("Could not update Trip in persistence layer", e);
         }
 
@@ -150,12 +148,40 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
+    public Map<Trip, Collection<Excursion>> tripsForMoney(Double money) {
+        if (money <= 0) {
+            throw new IllegalArgumentException("Money must be more than zero");
+        }
+        TreeSet<Excursion> availableExcursions = new TreeSet<>(Comparator.comparing(Excursion::getPrice));
+        TreeSet<Trip> allTrips = new TreeSet<>(Comparator.comparing(Trip::getPrice));
+        allTrips.addAll(findTripBySlot(1));
+        Double moneyLeft = money;
+        Map<Trip, Collection<Excursion>> result = new HashMap<>();
+        for (Trip trip : allTrips) {
+            if ((moneyLeft - trip.getPrice()) < 0) {
+                break;
+            }
+            moneyLeft = moneyLeft - trip.getPrice();
+            availableExcursions.addAll(trip.getExcursions());
+            result.put(trip, new HashSet<>());
+        }
+        for (Excursion excursion : availableExcursions) {
+            if (moneyLeft - excursion.getPrice() < 0) {
+                break;
+            }
+            moneyLeft = moneyLeft - excursion.getPrice();
+            result.get(excursion.getTrip()).add(excursion);
+        }
+        return result;
+    }
+
+    @Override
     public Collection<Trip> findAvailableFutureTrip() {
         Collection<Trip> allTrips;
         try {
             allTrips = tripDao.findAll();
         } catch (Exception e) {
-            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+            throw new DataAccessLayerException("Could not get Trip from the persistence layer", e);
         }
         Set<Trip> foundTrips = new HashSet<>();
         allTrips.stream().filter((trip) -> (trip.getCapacity() > 0 && trip.getFromDate()
@@ -165,5 +191,4 @@ public class TripServiceImpl implements TripService {
         return foundTrips;
 
     }
-
 }

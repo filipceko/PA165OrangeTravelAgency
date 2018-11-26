@@ -7,7 +7,6 @@ import cz.muni.fi.travelAgency.entities.Trip;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * An interface that defines a service access to the {@link Trip} entity.
@@ -43,7 +42,7 @@ public interface TripService {
      * Finds all trips in interval fromDate and toDate.
      *
      * @param fromDate day when trips start
-     * @param toDate day when trips end
+     * @param toDate   day when trips end
      * @return collection of trips with given dates
      */
     Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate);
@@ -82,10 +81,19 @@ public interface TripService {
      *
      * @param trip to get the customers for
      * @return Collection of customers who booked the trip
-     *
      * @author Simona Raucinova
      */
     Collection<Customer> getAllCustomers(Trip trip);
+
+    /**
+     * Finds as much trips as possible with as much
+     * excursions as possible for given amount of money.
+     *
+     * @param money we want to spend
+     * @return Map of trips with excursions
+     * @author Filip Cekovsky
+     */
+    Map<Trip, Collection<Excursion>> tripsForMoney(Double money);
 
     /**
      * Finds all trips available in the future.

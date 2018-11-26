@@ -1,11 +1,12 @@
 package cz.muni.fi.travelAgency.facade;
 
+import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
 import cz.muni.fi.travelAgency.DTO.CustomerDTO;
 import cz.muni.fi.travelAgency.DTO.ReservationDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.entities.Customer;
-import cz.muni.fi.travelAgency.entities.Reservation;
+import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.TripService;
@@ -35,7 +36,7 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
     private final String destination = "Lake Island";
     private TripDTO tripDTO;
     private Trip tripBrno;
-  
+
     private LocalDate firstDate = LocalDate.of(2018, 11, 27);
     private LocalDate secondDate = LocalDate.of(2018, 11, 29);
 
@@ -195,6 +196,20 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(result.size(), 2);
     }
 
+    /**
+     * Tests CheapTravelDTO is returned and valid
+     */
+    @Test
+    public void tripsForMoneyTest() {
+        Map<Trip, Collection<Excursion>> map = new HashMap<>();
+        map.put(tripBrno, new HashSet<>());
+        Mockito.when(tripService.tripsForMoney(Mockito.anyDouble())).thenReturn(map);
+        CheapTravelDTO result = tripFacade.tripsForMoney(50.00);
+        TripDTO mappedTrip = beanMappingService.mapTo(tripBrno, TripDTO.class);
+        Assert.assertTrue(result.getTrips().contains(mappedTrip));
+        Assert.assertTrue(result.getExcursions().isEmpty());
+    }
+
     @Test
     public void getAvailableFutureTripTest() {
         Trip trip4 = new Trip();
@@ -212,7 +227,7 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
         trip5.setDestination("Prague");
         trip5.setCapacity(4);
         trip5.setPrice(120.20);
-        
+
         Collection<Trip> allTrips = Arrays.asList(trip4, trip5);
         Mockito.when(tripService.findAvailableFutureTrip()).thenReturn(allTrips);
         Collection<TripDTO> availableFutureTrips = tripFacade.getAvailableFutureTrip();
@@ -224,23 +239,23 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
      * @author Simona Raucinova
      */
     @Test
-    public void getAllCustomersTest(){
-        Set<ReservationDTO> reservationDTOS = createReservations(createCustomers(),tripDTO);
+    public void getAllCustomersTest() {
+        Set<ReservationDTO> reservationDTOS = createReservations(createCustomers(), tripDTO);
         tripDTO.setReservations(reservationDTOS);
-        Trip mappedTrip = beanMappingService.mapTo(tripDTO,Trip.class);
-        Collection<Customer> customersToBeReturned = beanMappingService.mapTo(createCustomers(),Customer.class);
+        Trip mappedTrip = beanMappingService.mapTo(tripDTO, Trip.class);
+        Collection<Customer> customersToBeReturned = beanMappingService.mapTo(createCustomers(), Customer.class);
         Mockito.when(tripService.getAllCustomers(mappedTrip)).thenReturn(customersToBeReturned);
         Collection<CustomerDTO> customerDTOS = tripFacade.getAllCustomers(tripDTO);
-        Collection<Customer> customersFromFacade = beanMappingService.mapTo(customerDTOS,Customer.class);
-        Assert.assertEquals(customersToBeReturned,customersFromFacade);
-        Assert.assertEquals(customersFromFacade.size(),3);
+        Collection<Customer> customersFromFacade = beanMappingService.mapTo(customerDTOS, Customer.class);
+        Assert.assertEquals(customersToBeReturned, customersFromFacade);
+        Assert.assertEquals(customersFromFacade.size(), 3);
 
     }
 
     /**
      * @author Simona Raucinova
      */
-    private Set<CustomerDTO> createCustomers(){
+    private Set<CustomerDTO> createCustomers() {
         Set<CustomerDTO> customerDTOSet = new HashSet<>();
 
         CustomerDTO customer1 = new CustomerDTO();
@@ -270,18 +285,18 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
     /**
      * @author Simona Raucinova
      */
-    private Set<ReservationDTO> createReservations(Set<CustomerDTO> customerDTOS, TripDTO tripDTO){
+    private Set<ReservationDTO> createReservations(Set<CustomerDTO> customerDTOS, TripDTO tripDTO) {
         Set<ReservationDTO> reservationDTOS = new HashSet<>();
         long counter = 0L;
 
-        for (CustomerDTO customerDTO:customerDTOS){
+        for (CustomerDTO customerDTO : customerDTOS) {
             counter++;
             ReservationDTO reservationDTO = new ReservationDTO();
             reservationDTO.setExcursions(new HashSet<>());
             reservationDTO.setTrip(tripDTO);
             reservationDTO.setCustomer(customerDTO);
             reservationDTO.setId(counter);
-            reservationDTO.setReserveDate(LocalDate.of(2018,11,25));
+            reservationDTO.setReserveDate(LocalDate.of(2018, 11, 25));
             reservationDTOS.add(reservationDTO);
         }
 

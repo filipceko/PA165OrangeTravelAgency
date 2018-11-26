@@ -3,6 +3,7 @@ package cz.muni.fi.travelAgency.service;
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.dao.TripDao;
 import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
@@ -17,6 +18,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -30,18 +32,15 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class TripServiceTest extends AbstractTestNGSpringContextTests {
 
-    private final String destination = "Lake Island";
     /**
      * Service tested with mocked injections.
      */
     @InjectMocks
     private final TripService tripService = new TripServiceImpl();
-  
+    private final String destination = "Lake Island";
     private Trip trip;
     private LocalDate firstDate = LocalDate.of(2018, 11, 27);
     private LocalDate secondDate = LocalDate.of(2018, 11, 29);
-    private final String destination = "Lake Island";
-
     /**
      * Mocked trip data access object for testing.
      */
@@ -194,7 +193,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
 
         List<Trip> allTrips = Arrays.asList(trip1, trip2, trip3);
         Mockito.when(tripDao.findAll()).thenReturn(allTrips);
-      
+
         List<Trip> getTrips = new ArrayList<>(tripService.findAll());
         Assert.assertEquals(3, getTrips.size());
         Assert.assertEquals(getTrips.size(), 3);
@@ -246,14 +245,6 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     public void findByDestinationThrowsTest() {
         Mockito.when(tripDao.findByDestination("search")).thenThrow(IllegalArgumentException.class);
         tripService.findByDestination("search");
-    }
-
-    /**
-     * Tests service validates the argument.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void findByIntervalNullTest() {
-        tripService.findByInterval(null, null);
     }
 
     /**
@@ -391,4 +382,94 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         return customers;
     }
 
+    /**
+     * Tests argument constraint violation
+     *
+     * @author Filip Cekovsky
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void tripsForMoneyViolateTest() {
+        tripService.tripsForMoney(0.0);
+    }
+
+    /**
+     * Tests argument constraint violation
+     *
+     * @author Filip Cekovsky
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    void tripsForMoneyViolate2Test() {
+        tripService.tripsForMoney(-19909.0);
+    }
+
+    /**
+     * Test that DAO exception is rethrown as DataAccessException.
+     *
+     * @author Filip Cekovsky
+     */
+    @Test(expectedExceptions = DataAccessLayerException.class)
+    void tripForMoneyTrowTest() {
+        Mockito.when(tripDao.findAll()).thenThrow(IllegalArgumentException.class);
+        tripService.tripsForMoney(80.00);
+    }
+
+    /**
+     * Tests tripFormMoney when there are no excursions
+     *
+     * @autrhor Filip Cekovsky
+     */
+    @Test
+    void tripForMonetOnlyTripsTest() {
+        LocalDate from = LocalDate.now();
+        LocalDate to = LocalDate.now().plusDays(5);
+        Trip trip1 = new Trip(from, to, "Prague", 5, 30.0);
+        Trip trip2 = new Trip(from, to, "Paris", 5, 40.0);
+        Trip trip3 = new Trip(from, to, "Bratislava", 5, 30.1);
+        Trip trip4 = new Trip(from, to, "Brno", 5, 60.0);
+        Trip trip5 = new Trip(from, to, "Oslo", 5, 50.0);
+        Trip trip6 = new Trip(from, to, "Praha-Venkov", 0, 0.5);
+        Collection<Trip> trips = Arrays.asList(trip1, trip2, trip3, trip4, trip5, trip6);
+        Mockito.when(tripDao.findAll()).thenReturn(trips);
+        Map<Trip, Collection<Excursion>> result = tripService.tripsForMoney(155.99);
+        Assert.assertEquals(result.size(), 4);
+        for (Map.Entry<Trip, Collection<Excursion>> entry : result.entrySet()) {
+            Assert.assertTrue(entry.getValue().isEmpty());
+        }
+        Assert.assertNotNull(result.get(trip1));
+        Assert.assertNotNull(result.get(trip2));
+        Assert.assertNotNull(result.get(trip3));
+        Assert.assertNotNull(result.get(trip5));
+        Assert.assertNull(result.get(trip4));
+    }
+
+    /**
+     * Tests tripFormMoney with excursions
+     *
+     * @author Filip Cekovsky
+     */
+    @Test
+    void tripForMonetTest() {
+        LocalDate from = LocalDate.now();
+        LocalDate to = LocalDate.now().plusDays(5);
+        Trip trip1 = new Trip(from, to, "Prague", 5, 30.0);
+        Trip trip2 = new Trip(from, to, "Paris", 5, 40.0);
+        Trip trip3 = new Trip(from, to, "Bratislava", 5, 30.1);
+        Trip trip4 = new Trip(from, to, "Brno", 5, 60.0);
+        Trip trip5 = new Trip(from, to, "Oslo", 5, 50.0);
+        new Excursion("test1", "any1", 0.05, from, Duration.ZERO, trip1);
+        new Excursion("test2", "any2", 2.00, from, Duration.ZERO, trip2);
+        new Excursion("test3", "any3", 1.99, from, Duration.ZERO, trip1);
+        new Excursion("test4", "any4", 2.00, from, Duration.ZERO, trip5);
+        new Excursion("test5", "any5", 0.50, from, Duration.ZERO, trip4);
+        new Excursion("test6", "any6", 11.50, from, Duration.ZERO, trip2);
+        Collection<Trip> trips = Arrays.asList(trip1, trip2, trip3, trip4, trip5);
+        Mockito.when(tripDao.findAll()).thenReturn(trips);
+        Map<Trip, Collection<Excursion>> result = tripService.tripsForMoney(155.99);
+        Assert.assertEquals(result.size(), 4);
+        Assert.assertEquals(result.get(trip1).size(), 2);
+        Assert.assertEquals(result.get(trip2).size(), 1);
+        Assert.assertTrue(result.get(trip3).isEmpty());
+        Assert.assertTrue(result.get(trip5).isEmpty());
+        Assert.assertNull(result.get(trip4));
+    }
 }
