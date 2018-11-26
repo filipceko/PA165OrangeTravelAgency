@@ -124,12 +124,9 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
         Assert.assertTrue(getAllTrips.contains(trip3));
     }
 
-
     @Test
     public void getAvailableSlotsTripTest() {
         int amount = 3;
-
-
         Trip trip2 = new Trip();
         trip2.setId(12L);
         trip2.setFromDate(firstDate);

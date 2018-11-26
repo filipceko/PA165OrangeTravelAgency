@@ -3,6 +3,7 @@ package cz.muni.fi.travelAgency.service;
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.dao.TripDao;
 import cz.muni.fi.travelAgency.entities.Trip;
+import cz.muni.fi.travelAgency.exceptions.DataAccessException;
 import org.mockito.*;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -54,6 +55,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
      */
     @BeforeMethod
     public void setUpTest(){
+        Mockito.reset(tripDao);
         trip = new Trip();
         trip.setId(1L);
         trip.setFromDate(firstDate);
@@ -70,6 +72,27 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     public void createTripTest(){
         tripService.createTrip(trip);
         Mockito.verify(tripDao).create(trip);
+    }
+
+    /**
+     * Tests update on DAO is called.
+     */
+    @Test
+    public void updateTripTest() {
+        trip.setDestination("New Lake Island");
+        trip.setCapacity(15);
+        trip.setPrice(150.20);
+        tripService.updateTrip(trip);
+        Mockito.verify(tripDao, Mockito.times(1)).update(trip);
+    }
+
+    /**
+     * Tests remove on DAO is called.
+     */
+    @Test
+    public void removeTripTest(){
+        tripService.removeTrip(trip);
+        Mockito.verify(tripDao, Mockito.times(1)).remove(trip);
     }
 
     /**
@@ -147,28 +170,6 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * Tests update on DAO is called.
-     */
-    @Test
-    public void updateTripTest() {
-        Assert.assertEquals(trip.getDestination(),"Lake Island");
-        trip.setDestination("New Lake Island");
-        trip.setCapacity(15);
-        trip.setPrice(150.20);
-        tripService.updateTrip(trip);
-        Mockito.verify(tripDao, Mockito.times(1)).update(trip);
-    }
-
-    /**
-     * Tests remove on DAO is called.
-     */
-    @Test
-    public void removeTripTest(){
-        tripService.removeTrip(trip);
-        Mockito.verify(tripDao, Mockito.times(1)).remove(trip);
-    }
-
-    /**
      * Tests valid result is returned.
      */
     @Test
@@ -177,5 +178,117 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         Trip foundTrip = tripService.findById(trip.getId());
         Assert.assertEquals(foundTrip,trip);
         Assert.assertEquals(foundTrip.getDestination(),trip.getDestination());
+    }
+
+    /**
+     * Tests service validates the argument.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByIdNullTest() {
+        tripService.findById(null);
+    }
+
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
+    @Test(expectedExceptions = DataAccessException.class)
+    public void findByIdThrowsTest() {
+        Mockito.when(tripDao.findById(1L)).thenThrow(IllegalArgumentException.class);
+        tripService.findById(1L);
+    }
+
+    /**
+     * Tests service validates the argument.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByDestinationNullTest() {
+        tripService.findByDestination(null);
+    }
+
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
+    @Test(expectedExceptions = DataAccessException.class)
+    public void findByDestinationThrowsTest() {
+        Mockito.when(tripDao.findByDestination("search")).thenThrow(IllegalArgumentException.class);
+        tripService.findByDestination("search");
+    }
+
+    /**
+     * Tests service validates the argument.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findByIntervalNullTest() {
+        tripService.findByInterval(null,null);
+    }
+
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
+    @Test(expectedExceptions = DataAccessException.class)
+    public void findByIntervalThrowsTest() {
+        Mockito.when(tripDao.findByInterval(firstDate,secondDate)).thenThrow(IllegalArgumentException.class);
+        tripService.findByInterval(firstDate,secondDate);
+    }
+
+    /**
+     * Tests service validates the argument.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void findTripBySlotErrorTest() {
+        tripService.findTripBySlot(-1);
+    }
+
+
+    /**
+     * Tests service validates the argument.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void createTripNullTest() {
+        tripService.createTrip(null);
+    }
+
+    /**
+     * Tests service validates the argument.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void removeNullTest() {
+        tripService.removeTrip(null);
+    }
+
+    /**
+     * Tests service validates the argument.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void removeNoIdTest() {
+        try {
+            trip.setId(null);
+            tripService.removeTrip(trip);
+        } finally {
+            Mockito.verify(tripDao, Mockito.never()).update(Mockito.any());
+        }
+    }
+
+    /**
+     * Tests service validates the argument.
+     */
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void updateNoIdTest() {
+        try {
+            trip.setId(null);
+            tripService.updateTrip(trip);
+        } finally {
+            Mockito.verify(tripDao, Mockito.never()).update(Mockito.any());
+        }
+    }
+
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
+    @Test(expectedExceptions = DataAccessException.class)
+    void updateThrowsTest() {
+        trip.setId(100L);
+        Mockito.doThrow(IllegalArgumentException.class).when(tripDao).update(Mockito.any(Trip.class));
+        tripService.updateTrip(trip);
     }
 }
