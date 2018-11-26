@@ -42,7 +42,7 @@ public class ReservationDTO extends ReservationCreateDTO {
     }
 
     /**
-     * Constructor without excursions
+     * Constructor without excursions and with ID
      *
      * @param customer    who made this reservation
      * @param trip        the reservation is for
@@ -56,7 +56,7 @@ public class ReservationDTO extends ReservationCreateDTO {
     }
 
     /**
-     * Constructor with excursions
+     * Constructor with excursions and ID
      *
      * @param customer    who made this reservation
      * @param trip        the reservation is for
@@ -67,6 +67,31 @@ public class ReservationDTO extends ReservationCreateDTO {
     public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, @NotNull Set<ExcursionDTO> excursions, Long id, @NotNull LocalDate reserveDate) {
         super(customer, trip, excursions);
         this.id = id;
+        this.reserveDate = reserveDate;
+    }
+
+    /**
+     * Constructor without excursions and ID
+     *
+     * @param customer    who made the reservation
+     * @param trip        the reservation is for
+     * @param reserveDate tha date this reservation was made
+     */
+    public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, @NotNull LocalDate reserveDate) {
+        super(customer, trip);
+        this.reserveDate = reserveDate;
+    }
+
+    /**
+     * Constructor with excursions and without ID
+     *
+     * @param customer    who made the reservation
+     * @param trip        the reservation is for
+     * @param excursions  booked with this reservation
+     * @param reserveDate the date this reservation was made
+     */
+    public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, @NotNull Set<ExcursionDTO> excursions, @NotNull LocalDate reserveDate) {
+        super(customer, trip, excursions);
         this.reserveDate = reserveDate;
     }
 
