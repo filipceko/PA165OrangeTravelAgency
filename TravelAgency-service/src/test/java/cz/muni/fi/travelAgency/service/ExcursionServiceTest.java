@@ -4,9 +4,10 @@ import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.dao.ExcursionDao;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
-import cz.muni.fi.travelAgency.exceptions.DataAccessException;
 import java.math.BigDecimal;
 import java.time.Duration;
+
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -127,7 +128,7 @@ public class ExcursionServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void createThrowsTest() {
         Mockito.doThrow(IllegalArgumentException.class).when(excursionDao).create(excursionUbud);
         excursionService.createExcursion(excursionUbud);
@@ -157,7 +158,7 @@ public class ExcursionServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void findByIdThrowsTest() {
         Mockito.when(excursionDao.findById(11L)).thenThrow(IllegalArgumentException.class);
         excursionService.findExcursionById(11L);
@@ -183,7 +184,7 @@ public class ExcursionServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void getAllThrowsTest() {
         Mockito.when(excursionDao.findAll()).thenThrow(IllegalArgumentException.class);
         excursionService.getAllExcursions();
@@ -213,7 +214,7 @@ public class ExcursionServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void findByDestinationThrowsTest() {
         Mockito.when(excursionDao.findByDestination("Legian")).thenThrow(IllegalArgumentException.class);
         excursionService.findExcursionByDestination("Legian");
@@ -245,7 +246,7 @@ public class ExcursionServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void findByTripThrowsTest() {
         Mockito.when(excursionDao.findByTripId(Mockito.anyLong())).thenThrow(IllegalArgumentException.class);
         excursionService.findExcursionByTripId(30L);
@@ -273,7 +274,7 @@ public class ExcursionServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void updateThrowsTest() {
         excursionBorobudur.setId(85L);
         Mockito.doThrow(IllegalArgumentException.class).when(excursionDao).update(Mockito.any(Excursion.class));
@@ -301,7 +302,7 @@ public class ExcursionServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void deleteThrowsTest() {
         excursionPrambanan.setId(24L);
         Mockito.doThrow(IllegalArgumentException.class).when(excursionDao).remove(excursionPrambanan);

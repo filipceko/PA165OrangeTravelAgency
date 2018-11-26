@@ -2,9 +2,10 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.ExcursionDao;
 import cz.muni.fi.travelAgency.entities.Excursion;
-import cz.muni.fi.travelAgency.exceptions.DataAccessException;
 import java.util.Collection;
 import javax.inject.Inject;
+
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,7 +26,7 @@ public class ExcursionServiceImpl implements ExcursionService {
         try {
             return excursionDao.findAll();
         } catch (IllegalArgumentException exp) {
-            throw new DataAccessException(exp.getMessage());
+            throw new DataAccessLayerException(exp.getMessage());
         }
     }
 
@@ -37,7 +38,7 @@ public class ExcursionServiceImpl implements ExcursionService {
         try {
             excursionDao.create(excursion);
         } catch (IllegalArgumentException exp) {
-            throw new DataAccessException(exp.getMessage());
+            throw new DataAccessLayerException(exp.getMessage());
         }
     }
 
@@ -49,7 +50,7 @@ public class ExcursionServiceImpl implements ExcursionService {
         try {
             excursionDao.update(excursion);
         } catch (IllegalArgumentException exp) {
-            throw new DataAccessException(exp.getMessage());
+            throw new DataAccessLayerException(exp.getMessage());
         }
     }
 
@@ -61,7 +62,7 @@ public class ExcursionServiceImpl implements ExcursionService {
         try {
             excursionDao.remove(excursion);
         } catch (IllegalArgumentException exp) {
-            throw new DataAccessException(exp.getMessage());
+            throw new DataAccessLayerException(exp.getMessage());
         }
     }
 
@@ -73,7 +74,7 @@ public class ExcursionServiceImpl implements ExcursionService {
         try {
             return excursionDao.findById(excursionId);
         } catch (IllegalArgumentException exp) {
-            throw new DataAccessException(exp.getMessage());
+            throw new DataAccessLayerException(exp.getMessage());
         }
     }
 
@@ -85,7 +86,7 @@ public class ExcursionServiceImpl implements ExcursionService {
         try {
             return excursionDao.findByDestination(destination);
         } catch (IllegalArgumentException exp) {
-            throw new DataAccessException(exp.getMessage());
+            throw new DataAccessLayerException(exp.getMessage());
         }
     }
 
@@ -97,7 +98,7 @@ public class ExcursionServiceImpl implements ExcursionService {
         try {
             return excursionDao.findByTripId(tripId);
         } catch (IllegalArgumentException exp) {
-            throw new DataAccessException(exp.getMessage());
+            throw new DataAccessLayerException(exp.getMessage());
         }
     }
 }
