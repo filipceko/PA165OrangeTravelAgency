@@ -46,6 +46,9 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Collection<Trip> findByDestination(String destination){
+        if (destination == null || destination.isEmpty()){
+            throw new IllegalArgumentException("Cannot find Trip with null destination or empty string.");
+        }
         try {
             return tripDao.findByDestination(destination);
         } catch (Exception e){
@@ -55,6 +58,13 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate){
+        if (fromDate == null || toDate == null)
+        {
+            throw new IllegalArgumentException("Date cannot be null.");
+        }
+        else if (fromDate.isAfter(toDate)){
+            throw new IllegalArgumentException("From Date cannot after To Date.");
+        }
         try {
             return tripDao.findByInterval(fromDate,toDate);
         } catch (Exception e){
@@ -64,19 +74,17 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Collection<Trip> findTripBySlot(int amount){
-        try {
-            Collection<Trip> allTrips = tripDao.findAll();
-            Set<Trip> foundTrips = new HashSet<>();
-            for (Trip trip : allTrips) {
-                if (trip.getCapacity() >= amount){
-                    foundTrips.add(trip);
-                }
-            }
-            return foundTrips;
-        } catch (Exception e){
-            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+        if (amount < 0){
+            throw new IllegalArgumentException("Invalid amount of slots.");
         }
-
+        Collection<Trip> allTrips = tripDao.findAll();
+        Set<Trip> foundTrips = new HashSet<>();
+        for (Trip trip : allTrips) {
+            if (trip.getCapacity() >= amount){
+                foundTrips.add(trip);
+            }
+        }
+        return foundTrips;
     }
 
     @Override
@@ -90,11 +98,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void removeTrip(Trip trip) {
-        try {
-            tripDao.remove(trip);
-        } catch (Exception e) {
-            throw new DataAccessException("Could not remove Trip from the persistence layer", e);
-        }
+        tripDao.remove(trip);
     }
 
     @Override
