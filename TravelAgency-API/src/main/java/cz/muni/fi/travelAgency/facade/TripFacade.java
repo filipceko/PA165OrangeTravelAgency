@@ -6,6 +6,11 @@ import cz.muni.fi.travelAgency.DTO.TripDTO;
 import java.time.LocalDate;
 import java.util.Collection;
 
+/**
+ * Trip facade interface
+ *
+ * @author Rithy Ly
+ */
 public interface TripFacade {
     /**
      * Create new Trip

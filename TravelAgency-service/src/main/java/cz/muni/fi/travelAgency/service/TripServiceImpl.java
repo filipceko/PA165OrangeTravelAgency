@@ -17,7 +17,7 @@ import java.util.*;
  * service module of the application that provides the implementation of the
  * business logic.
  *
- * @author Rithy Ly, Filip
+ * @author Rithy Ly
  */
 
 @Service
@@ -28,6 +28,9 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Trip findById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Tried to find Trip by NULL");
+        }
         try {
             return tripDao.findById(id);
         } catch (Exception e) {
@@ -73,7 +76,12 @@ public class TripServiceImpl implements TripService {
         if (amount < 0) {
             throw new IllegalArgumentException("Invalid amount of slots.");
         }
-        Collection<Trip> allTrips = tripDao.findAll();
+        Collection<Trip> allTrips;
+        try {
+            allTrips = tripDao.findAll();
+        } catch (Exception e) {
+            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+        }
         Set<Trip> foundTrips = new HashSet<>();
         for (Trip trip : allTrips) {
             if (trip.getCapacity() >= amount) {
@@ -101,21 +109,32 @@ public class TripServiceImpl implements TripService {
     @Override
     public void removeTrip(Trip trip) {
         if (trip == null) {
-            throw new IllegalArgumentException("Cannot delete null Trip.");
+            throw new IllegalArgumentException("Tried to delete NULL trip");
         }
         if (trip.getId() == null) {
-            throw new IllegalArgumentException("Trip ID is null");
+            throw new IllegalArgumentException("Tried to delete trip without ID");
         }
         tripDao.remove(trip);
     }
 
     @Override
     public void updateTrip(Trip trip) {
+        if (trip == null) {
+            throw new IllegalArgumentException("Cannot update trip with destination not set or null.");
+        }
+        if (trip.getDestination() == null || trip.getDestination().isEmpty()) {
+            throw new IllegalArgumentException("Cannot update trip with destination not set or null.");
+        } else if (trip.getFromDate().isAfter(trip.getToDate())) {
+            throw new IllegalArgumentException("Cannot update trip starting date after end date.");
+        } else if (trip.getId() == null) {
+            throw new IllegalArgumentException("Tried to update trip without ID");
+        }
         try {
             tripDao.update(trip);
         } catch (Exception e) {
             throw new DataAccessException("Could not update Trip in persistence layer", e);
         }
+
     }
 
     @Override
@@ -125,7 +144,6 @@ public class TripServiceImpl implements TripService {
         for (Reservation reservation : reservations) {
             customers.add(reservation.getCustomer());
         }
-
         return customers;
     }
 

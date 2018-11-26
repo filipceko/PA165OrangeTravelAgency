@@ -18,6 +18,9 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import org.junit.Assert;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -172,7 +175,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         excursionDao.update(excursionEiffel);
         Excursion retrievedExcursion = excursionDao.findById(excursionEiffel.getId());
         assertEquals(excursionEiffel, retrievedExcursion);
-        assertEquals(new BigDecimal("36.00"), retrievedExcursion.getPrice());
+        assertEquals(new Double("36.00"), retrievedExcursion.getPrice());
     }
 
     @Test
@@ -192,4 +195,19 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         assertFalse(parisTrip.getExcursions().contains(excursionEiffel));
         assertThrows(IllegalArgumentException.class, () -> excursionDao.remove(null));
     }
+    @Test
+    public void findByDestination() {
+        Assert.assertEquals(1, excursionDao.findByDestination("Eiffel Tower").size());
+        Assert.assertEquals(0, excursionDao.findByDestination("Museum").size());
+
+        Assert.assertNotNull(excursionEiffel.getDestination());
+        Collection<Excursion> found = excursionDao.findByDestination(excursionEiffel.getDestination());
+        Assert.assertNotNull(found);
+        List<Excursion> expected = new LinkedList<>();
+        expected.add(excursionEiffel);
+        Assert.assertEquals(expected, found);
+        assertThrows(IllegalArgumentException.class, () -> excursionDao.findByDestination(null));
+
+    }
+
 }
