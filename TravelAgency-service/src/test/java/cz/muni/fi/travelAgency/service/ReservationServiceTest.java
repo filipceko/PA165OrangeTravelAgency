@@ -82,21 +82,56 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
         Mockito.verify(reservationDao).create(reservation1);
     }
 
+    /**
+     * Tests service validates the argument.
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     void createNullTest() {
         reservationService.create(null);
     }
 
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
     @Test(expectedExceptions = DataAccessException.class)
     void createThrowsTest() {
         Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).create(reservation2);
         reservationService.create(reservation2);
     }
 
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
     @Test(expectedExceptions = DataAccessException.class)
     void createThrows2Test() {
         Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).create(reservation2);
         reservationService.create(reservation2);
+    }
+
+    /**
+     * Tests valid result is returned.
+     */
+    @Test
+    public void findAllTest() {
+        Set<Reservation> expected = new HashSet<>();
+        expected.add(reservation1);
+        expected.add(reservation2);
+        expected.add(reservation3);
+        expected.add(reservation4);
+        Mockito.when(reservationDao.findAll()).thenReturn(expected);
+        Collection<Reservation> result = reservationService.findAll();
+        Assert.assertEquals(result.size(), 4);
+        Assert.assertTrue(result.contains(reservation1));
+        Assert.assertTrue(result.contains(reservation2));
+    }
+
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
+    @Test(expectedExceptions = DataAccessException.class)
+    void findAllThrowsTest() {
+        Mockito.when(reservationDao.findAll()).thenThrow(IllegalArgumentException.class);
+        reservationService.findAll();
     }
 
     /**
@@ -112,11 +147,17 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(id, reservation1.getId());
     }
 
+    /**
+     * Tests service validates the argument.
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByNullTest() {
         reservationService.findById(null);
     }
 
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
     @Test(expectedExceptions = DataAccessException.class)
     void findByIdThrowsTest() {
         Mockito.when(reservationDao.findById(15L)).thenThrow(IllegalArgumentException.class);
@@ -138,12 +179,17 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertTrue(result.contains(reservation2));
     }
 
-
+    /**
+     * Tests service validates the argument.
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByNullCustomerTest() {
         reservationService.findByCustomer(null);
     }
 
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
     @Test(expectedExceptions = DataAccessException.class)
     void findByCustomerThrowsTest() {
         Mockito.doThrow(IllegalArgumentException.class).when(reservationDao).findByCustomerId(Mockito.anyLong());
@@ -165,11 +211,17 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertTrue(result.contains(reservation4));
     }
 
+    /**
+     * Tests service validates the argument.
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void findByNullTripTest() {
         reservationService.findByTrip(null);
     }
 
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
     @Test(expectedExceptions = DataAccessException.class)
     void findByTripThrowsTest() {
         Mockito.when(reservationDao.findByTripId(Mockito.anyLong())).thenThrow(IllegalArgumentException.class);
@@ -187,11 +239,17 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
         Mockito.verify(reservationDao, Mockito.times(1)).update(reservation3);
     }
 
+    /**
+     * Tests service validates the argument.
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void updateNullTest() {
         reservationService.update(null);
     }
 
+    /**
+     * Tests service validates the argument.
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void updateNoIdTest() {
         try {
@@ -201,6 +259,9 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
         }
     }
 
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
     @Test(expectedExceptions = DataAccessException.class)
     void updateThrowsTest() {
         reservation1.setId(85L);
@@ -218,11 +279,17 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
         Mockito.verify(reservationDao, Mockito.times(1)).remove(reservation3);
     }
 
+    /**
+     * Tests service validates the argument.
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void removeNullTest() {
         reservationService.remove(null);
     }
 
+    /**
+     * Tests service validates the argument.
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void removeNoIdTest() {
         try {
@@ -232,6 +299,9 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
         }
     }
 
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
     @Test(expectedExceptions = DataAccessException.class)
     void removeThrowsTest() {
         reservation1.setId(24L);
@@ -300,6 +370,9 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertTrue(result3.contains(reservation2));
     }
 
+    /**
+     * Tests that exceptions thrown by the DAO are thrown as DataAccessException
+     */
     @Test(expectedExceptions = DataAccessException.class)
     void findBetweenThrowsTest() {
         Mockito.when(reservationDao.findReservationBetween(Mockito.any(), Mockito.any())).thenThrow(IllegalArgumentException.class);
