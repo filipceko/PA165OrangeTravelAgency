@@ -246,17 +246,6 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     /**
-     * <<<<<<< HEAD
-     * =======
-     * Tests service validates the argument.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void findByIntervalNullTest() {
-        tripService.findByInterval(null, null);
-    }
-
-    /**
-     * >>>>>>> master
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
     @Test(expectedExceptions = DataAccessLayerException.class)
