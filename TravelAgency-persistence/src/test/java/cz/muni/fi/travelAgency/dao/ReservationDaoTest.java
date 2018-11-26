@@ -17,7 +17,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.validation.ConstraintViolationException;
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -58,13 +57,13 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         EntityManager manager = managerFactory.createEntityManager();
         manager.getTransaction().begin();
 
-        trip = new Trip(firstDate, secondDate, "Test", 10,100.20);
+        trip = new Trip(firstDate, secondDate, "Test", 10, 100.20);
         customer1 = new Customer("Filip", "Cekovsky", "filip@ceko.com");
         customer2 = new Customer("Frodo", "Zemiak", "frodo@zemiak.com");
         customer3 = new Customer("Imrich", "Piskotka", "piskota@sucha.com");
-        Excursion excursion1 = new Excursion("Test excursion", "Test", BigDecimal.valueOf(10.00),
+        Excursion excursion1 = new Excursion("Test excursion", "Test", 10.00,
                 firstDate, Duration.ZERO, trip);
-        excursion2 = new Excursion("Test excursion 2.0", "Tale", BigDecimal.valueOf(11.50),
+        excursion2 = new Excursion("Test excursion 2.0", "Tale", 11.50,
                 secondDate, Duration.ofHours(5), trip);
         reservation1 = new Reservation(customer1, trip, firstDate);
         reservation2 = new Reservation(customer2, trip, secondDate);

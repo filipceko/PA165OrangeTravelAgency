@@ -51,13 +51,13 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         newYorkTrip.setDestination("New York");
         newYorkTrip.setCapacity(25);
         newYorkTrip.setPrice(100.20);
-        
+
 
         Excursion excursionStatueOfLiberty = new Excursion();
         excursionStatueOfLiberty.setDescription("Visit the America’s most notable visitor experiences " +
                 "– the Statue of Liberty National Monument on Liberty Island");
         excursionStatueOfLiberty.setDestination("Statue of Liberty National Monument on Liberty Island");
-        excursionStatueOfLiberty.setPrice(new BigDecimal("30.25"));
+        excursionStatueOfLiberty.setPrice(30.25);
         excursionStatueOfLiberty.setExcursionDate(LocalDate.of(2018, 7, 8));
         excursionStatueOfLiberty.setExcursionDuration(Duration.ofMinutes(253));
         excursionStatueOfLiberty.setTrip(newYorkTrip);
@@ -66,7 +66,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         excursionObservatory.setDescription("See New York City at your feet with admission to the One World Observatory," +
                 " a 3-story destination on top of the western hemisphere’s tallest building. ");
         excursionObservatory.setDestination("NYC One World Observatory");
-        excursionObservatory.setPrice(new BigDecimal("34.00"));
+        excursionObservatory.setPrice(34.00);
         excursionObservatory.setExcursionDate(LocalDate.of(2018, 7, 10));
         excursionObservatory.setExcursionDuration(Duration.ofMinutes(120));
         excursionObservatory.setTrip(newYorkTrip);
@@ -82,7 +82,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         excursionEiffel.setDescription("Listen as your host adds colorful history and facts to the sights below as " +
                 "you look over Les Invalides, Notre Dame Cathedral and other city landmarks.");
         excursionEiffel.setDestination("Eiffel Tower");
-        excursionEiffel.setPrice(new BigDecimal("47.58"));
+        excursionEiffel.setPrice(47.58);
         excursionEiffel.setExcursionDate(LocalDate.of(2018, 9, 27));
         excursionEiffel.setExcursionDuration(Duration.ofMinutes(60));
         excursionEiffel.setTrip(parisTrip);
@@ -107,7 +107,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
     public void createTest() {
         EntityManager manager = managerFactory.createEntityManager();
         LocalDate excursionDate = LocalDate.of(2018, 7, 13);
-        Excursion testExcursion = new Excursion("Description", "Destination", new BigDecimal("10.00"),
+        Excursion testExcursion = new Excursion("Description", "Destination", 10.00,
                 excursionDate, Duration.ofMinutes(20), newYorkTrip);
         excursionDao.create(testExcursion);
         Excursion stored = manager.createQuery("select e from Excursion e where e.excursionDate = :date",
@@ -120,23 +120,17 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
 
         assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion()));
         assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion(null,
-                "Destination", new BigDecimal("10"),
-                excursionDate, Duration.ofMinutes(20), newYorkTrip)));
+                "Destination", 10.0, excursionDate, Duration.ofMinutes(20), newYorkTrip)));
         assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion("Description",
-                null, new BigDecimal("10"),
-                excursionDate, Duration.ofMinutes(20), newYorkTrip)));
+                null, 10.0, excursionDate, Duration.ofMinutes(20), newYorkTrip)));
         assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion("Description",
-                "Destination", null,
-                excursionDate, Duration.ofMinutes(20), newYorkTrip)));
+                "Destination", null, excursionDate, Duration.ofMinutes(20), newYorkTrip)));
         assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion("Description",
-                "Destination", new BigDecimal("10"),
-                null, Duration.ofMinutes(20), newYorkTrip)));
+                "Destination", 10.0, null, Duration.ofMinutes(20), newYorkTrip)));
         assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion("Description",
-                "Destination", new BigDecimal("10"),
-                excursionDate, null, newYorkTrip)));
+                "Destination", 10.0, excursionDate, null, newYorkTrip)));
         assertThrows(NullPointerException.class, () -> excursionDao.create(new Excursion("Description",
-                "Destination", new BigDecimal("10"),
-                excursionDate, Duration.ofMinutes(20), null)));
+                "Destination", 10.0, excursionDate, Duration.ofMinutes(20), null)));
 
         assertThrows(IllegalArgumentException.class, () -> excursionDao.create(null));
         excursionDao.remove(testExcursion);
@@ -174,7 +168,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void updateTest() {
-        excursionEiffel.setPrice(new BigDecimal("36.00"));
+        excursionEiffel.setPrice(36.00);
         excursionDao.update(excursionEiffel);
         Excursion retrievedExcursion = excursionDao.findById(excursionEiffel.getId());
         assertEquals(excursionEiffel, retrievedExcursion);
@@ -184,7 +178,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void removeTest() {
         LocalDate excursionDate = LocalDate.of(2018, 7, 13);
-        Excursion testExcursion = new Excursion("Description", "Destination", new BigDecimal("10.00"),
+        Excursion testExcursion = new Excursion("Description", "Destination", 10.00,
                 excursionDate, Duration.ofMinutes(20), newYorkTrip);
         excursionDao.create(testExcursion);
         assertEquals(4, excursionDao.findAll().size());

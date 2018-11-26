@@ -12,19 +12,21 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 @ContextConfiguration(classes = ServiceConfiguration.class)
-public class TripFacadeTest extends AbstractTestNGSpringContextTests{
+public class TripFacadeTest extends AbstractTestNGSpringContextTests {
 
+    private final String destination = "Lake Island";
     private TripDTO tripDTO;
     private Trip tripBrno;
     private LocalDate firstDate = LocalDate.of(2017, 11, 20);
     private LocalDate secondDate = LocalDate.of(2017, 11, 25);
-    private final String destination = "Lake Island";
-
     @Mock
     private TripService tripService;
 
@@ -41,7 +43,7 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
     }
 
     @BeforeMethod
-    public void SetupTripDTO(){
+    public void SetupTripDTO() {
         tripDTO = new TripDTO();
         tripDTO.setId(1L);
         tripDTO.setFromDate(firstDate);
@@ -52,7 +54,7 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
     }
 
     @Test
-    public void createTripTest(){
+    public void createTripTest() {
         tripFacade.createTrip(tripDTO);
         tripBrno = beanMappingService.mapTo(tripDTO, Trip.class);
         Mockito.verify(tripService).createTrip(tripBrno);
@@ -78,16 +80,16 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
     }
 
     @Test
-    public void findByIdTest(){
+    public void findByIdTest() {
         Assert.assertNotNull(tripDTO);
         tripBrno = beanMappingService.mapTo(tripDTO, Trip.class);
         Mockito.when(tripService.findById(tripDTO.getId())).thenReturn(tripBrno);
         TripDTO tripFromFacade = tripFacade.getTripById(tripDTO.getId());
-        Assert.assertEquals(tripFromFacade.getDestination(),destination);
+        Assert.assertEquals(tripFromFacade.getDestination(), destination);
     }
 
     @Test
-    public void findByAllTest(){
+    public void findByAllTest() {
         Trip trip1 = new Trip();
         trip1.setId(11L);
         trip1.setFromDate(firstDate);
@@ -111,15 +113,15 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         trip3.setDestination("Paris");
         trip3.setCapacity(8);
         trip3.setPrice(320.20);
-        List<Trip> allTrips = Arrays.asList(trip1,trip2,trip3);
+        List<Trip> allTrips = Arrays.asList(trip1, trip2, trip3);
 
         Mockito.when(tripService.findAll()).thenReturn(allTrips);
-        List<TripDTO> getAllTripsFacade = new ArrayList<>(tripFacade.getAllTrips());
-        List<Trip> getAllTrips = beanMappingService.mapTo(getAllTripsFacade,Trip.class);
+        Collection<TripDTO> getAllTripsFacade = tripFacade.getAllTrips();
+        Collection<Trip> getAllTrips = beanMappingService.mapTo(getAllTripsFacade, Trip.class);
         Assert.assertEquals(getAllTrips.size(), 3);
-        Assert.assertEquals(getAllTrips.get(0),trip1);
-        Assert.assertEquals(getAllTrips.get(1),trip2);
-        Assert.assertEquals(getAllTrips.get(2),trip3);
+        Assert.assertTrue(getAllTrips.contains(trip1));
+        Assert.assertTrue(getAllTrips.contains(trip2));
+        Assert.assertTrue(getAllTrips.contains(trip3));
     }
 
 
@@ -143,11 +145,11 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests{
         trip3.setDestination("Paris");
         trip3.setCapacity(1);
         trip3.setPrice(320.20);
-        Collection<Trip> listTrips = Arrays.asList(trip2,trip3);
+        Collection<Trip> listTrips = Arrays.asList(trip2, trip3);
         Mockito.when(tripService.findTripBySlot(amount)).thenReturn(listTrips);
 
         Collection<TripDTO> availableTrips = tripFacade.getTripBySlot(amount);
-        Collection<Trip> result = beanMappingService.mapTo(availableTrips,Trip.class);
+        Collection<Trip> result = beanMappingService.mapTo(availableTrips, Trip.class);
         Assert.assertEquals(result.size(), 2);
     }
 }

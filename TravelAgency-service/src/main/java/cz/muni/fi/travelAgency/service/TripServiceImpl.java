@@ -2,22 +2,22 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.TripDao;
 import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.exceptions.DataAccessException;
 import org.springframework.stereotype.Service;
+
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Implementation of the {@link TripService}. This class is part of the
  * service module of the application that provides the implementation of the
  * business logic.
- * @author Rithy Ly
+ *
+ * @author Rithy Ly, Filip
  */
 
 @Service
@@ -30,7 +30,7 @@ public class TripServiceImpl implements TripService {
     public Trip findById(Long id) {
         try {
             return tripDao.findById(id);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DataAccessException("Could not get Trip from the persistence layer", e);
         }
     }
@@ -39,48 +39,44 @@ public class TripServiceImpl implements TripService {
     public Collection<Trip> findAll() {
         try {
             return tripDao.findAll();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DataAccessException("Could not get Trip from the persistence layer", e);
         }
     }
 
     @Override
-    public Collection<Trip> findByDestination(String destination){
-        if (destination == null || destination.isEmpty()){
+    public Collection<Trip> findByDestination(String destination) {
+        if (destination == null || destination.isEmpty()) {
             throw new IllegalArgumentException("Cannot find Trip with null destination or empty string.");
         }
         try {
             return tripDao.findByDestination(destination);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DataAccessException("Could not get Trip from the persistence layer", e);
         }
     }
 
     @Override
-    public Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate){
-        if (fromDate == null || toDate == null)
-        {
-            throw new IllegalArgumentException("Date cannot be null.");
-        }
-        else if (fromDate.isAfter(toDate)){
+    public Collection<Trip> findByInterval(LocalDate fromDate, LocalDate toDate) {
+        if (fromDate != null && toDate != null && (fromDate.isAfter(toDate))) {
             throw new IllegalArgumentException("From Date cannot after To Date.");
         }
         try {
-            return tripDao.findByInterval(fromDate,toDate);
-        } catch (Exception e){
+            return tripDao.findByInterval(fromDate, toDate);
+        } catch (Exception e) {
             throw new DataAccessException("Could not get Trip from the persistence layer", e);
         }
     }
 
     @Override
-    public Collection<Trip> findTripBySlot(int amount){
-        if (amount < 0){
+    public Collection<Trip> findTripBySlot(int amount) {
+        if (amount < 0) {
             throw new IllegalArgumentException("Invalid amount of slots.");
         }
         Collection<Trip> allTrips = tripDao.findAll();
         Set<Trip> foundTrips = new HashSet<>();
         for (Trip trip : allTrips) {
-            if (trip.getCapacity() >= amount){
+            if (trip.getCapacity() >= amount) {
                 foundTrips.add(trip);
             }
         }
@@ -89,15 +85,27 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void createTrip(Trip trip) {
+        if (trip == null) {
+            throw new IllegalArgumentException("Cannot create null Trip.");
+        }
+        if (trip.getFromDate().isAfter(trip.getToDate())) {
+            throw new IllegalArgumentException("Cannot update trip starting date after end date.");
+        }
         try {
             tripDao.create(trip);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DataAccessException("Could not create Trip in persistence layer", e);
         }
     }
 
     @Override
     public void removeTrip(Trip trip) {
+        if (trip == null) {
+            throw new IllegalArgumentException("Cannot delete null Trip.");
+        }
+        if (trip.getId() == null) {
+            throw new IllegalArgumentException("Trip ID is null");
+        }
         tripDao.remove(trip);
     }
 
@@ -105,21 +113,20 @@ public class TripServiceImpl implements TripService {
     public void updateTrip(Trip trip) {
         try {
             tripDao.update(trip);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DataAccessException("Could not update Trip in persistence layer", e);
         }
     }
 
-     @Override
-     public Collection<Customer> getAllCustomers(Trip trip) {
-         Collection<Reservation> reservations = tripDao.findById(trip.getId()).getReservations();
-         Set<Customer> customers = new HashSet<>();
-         for (Reservation reservation : reservations){
-             customers.add(reservation.getCustomer());
-         }
+    @Override
+    public Collection<Customer> getAllCustomers(Trip trip) {
+        Collection<Reservation> reservations = tripDao.findById(trip.getId()).getReservations();
+        Set<Customer> customers = new HashSet<>();
+        for (Reservation reservation : reservations) {
+            customers.add(reservation.getCustomer());
+        }
 
-         return customers;
-     }
-
+        return customers;
+    }
 
  }

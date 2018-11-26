@@ -2,7 +2,6 @@ package cz.muni.fi.travelAgency.facade;
 
 import cz.muni.fi.travelAgency.DTO.CustomerAuthenticateDTO;
 import cz.muni.fi.travelAgency.DTO.CustomerDTO;
-import cz.muni.fi.travelAgency.dao.CustomerDao;
 import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.CustomerService;
@@ -14,11 +13,12 @@ import java.util.List;
 
 /**
  * Implemetation of {@link CustomerFacade}.
+ *
  * @author Simona Raucinova
  */
 @Service
 @Transactional
-public class CustomerFacadeImpl implements CustomerFacade{
+public class CustomerFacadeImpl implements CustomerFacade {
 
     @Autowired
     private CustomerService customerService;
@@ -28,7 +28,7 @@ public class CustomerFacadeImpl implements CustomerFacade{
 
     @Override
     public void registerCustomer(CustomerDTO customer, String unencryptedPassword) {
-        if(customer == null || unencryptedPassword == null || customer.getEmail() == null){
+        if (customer == null || unencryptedPassword == null || customer.getEmail() == null) {
             throw new IllegalArgumentException("Either customer, password or customer's email is null");
         }
         Customer customerEntity = beanMappingService.mapTo(customer, Customer.class);
@@ -44,7 +44,8 @@ public class CustomerFacadeImpl implements CustomerFacade{
     @Override
     public boolean authenticate(CustomerAuthenticateDTO customer) {
         return customerService.authenticate(
-                customerService.findCustomerById(customer.getCustomerId()), customer.getPassword());    }
+                customerService.findCustomerById(customer.getCustomerId()), customer.getPassword());
+    }
 
     @Override
     public boolean isAdmin(CustomerDTO customer) {
