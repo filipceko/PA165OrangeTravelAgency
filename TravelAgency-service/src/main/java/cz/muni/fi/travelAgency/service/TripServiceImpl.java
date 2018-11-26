@@ -5,12 +5,14 @@ import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
-import cz.muni.fi.travelAgency.exceptions.DataAccessException;
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Implementation of the {@link TripService}. This class is part of the service
@@ -32,8 +34,9 @@ public class TripServiceImpl implements TripService {
         }
         try {
             return tripDao.findById(id);
-        } catch (Exception e) {
-            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+
+        } catch (Exception e){
+            throw new DataAccessLayerException("Could not get Trip from the persistence layer", e);
         }
     }
 
@@ -41,8 +44,8 @@ public class TripServiceImpl implements TripService {
     public Collection<Trip> findAll() {
         try {
             return tripDao.findAll();
-        } catch (Exception e) {
-            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+        } catch (Exception e){
+            throw new DataAccessLayerException("Could not get Trip from the persistence layer", e);
         }
     }
 
@@ -53,8 +56,8 @@ public class TripServiceImpl implements TripService {
         }
         try {
             return tripDao.findByDestination(destination);
-        } catch (Exception e) {
-            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+        } catch (Exception e){
+            throw new DataAccessLayerException("Could not get Trip from the persistence layer", e);
         }
     }
 
@@ -64,9 +67,9 @@ public class TripServiceImpl implements TripService {
             throw new IllegalArgumentException("From Date cannot after To Date.");
         }
         try {
-            return tripDao.findByInterval(fromDate, toDate);
-        } catch (Exception e) {
-            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+            return tripDao.findByInterval(fromDate,toDate);
+        } catch (Exception e){
+            throw new DataAccessLayerException("Could not get Trip from the persistence layer", e);
         }
     }
 
@@ -79,7 +82,7 @@ public class TripServiceImpl implements TripService {
         try {
             allTrips = tripDao.findAll();
         } catch (Exception e) {
-            throw new DataAccessException("Could not get Trip from the persistence layer", e);
+            throw new DataAccessLayerException("Could not get Trip from the persistence layer", e);
         }
         Set<Trip> foundTrips = new HashSet<>();
         for (Trip trip : allTrips) {
@@ -100,8 +103,8 @@ public class TripServiceImpl implements TripService {
         }
         try {
             tripDao.create(trip);
-        } catch (Exception e) {
-            throw new DataAccessException("Could not create Trip in persistence layer", e);
+        } catch (Exception e){
+            throw new DataAccessLayerException("Could not create Trip in persistence layer", e);
         }
     }
 
@@ -130,8 +133,8 @@ public class TripServiceImpl implements TripService {
         }
         try {
             tripDao.update(trip);
-        } catch (Exception e) {
-            throw new DataAccessException("Could not update Trip in persistence layer", e);
+        } catch (Exception e){
+            throw new DataAccessLayerException("Could not update Trip in persistence layer", e);
         }
 
     }

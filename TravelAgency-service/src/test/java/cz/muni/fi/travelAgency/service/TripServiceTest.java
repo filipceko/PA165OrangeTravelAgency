@@ -2,9 +2,14 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.dao.TripDao;
+import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
-import cz.muni.fi.travelAgency.exceptions.DataAccessException;
-import org.mockito.*;
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
@@ -13,9 +18,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
+import static org.mockito.Mockito.when;
 
 /**
  * Simple Trip service tests using Mockito.
@@ -25,6 +30,13 @@ import java.util.List;
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class TripServiceTest extends AbstractTestNGSpringContextTests {
 
+    private final String destination = "Lake Island";
+    /**
+     * Service tested with mocked injections.
+     */
+    @InjectMocks
+    private final TripService tripService = new TripServiceImpl();
+  
     private Trip trip;
     private LocalDate firstDate = LocalDate.of(2018, 11, 27);
     private LocalDate secondDate = LocalDate.of(2018, 11, 29);
@@ -35,12 +47,6 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Mock
     private TripDao tripDao;
-
-    /**
-     * Service tested with mocked injections.
-     */
-    @InjectMocks
-    private final TripService tripService = new TripServiceImpl();
 
     /**
      * Set's up the Mockito injections.
@@ -188,6 +194,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
 
         List<Trip> allTrips = Arrays.asList(trip1, trip2, trip3);
         Mockito.when(tripDao.findAll()).thenReturn(allTrips);
+      
         List<Trip> getTrips = new ArrayList<>(tripService.findAll());
         Assert.assertEquals(3, getTrips.size());
         Assert.assertEquals(getTrips.size(), 3);
@@ -218,7 +225,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     public void findByIdThrowsTest() {
         Mockito.when(tripDao.findById(1L)).thenThrow(IllegalArgumentException.class);
         tripService.findById(1L);
@@ -235,7 +242,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     public void findByDestinationThrowsTest() {
         Mockito.when(tripDao.findByDestination("search")).thenThrow(IllegalArgumentException.class);
         tripService.findByDestination("search");
@@ -252,7 +259,7 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     public void findByIntervalThrowsTest() {
         Mockito.when(tripDao.findByInterval(firstDate, secondDate)).thenThrow(IllegalArgumentException.class);
         tripService.findByInterval(firstDate, secondDate);
@@ -311,10 +318,77 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
     /**
      * Tests that exceptions thrown by the DAO are thrown as DataAccessException
      */
-    @Test(expectedExceptions = DataAccessException.class)
+    @Test(expectedExceptions = DataAccessLayerException.class)
     void updateThrowsTest() {
         trip.setId(100L);
         Mockito.doThrow(IllegalArgumentException.class).when(tripDao).update(Mockito.any(Trip.class));
         tripService.updateTrip(trip);
     }
+
+    /**
+     * @author Simona Raucinova
+     */
+    @Test
+    public void getAllCustomers() {
+        Set<Reservation> reservations = createReservations(createCustomers(), trip);
+        for (Reservation reservation : reservations) {
+            trip.addReservation(reservation);
+        }
+        when(tripDao.findById(1L)).thenReturn(trip);
+        Collection<Customer> returnedCustomers = tripService.getAllCustomers(trip);
+        Set<Customer> returnedCustomerSet = new HashSet<>(returnedCustomers);
+        Assert.assertEquals(createCustomers(), returnedCustomerSet);
+        Assert.assertEquals(returnedCustomers.size(), 3);
+    }
+
+    /**
+     * @author Simona Raucinova
+     */
+    private Set<Reservation> createReservations(Set<Customer> customers, Trip trip) {
+        Set<Reservation> reservations = new HashSet<>();
+        long counter = 0L;
+        for (Customer customer : customers) {
+            counter++;
+            Reservation reservation = new Reservation();
+            reservation.setExcursions(new HashSet<>());
+            reservation.setTrip(trip);
+            reservation.setCustomer(customer);
+            reservation.setId(counter);
+            reservation.setReserveDate(LocalDate.of(2018, 11, 25));
+            reservations.add(reservation);
+        }
+
+        return reservations;
+    }
+
+    /**
+     * @author Simona Raucinova
+     */
+    private Set<Customer> createCustomers() {
+        Set<Customer> customers = new HashSet<>();
+
+        Customer customer1 = new Customer();
+        customer1.setId(1L);
+        customer1.setName("Karol");
+        customer1.setSurname("Kovac");
+        customer1.setEmail("karol@pa165.com");
+        customers.add(customer1);
+
+        Customer customer2 = new Customer();
+        customer2.setId(2L);
+        customer2.setName("Matej");
+        customer2.setSurname("Svoboda");
+        customer2.setEmail("matej@pa165.com");
+        customers.add(customer2);
+
+        Customer customer3 = new Customer();
+        customer3.setId(3L);
+        customer3.setName("Jan");
+        customer3.setSurname("Novak");
+        customer3.setEmail("novak@pa165.com");
+        customers.add(customer3);
+
+        return customers;
+    }
+
 }

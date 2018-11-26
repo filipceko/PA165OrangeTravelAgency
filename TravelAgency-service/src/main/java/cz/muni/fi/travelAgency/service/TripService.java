@@ -82,6 +82,8 @@ public interface TripService {
      *
      * @param trip to get the customers for
      * @return Collection of customers who booked the trip
+     *
+     * @author Simona Raucinova
      */
     Collection<Customer> getAllCustomers(Trip trip);
 
@@ -91,5 +93,4 @@ public interface TripService {
      * @return collection of available future trips
      */
     Collection<Trip> findAvailableFutureTrip();
-
 }

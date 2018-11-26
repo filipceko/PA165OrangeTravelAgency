@@ -3,6 +3,7 @@ package cz.muni.fi.travelAgency.service;
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.dao.CustomerDao;
 import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,6 +22,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
+
+/**
+ * Test for service layer of customer.
+ * @author Simona Raucinova
+ */
 
 @ContextConfiguration(classes = ServiceConfiguration.class)
 public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
@@ -58,12 +64,18 @@ public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
         customer.setPhoneNumber(phoneNumber);
     }
 
+    /**
+     * Test for registration of a new customer.
+     */
     @Test
     public void testRegister() {
         customerService.registerCustomer(customer, "Password");
         Mockito.verify(customerDao).create(customer);
     }
 
+    /**
+     * Test update of customer.
+     */
     @Test
     public void testUpdate() {
         when(customerDao.findById(id)).thenReturn(customer);
@@ -82,20 +94,29 @@ public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(phoneNumber, retrievedCustomer.getPhoneNumber());
     }
 
+    /**
+     * Test retrieving by Id.
+     */
     @Test
     public void testFindById() {
         when(customerDao.findById(id)).thenReturn(customer);
         Assert.assertEquals(customer, customerService.findCustomerById(id));
     }
 
+    /**
+     * Test retrieving by email.
+     */
     @Test
     public void testFindByEmail() {
         when(customerDao.findByEmail(email)).thenReturn(customer);
         Assert.assertEquals(customer, customerService.findCustomerByEmail(email));
     }
 
+    /**
+     * Test retrieving of all customers.
+     */
     @Test
-    public void testGetAllUsers() {
+    public void testGetAllCustomers() {
         Customer anotherCustomer = new Customer();
         anotherCustomer.setId(2L);
         anotherCustomer.setName("Milan");
@@ -125,6 +146,9 @@ public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
 
     }
 
+    /**
+     * Test of authentication of a customer.
+     */
     @Test
     public void testAuthenticate() {
         customer.setPasswordHash(BCrypt.hashpw("pswd", BCrypt.gensalt()));
@@ -132,29 +156,46 @@ public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertTrue(customerService.authenticate(customer, "pswd"));
     }
 
+    /**
+     * Test for deletion of customer.
+     */
     @Test
     public void testDelete() {
         customerService.deleteCustomer(customer);
         Mockito.verify(customerDao).remove(customer);
     }
 
+    /**
+     * Test registration of null customer.
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testRegisterNull() {
         customerService.registerCustomer(null, "0000");
     }
 
+    /**
+     * Test registration of customer with null password.
+     */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testRegisterWithNullPassword() {
         customerService.registerCustomer(customer, null);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testUpdateNull() {
+    /**
+     * Test updating null customer.
+     */
+    @Test(expectedExceptions = DataAccessLayerException.class)
+    public void testUpdateNull(){
+        Mockito.doThrow(IllegalArgumentException.class).when(customerDao).update(null);
         customerService.updateCustomer(null);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testDeleteNull() {
+    /**
+     * Test deletion of null customer.
+     */
+    @Test(expectedExceptions = DataAccessLayerException.class)
+    public void testDeleteNull(){
+        Mockito.doThrow(IllegalArgumentException.class).when(customerDao).remove(null);
         customerService.deleteCustomer(null);
     }
 

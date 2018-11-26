@@ -1,7 +1,11 @@
 package cz.muni.fi.travelAgency.facade;
 
+import cz.muni.fi.travelAgency.DTO.CustomerDTO;
+import cz.muni.fi.travelAgency.DTO.ReservationDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
+import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.TripService;
@@ -31,6 +35,7 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
     private final String destination = "Lake Island";
     private TripDTO tripDTO;
     private Trip tripBrno;
+  
     private LocalDate firstDate = LocalDate.of(2018, 11, 27);
     private LocalDate secondDate = LocalDate.of(2018, 11, 29);
 
@@ -213,5 +218,73 @@ public class TripFacadeTest extends AbstractTestNGSpringContextTests {
         Collection<TripDTO> availableFutureTrips = tripFacade.getAvailableFutureTrip();
         Collection<Trip> getResult = beanMappingService.mapTo(availableFutureTrips, Trip.class);
         Assert.assertEquals(2, getResult.size());
+    }
+
+    /**
+     * @author Simona Raucinova
+     */
+    @Test
+    public void getAllCustomersTest(){
+        Set<ReservationDTO> reservationDTOS = createReservations(createCustomers(),tripDTO);
+        tripDTO.setReservations(reservationDTOS);
+        Trip mappedTrip = beanMappingService.mapTo(tripDTO,Trip.class);
+        Collection<Customer> customersToBeReturned = beanMappingService.mapTo(createCustomers(),Customer.class);
+        Mockito.when(tripService.getAllCustomers(mappedTrip)).thenReturn(customersToBeReturned);
+        Collection<CustomerDTO> customerDTOS = tripFacade.getAllCustomers(tripDTO);
+        Collection<Customer> customersFromFacade = beanMappingService.mapTo(customerDTOS,Customer.class);
+        Assert.assertEquals(customersToBeReturned,customersFromFacade);
+        Assert.assertEquals(customersFromFacade.size(),3);
+
+    }
+
+    /**
+     * @author Simona Raucinova
+     */
+    private Set<CustomerDTO> createCustomers(){
+        Set<CustomerDTO> customerDTOSet = new HashSet<>();
+
+        CustomerDTO customer1 = new CustomerDTO();
+        customer1.setId(1L);
+        customer1.setName("Karol");
+        customer1.setSurname("Kovac");
+        customer1.setEmail("karol@pa165.com");
+        customerDTOSet.add(customer1);
+
+        CustomerDTO customer2 = new CustomerDTO();
+        customer2.setId(2L);
+        customer2.setName("Matej");
+        customer2.setSurname("Svoboda");
+        customer2.setEmail("matej@pa165.com");
+        customerDTOSet.add(customer2);
+
+        CustomerDTO customer3 = new CustomerDTO();
+        customer3.setId(3L);
+        customer3.setName("Jan");
+        customer3.setSurname("Novak");
+        customer3.setEmail("novak@pa165.com");
+        customerDTOSet.add(customer3);
+
+        return customerDTOSet;
+    }
+
+    /**
+     * @author Simona Raucinova
+     */
+    private Set<ReservationDTO> createReservations(Set<CustomerDTO> customerDTOS, TripDTO tripDTO){
+        Set<ReservationDTO> reservationDTOS = new HashSet<>();
+        long counter = 0L;
+
+        for (CustomerDTO customerDTO:customerDTOS){
+            counter++;
+            ReservationDTO reservationDTO = new ReservationDTO();
+            reservationDTO.setExcursions(new HashSet<>());
+            reservationDTO.setTrip(tripDTO);
+            reservationDTO.setCustomer(customerDTO);
+            reservationDTO.setId(counter);
+            reservationDTO.setReserveDate(LocalDate.of(2018,11,25));
+            reservationDTOS.add(reservationDTO);
+        }
+
+        return reservationDTOS;
     }
 }
