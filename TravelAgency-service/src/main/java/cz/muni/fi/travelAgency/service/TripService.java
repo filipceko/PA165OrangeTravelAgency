@@ -91,6 +91,7 @@ public interface TripService {
      *
      * @param money we want to spend
      * @return Map of trips with excursions
+     * @author Filip Cekovsky
      */
     Map<Trip, Collection<Excursion>> tripsForMoney(Double money);
 
