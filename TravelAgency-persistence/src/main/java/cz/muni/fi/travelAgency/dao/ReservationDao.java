@@ -1,12 +1,9 @@
 package cz.muni.fi.travelAgency.dao;
 
-import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
-import cz.muni.fi.travelAgency.entities.Trip;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.time.LocalDate;
 
 /**
  * Reservation DAO interface
@@ -17,20 +14,23 @@ public interface ReservationDao {
 
     /**
      * Add new Reservation into database
+     *
      * @param reservation to be added
-     * @throws IllegalArgumentException if input is NULL
+     * @throws IllegalArgumentException                      if input is NULL
      * @throws javax.validation.ConstraintViolationException if parameter violates constraints
      */
     void create(Reservation reservation);
 
     /**
      * Get all reservations
+     *
      * @return collection of Reservation in database
      */
     Collection<Reservation> findAll();
 
     /**
      * Get Reservation by id
+     *
      * @param id of the reservation
      * @return reservation with given ID or NULL if none found
      * @throws IllegalArgumentException if id is NULL
@@ -39,6 +39,7 @@ public interface ReservationDao {
 
     /**
      * Get Reservation by customer
+     *
      * @param customerId ID of the customer to retrieve reservations for
      * @return collection of reservations by the given customer or null if none found
      * @throws IllegalArgumentException if one of name parts is NULL
@@ -47,6 +48,7 @@ public interface ReservationDao {
 
     /**
      * Get Reservation by trip
+     *
      * @param tripId ID of the trip to retrieve reservations for
      * @return collection of reservations with the given trip or null if none found
      * @throws IllegalArgumentException if one of name parts is NULL
@@ -55,22 +57,25 @@ public interface ReservationDao {
 
     /**
      * Updates given Reservation's data in the DB
+     *
      * @param reservation to be updated
-     * @throws IllegalArgumentException if parameter is NULL or not saved yet.
+     * @throws IllegalArgumentException                                   if parameter is NULL or not saved yet.
      * @throws org.springframework.transaction.TransactionSystemException if constraints are violated
      */
     void update(Reservation reservation);
 
     /**
      * Erases data for given Reservation form the DB.
+     *
      * @param reservation to be erased
-     * @throws IllegalArgumentException when NULL as parameter
+     * @throws IllegalArgumentException                      when NULL as parameter
      * @throws javax.validation.ConstraintViolationException when parameter is not valid
      */
     void remove(Reservation reservation);
 
     /**
      * Get List of Reservation by providing from date and to date
+     *
      * @param startDate of the interval
      * @param endDate   of the interval
      * @return collection of reservations with the given date

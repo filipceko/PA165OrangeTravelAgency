@@ -4,13 +4,15 @@ import cz.muni.fi.travelAgency.PersistenceTestAppContext;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import javax.validation.ConstraintViolationException;
+import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -22,7 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author Rajivv
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TestExecutionListeners(TransactionalTestExecutionListener.class)
+@Transactional
 public class TripDaoTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private TripDao tripDao;
@@ -53,7 +56,7 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
         Trip foundTrip = tripDao.findById(tripBrno.getId());
         Assert.assertEquals(tripBrno, foundTrip);
         Assert.assertEquals(tripBrno.getDestination(), foundTrip.getDestination());
-        assertThrows(ConstraintViolationException.class, () -> tripDao.create(new Trip()));
+        assertThrows(PersistenceException.class, () -> tripDao.create(new Trip()));
         assertThrows(IllegalArgumentException.class, () -> tripDao.create(null));
     }
 
@@ -135,7 +138,7 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
     public void removeTest() {
         tripDao.remove(tripBrno);
         Assert.assertNull(tripDao.findById(tripBrno.getId()));
-        assertThrows(ConstraintViolationException.class, () -> tripDao.remove(new Trip()));
+        assertThrows(IllegalArgumentException.class, () -> tripDao.remove(new Trip()));
         assertThrows(IllegalArgumentException.class, () -> tripDao.remove(null));
     }
 }

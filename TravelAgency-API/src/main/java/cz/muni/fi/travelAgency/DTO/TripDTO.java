@@ -1,11 +1,9 @@
-
 package cz.muni.fi.travelAgency.DTO;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Trip Data Transfer Object representing all the information about a single trip

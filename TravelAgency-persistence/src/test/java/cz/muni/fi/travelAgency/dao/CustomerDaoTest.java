@@ -4,13 +4,15 @@ import cz.muni.fi.travelAgency.PersistenceTestAppContext;
 import cz.muni.fi.travelAgency.entities.Customer;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import javax.validation.ConstraintViolationException;
+import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -23,7 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Rithy
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TestExecutionListeners(TransactionalTestExecutionListener.class)
+@Transactional
 public class CustomerDaoTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
@@ -55,7 +58,7 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests {
         assertEquals(customer, foundCustomer);
         assertEquals(customer.getEmail(), foundCustomer.getEmail());
 
-        assertThrows(ConstraintViolationException.class, () -> customerDao.create(new Customer()));
+        assertThrows(PersistenceException.class, () -> customerDao.create(new Customer()));
         assertThrows(IllegalArgumentException.class, () -> customerDao.create(null));
     }
 

@@ -69,7 +69,7 @@ public class BeanMappingServiceImpl implements BeanMappingService {
         result.setTrips(mapTo(trips, TripDTO.class));
         Collection<Collection<Excursion>> excursions = entitiesMap.values();
         Set<Excursion> allExcursions = new HashSet<>();
-        for (Collection<Excursion> excursionsOfTrip : excursions){
+        for (Collection<Excursion> excursionsOfTrip : excursions) {
             allExcursions.addAll(excursionsOfTrip);
         }
         result.setExcursions(mapTo(allExcursions, ExcursionDTO.class));

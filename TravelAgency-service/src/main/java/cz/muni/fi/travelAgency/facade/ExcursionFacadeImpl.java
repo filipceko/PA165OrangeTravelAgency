@@ -4,10 +4,11 @@ import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.ExcursionService;
-import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 /**
  * Implemetation of {@link ExcursionFacade}.

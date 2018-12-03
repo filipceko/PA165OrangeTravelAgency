@@ -7,6 +7,7 @@ import java.util.Set;
 
 /**
  * Data Transfer Object for Reservation Creation.
+ *
  * @author Filip Cekovsky
  */
 public class ReservationCreateDTO {

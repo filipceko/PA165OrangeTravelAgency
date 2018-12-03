@@ -1,8 +1,9 @@
 package cz.muni.fi.travelAgency.dao;
 
+import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
+import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,7 +17,6 @@ import java.util.Collection;
  * @author Rithy
  */
 @Repository
-@Transactional
 public class ReservationDaoImpl implements ReservationDao {
 
     /**
@@ -85,11 +85,10 @@ public class ReservationDaoImpl implements ReservationDao {
         if (reservation == null) {
             throw new IllegalArgumentException("Tried to update NULL!");
         }
-        if (em.find(Reservation.class, reservation.getId()) != null) {
-            em.merge(reservation);
-        } else {
+        if (findById(reservation.getId()) == null) {
             throw new IllegalArgumentException("Tried to update Reservation that was not saved before.");
         }
+        em.merge(reservation);
     }
 
     @Override
@@ -97,8 +96,14 @@ public class ReservationDaoImpl implements ReservationDao {
         if (reservation == null) {
             throw new IllegalArgumentException("Tried to remove NULL!");
         }
-        if (em.find(Reservation.class, reservation.getId()) != null) {
-            em.createQuery("delete Reservation r where r.id = :id").setParameter("id", reservation.getId()).executeUpdate();
+        if (findById(reservation.getId()) != null) {
+            Trip trip = reservation.getTrip();
+            trip.removeReservation(reservation);
+            Customer customer = reservation.getCustomer();
+            customer.removeReservation(reservation);
+            em.remove(em.merge(reservation));
+            em.merge(trip);
+            em.merge(customer);
         } else {
             throw new IllegalArgumentException("Tried to Remove Reservation that was not saved before.");
         }

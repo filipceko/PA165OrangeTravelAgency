@@ -14,14 +14,16 @@ public interface CustomerService {
 
     /**
      * Register the given customer with the given unencrypted password.
-     * @param customer to be registered
+     *
+     * @param customer            to be registered
      * @param unencryptedPassword unencrypted form of password
      */
     void registerCustomer(Customer customer, String unencryptedPassword);
 
     /**
      * Register admin with the giver unencrypted password.
-     * @param customer admin to be registered
+     *
+     * @param customer            admin to be registered
      * @param unencryptedPassword unencrypted form of password
      */
     void registerAdmin(Customer customer, String unencryptedPassword);
@@ -33,6 +35,7 @@ public interface CustomerService {
 
     /**
      * Try to authenticate a customer. Return true only if the hashed password matches the records.
+     *
      * @param customer to be authenticated
      * @param password inputted password
      */
@@ -40,12 +43,14 @@ public interface CustomerService {
 
     /**
      * Check if the given user is admin.
+     *
      * @param customer to be checked if is admin
      */
     boolean isAdmin(Customer customer);
 
     /**
      * Retrieves customer with given id.
+     *
      * @param customerId id of customer
      * @return customer with given id
      */
@@ -53,6 +58,7 @@ public interface CustomerService {
 
     /**
      * Retrieves customer with given email.
+     *
      * @param email of customer
      * @return customer with given email
      */
@@ -60,12 +66,14 @@ public interface CustomerService {
 
     /**
      * Updates customer.
+     *
      * @param customer to be updated
      */
     void updateCustomer(Customer customer);
 
     /**
      * Deletes customer.
+     *
      * @param customer to be deleted
      */
     void deleteCustomer(Customer customer);

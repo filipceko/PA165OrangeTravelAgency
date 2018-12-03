@@ -4,7 +4,7 @@ import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.dao.ExcursionDao;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
-import java.math.BigDecimal;
+
 import java.time.Duration;
 
 import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;

@@ -2,7 +2,6 @@ package cz.muni.fi.travelAgency.dao;
 
 import cz.muni.fi.travelAgency.entities.Customer;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +13,6 @@ import java.util.Collection;
  * @author Filip Cekovsky
  */
 @Repository
-@Transactional
 public class CustomerDaoImpl implements CustomerDao {
 
     /**
@@ -50,13 +48,13 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer findByEmail(String email){
-        if (email == null){
+    public Customer findByEmail(String email) {
+        if (email == null) {
             throw new IllegalArgumentException("findByEmail() was called with NULL argument!");
         }
 
-        return manager.createQuery("select c from Customer c where c.email = :email",Customer.class)
-                .setParameter("email",email).getSingleResult();
+        return manager.createQuery("select c from Customer c where c.email = :email", Customer.class)
+                .setParameter("email", email).getSingleResult();
     }
 
     @Override
