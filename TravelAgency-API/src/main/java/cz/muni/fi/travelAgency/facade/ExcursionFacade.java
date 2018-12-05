@@ -1,7 +1,7 @@
 package cz.muni.fi.travelAgency.facade;
 
-import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
+
 import java.util.Collection;
 
 /**

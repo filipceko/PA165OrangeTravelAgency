@@ -12,19 +12,19 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.sql.DataSource;
 
 /**
  * JPA persistent context beans configuration
+ *
  * @author Simona Raucinova
  */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories
 @ComponentScan(basePackages = "cz.muni.fi.travelAgency")
-public class PersistenceSampleApplicationContext {
+public class PersistenceApplicationContext {
 
     @Bean
     public JpaTransactionManager transactionManager() {
@@ -37,15 +37,11 @@ public class PersistenceSampleApplicationContext {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean jpaFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        jpaFactoryBean.setPersistenceUnitName("default");
         jpaFactoryBean.setDataSource(db());
         jpaFactoryBean.setLoadTimeWeaver(instrumentationLoadTimeWeaver());
         jpaFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         return jpaFactoryBean;
-    }
-
-    @Bean
-    public LocalValidatorFactoryBean localValidatorFactoryBean() {
-        return new LocalValidatorFactoryBean();
     }
 
     @Bean

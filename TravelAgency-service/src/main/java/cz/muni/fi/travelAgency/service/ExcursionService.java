@@ -1,8 +1,9 @@
 package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.entities.Excursion;
-import java.util.Collection;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 /**
  * An interface that defines a service access to the {@link Excursion} entity.

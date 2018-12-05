@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.DTO;
 
 /**
  * DTO for authentication of customer.
+ *
  * @author Simona Raucinova
  */
 public class CustomerAuthenticateDTO {

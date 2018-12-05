@@ -1,13 +1,14 @@
 package cz.muni.fi.travelAgency.DTO;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import javax.validation.constraints.Email;
 import java.time.LocalDate;
 
 /**
  * DTO for creation of customer.
+ *
  * @author Simona Raucinova
  */
 public class CustomerCreateDTO {

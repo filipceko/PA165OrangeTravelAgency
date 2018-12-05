@@ -1,7 +1,6 @@
 package cz.muni.fi.travelAgency.DTO;
 
 import javax.validation.constraints.NotNull;
-
 import java.time.Duration;
 import java.time.LocalDate;
 
@@ -28,7 +27,7 @@ public class ExcursionDTO extends ExcursionCreateDTO {
      * constructor based on {@link ExcursionCreateDTO} as parent object
      *
      * @param parent ExcursionCreateDTO that was used to create this excursion
-     * @param id this excursion obtained
+     * @param id     this excursion obtained
      */
     public ExcursionDTO(ExcursionCreateDTO parent, Long id) {
         super(parent.getDescription(), parent.getDestination(), parent.getPrice(), parent.getExcursionDate(), parent.getExcursionDuration(), parent.getTrip());
@@ -38,13 +37,13 @@ public class ExcursionDTO extends ExcursionCreateDTO {
     /**
      * Parametric constructor with trip and with ID
      *
-     * @param description of this excursion
-     * @param destination of this excursion
-     * @param price of this excursion
-     * @param trip the excursion is for
-     * @param excursionDate of this excursion
+     * @param description       of this excursion
+     * @param destination       of this excursion
+     * @param price             of this excursion
+     * @param trip              the excursion is for
+     * @param excursionDate     of this excursion
      * @param excursionDuration of this excursion
-     * @param id of this excursion
+     * @param id                of this excursion
      */
     public ExcursionDTO(@NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, @NotNull TripDTO trip, Long id) {
         super(description, destination, price, excursionDate, excursionDuration, trip);

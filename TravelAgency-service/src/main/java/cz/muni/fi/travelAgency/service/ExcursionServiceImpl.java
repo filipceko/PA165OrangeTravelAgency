@@ -2,11 +2,11 @@ package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.dao.ExcursionDao;
 import cz.muni.fi.travelAgency.entities.Excursion;
-import java.util.Collection;
-import javax.inject.Inject;
-
 import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import java.util.Collection;
 
 /**
  * Implementation of the {@link ExcursionService}. This class is part of the

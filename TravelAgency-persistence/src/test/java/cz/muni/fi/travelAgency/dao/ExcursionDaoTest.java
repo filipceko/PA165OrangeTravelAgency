@@ -3,24 +3,22 @@ package cz.muni.fi.travelAgency.dao;
 import cz.muni.fi.travelAgency.PersistenceTestAppContext;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
-import javax.validation.ConstraintViolationException;
-import java.math.BigDecimal;
+import javax.persistence.PersistenceException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import org.junit.Assert;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,14 +26,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Simona Raucinova
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TestExecutionListeners(TransactionalTestExecutionListener.class)
+@Transactional
 public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
-
-    @PersistenceUnit
-    private EntityManagerFactory managerFactory;
 
     @Autowired
     private ExcursionDao excursionDao;
+
+    @Autowired
+    private TripDao tripDao;
 
     private Trip newYorkTrip;
     private Excursion excursionStatueOfLiberty;
@@ -45,9 +44,6 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
 
     @BeforeMethod
     public void setUp() {
-        EntityManager manager = managerFactory.createEntityManager();
-        manager.getTransaction().begin();
-
         Trip newYorkTrip = new Trip();
         newYorkTrip.setFromDate(LocalDate.of(2018, 7, 1));
         newYorkTrip.setToDate(LocalDate.of(2018, 7, 15));
@@ -90,14 +86,11 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         excursionEiffel.setExcursionDuration(Duration.ofMinutes(60));
         excursionEiffel.setTrip(parisTrip);
 
-        manager.persist(parisTrip);
-        manager.persist(newYorkTrip);
-        manager.persist(excursionStatueOfLiberty);
-        manager.persist(excursionObservatory);
-        manager.persist(excursionEiffel);
-
-        manager.getTransaction().commit();
-        manager.close();
+        tripDao.create(parisTrip);
+        tripDao.create(newYorkTrip);
+        excursionDao.create(excursionStatueOfLiberty);
+        excursionDao.create(excursionObservatory);
+        excursionDao.create(excursionEiffel);
 
         this.newYorkTrip = newYorkTrip;
         this.parisTrip = parisTrip;
@@ -108,29 +101,27 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void createTest() {
-        EntityManager manager = managerFactory.createEntityManager();
         LocalDate excursionDate = LocalDate.of(2018, 7, 13);
         Excursion testExcursion = new Excursion("Description", "Destination", 10.00,
                 excursionDate, Duration.ofMinutes(20), newYorkTrip);
         excursionDao.create(testExcursion);
-        Excursion stored = manager.createQuery("select e from Excursion e where e.excursionDate = :date",
-                Excursion.class).setParameter("date", excursionDate).getSingleResult();
+        Excursion stored = excursionDao.findById(testExcursion.getId());
         assertEquals(testExcursion, stored);
         assertEquals(testExcursion.getDescription(), "Description");
         Trip retrievedTrip = stored.getTrip();
         assertEquals(retrievedTrip, newYorkTrip);
         assertEquals(stored.getId(), testExcursion.getId());
 
-        assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion()));
-        assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion(null,
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion()));
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion(null,
                 "Destination", 10.0, excursionDate, Duration.ofMinutes(20), newYorkTrip)));
-        assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion("Description",
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion("Description",
                 null, 10.0, excursionDate, Duration.ofMinutes(20), newYorkTrip)));
-        assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion("Description",
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion("Description",
                 "Destination", null, excursionDate, Duration.ofMinutes(20), newYorkTrip)));
-        assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion("Description",
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion("Description",
                 "Destination", 10.0, null, Duration.ofMinutes(20), newYorkTrip)));
-        assertThrows(ConstraintViolationException.class, () -> excursionDao.create(new Excursion("Description",
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion("Description",
                 "Destination", 10.0, excursionDate, null, newYorkTrip)));
         assertThrows(NullPointerException.class, () -> excursionDao.create(new Excursion("Description",
                 "Destination", 10.0, excursionDate, Duration.ofMinutes(20), null)));
@@ -195,6 +186,7 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         assertFalse(parisTrip.getExcursions().contains(excursionEiffel));
         assertThrows(IllegalArgumentException.class, () -> excursionDao.remove(null));
     }
+
     @Test
     public void findByDestination() {
         Assert.assertEquals(1, excursionDao.findByDestination("Eiffel Tower").size());

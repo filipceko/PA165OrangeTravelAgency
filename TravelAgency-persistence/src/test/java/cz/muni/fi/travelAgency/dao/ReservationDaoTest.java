@@ -6,17 +6,15 @@ import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.transaction.TransactionSystemException;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
-import javax.validation.ConstraintViolationException;
+import javax.persistence.PersistenceException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -29,14 +27,22 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Filip Cekovsky
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TestExecutionListeners(TransactionalTestExecutionListener.class)
+@Transactional
 public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
 
-    @PersistenceUnit
-    private EntityManagerFactory managerFactory;
 
     @Autowired
     private ReservationDao reservationDao;
+
+    @Autowired
+    private TripDao tripDao;
+
+    @Autowired
+    private ExcursionDao excursionDao;
+
+    @Autowired
+    private CustomerDao customerDao;
 
     private LocalDate firstDate = LocalDate.of(1995, 7, 28);
     private LocalDate secondDate = LocalDate.of(2018, 11, 24);
@@ -54,9 +60,6 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      */
     @BeforeMethod
     public void setUp() {
-        EntityManager manager = managerFactory.createEntityManager();
-        manager.getTransaction().begin();
-
         trip = new Trip(firstDate, secondDate, "Test", 10, 100.20);
         customer1 = new Customer("Filip", "Cekovsky", "filip@ceko.com");
         customer2 = new Customer("Frodo", "Zemiak", "frodo@zemiak.com");
@@ -67,15 +70,12 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
                 secondDate, Duration.ofHours(5), trip);
         reservation1 = new Reservation(customer1, trip, firstDate);
         reservation2 = new Reservation(customer2, trip, secondDate);
-        manager.persist(trip);
-        manager.persist(customer1);
-        manager.persist(customer2);
-        manager.persist(customer3);
-        manager.persist(excursion1);
-        manager.persist(excursion2);
-
-        manager.getTransaction().commit();
-        manager.close();
+        tripDao.create(trip);
+        customerDao.create(customer1);
+        customerDao.create(customer2);
+        customerDao.create(customer3);
+        excursionDao.create(excursion1);
+        excursionDao.create(excursion2);
 
         reservation1.addExcursion(excursion1);
         reservation1.addExcursion(excursion2);
@@ -103,15 +103,13 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void createTest() {
-        EntityManager manager = managerFactory.createEntityManager();
-        Reservation stored = manager.createQuery("select c from Reservation c where c.reserveDate = :date",
-                Reservation.class).setParameter("date", firstDate).getSingleResult();
+        Reservation stored = reservationDao.findById(reservation1.getId());
         assertEquals(reservation1, stored);
         assertEquals(firstDate, reservation1.getReserveDate());
         Collection<Excursion> retrievedExcursions = stored.getExcursions();
         assertEquals(2, retrievedExcursions.size());
         assertEquals(stored.getId(), reservation1.getId());
-        assertThrows(ConstraintViolationException.class, () -> reservationDao.create(new Reservation()));
+        assertThrows(PersistenceException.class, () -> reservationDao.create(new Reservation()));
         assertThrows(IllegalArgumentException.class, () -> reservationDao.create(null));
     }
 
@@ -180,9 +178,6 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         Reservation reservation3 = new Reservation(customer3, trip, firstDate);
         assertThrows(IllegalArgumentException.class, () -> reservationDao.update(reservation3));
         assertThrows(IllegalArgumentException.class, () -> reservationDao.update(null));
-
-        reservation2.setReserveDate(null);
-        assertThrows(TransactionSystemException.class, () -> reservationDao.update(reservation2));
     }
 
     /**

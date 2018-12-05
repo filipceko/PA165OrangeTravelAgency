@@ -15,12 +15,14 @@ public interface TripDao {
 
     /**
      * Saves trip into DB.
+     *
      * @param trip to be saved
      */
     void create(Trip trip);
 
     /**
      * Finds a trip with given id.
+     *
      * @param id of trip
      * @return trip with given id
      */
@@ -28,12 +30,14 @@ public interface TripDao {
 
     /**
      * Finds all trips in DB.
+     *
      * @return collection of trips in DB
      */
     Collection<Trip> findAll();
 
     /**
      * Finds all trips with given destination
+     *
      * @param destination of trips
      * @return collection of trips with given destination
      */
@@ -41,6 +45,7 @@ public interface TripDao {
 
     /**
      * Finds all trips in interval fromDate and toDate.
+     *
      * @param fromDate day when trips start
      * @param toDate   day when trips end
      * @return collection of trips with given dates
@@ -49,12 +54,14 @@ public interface TripDao {
 
     /**
      * Updates trip.
+     *
      * @param trip to be updated
      */
     void update(Trip trip);
 
     /**
      * Deletes trip.
+     *
      * @param trip to be deleted
      */
     void remove(Trip trip);

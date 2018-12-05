@@ -6,6 +6,7 @@ import java.util.Set;
 
 /**
  * DTO for Customer.
+ *
  * @author Simona Raucinova
  */
 public class CustomerDTO {

@@ -2,9 +2,11 @@ package cz.muni.fi.travelAgency.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Class representing Customer entity.
@@ -14,22 +16,30 @@ import java.util.*;
 @Entity
 @Table(name = "CUSTOMERS")
 public class Customer {
-    /** Unique ID set by the DB */
+    /**
+     * Unique ID set by the DB
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Name of the customer */
+    /**
+     * Name of the customer
+     */
     @NotNull
     @Column(nullable = false)
     private String name;
 
-    /** Surname of the customer */
+    /**
+     * Surname of the customer
+     */
     @NotNull
     @Column(nullable = false)
     private String surname;
 
-    /** Email address - compulsory */
+    /**
+     * Email address - compulsory
+     */
     @NotNull
     @Column(nullable = false, unique = true)
     private String email;
@@ -38,18 +48,26 @@ public class Customer {
 
     private boolean admin;
 
-    /** Nullable phone number */
+    /**
+     * Nullable phone number
+     */
     @Column
     private String phoneNumber;
 
-    /** Nullable passport number */
+    /**
+     * Nullable passport number
+     */
     private String passportNumber;
 
-    /** Nullable date of birth */
+    /**
+     * Nullable date of birth
+     */
     @Column
     private LocalDate dateOfBirth;
 
-    /** Set of reservations made by the customer */
+    /**
+     * Set of reservations made by the customer
+     */
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
     private Set<Reservation> reservations = new HashSet<>();
 
@@ -80,6 +98,7 @@ public class Customer {
 
     /**
      * Retrieves ID of this customer
+     *
      * @return unique ID
      */
     public Long getId() {
@@ -88,6 +107,7 @@ public class Customer {
 
     /**
      * Sets the ID, should be used primary by the DB
+     *
      * @param id of the entity
      */
     public void setId(Long id) {
@@ -96,6 +116,7 @@ public class Customer {
 
     /**
      * Retrieves customer's name
+     *
      * @return name of the customer
      */
     public String getName() {
@@ -104,6 +125,7 @@ public class Customer {
 
     /**
      * Name setter
+     *
      * @param name of the customer
      */
     public void setName(String name) {
@@ -128,6 +150,7 @@ public class Customer {
 
     /**
      * Retrieves customer's surname
+     *
      * @return surname of the customer
      */
     public String getSurname() {
@@ -136,6 +159,7 @@ public class Customer {
 
     /**
      * Surname setter
+     *
      * @param surname of the customer
      */
     public void setSurname(String surname) {
@@ -144,6 +168,7 @@ public class Customer {
 
     /**
      * Retrieves customer's email
+     *
      * @return email of the customer
      */
     public String getEmail() {
@@ -152,6 +177,7 @@ public class Customer {
 
     /**
      * Email setter
+     *
      * @param email non-null email
      */
     public void setEmail(String email) {
@@ -160,6 +186,7 @@ public class Customer {
 
     /**
      * Retrieves customers phone number
+     *
      * @return customer's phone number ro null if none set
      */
     public String getPhoneNumber() {
@@ -168,6 +195,7 @@ public class Customer {
 
     /**
      * Phone number setter
+     *
      * @param phoneNumber of the customer
      */
     public void setPhoneNumber(String phoneNumber) {
@@ -176,6 +204,7 @@ public class Customer {
 
     /**
      * Retrieves customers passport number
+     *
      * @return customer's passport number or null if none set
      */
     public String getPassportNumber() {
@@ -184,6 +213,7 @@ public class Customer {
 
     /**
      * Passport number setter
+     *
      * @param passportNumber of the customer
      */
     public void setPassportNumber(String passportNumber) {
@@ -192,6 +222,7 @@ public class Customer {
 
     /**
      * Retrieves all reservations for this customer
+     *
      * @return unmodifiable set of reservations
      */
     public Set<Reservation> getReservations() {
@@ -200,6 +231,7 @@ public class Customer {
 
     /**
      * Sets reservations to this customer entity
+     *
      * @param reservations set of {@link Reservation}s
      */
     public void setReservations(Set<Reservation> reservations) {
@@ -208,6 +240,7 @@ public class Customer {
 
     /**
      * Adds reservation for this customer
+     *
      * @param reservation to be added
      */
     public void addReservation(Reservation reservation) {
@@ -216,14 +249,16 @@ public class Customer {
 
     /**
      * Removes one of customer's reservations
+     *
      * @param reservation to be removed
      */
-    public void removeReservation(Reservation reservation){
+    public void removeReservation(Reservation reservation) {
         reservations.remove(reservation);
     }
 
     /**
      * Retrieves customers date of birth
+     *
      * @return Date of birth
      */
     public LocalDate getDateOfBirth() {
@@ -232,6 +267,7 @@ public class Customer {
 
     /**
      * Date of birth setter
+     *
      * @param dateOfBirth Date of birth of this customer
      */
     public void setDateOfBirth(LocalDate dateOfBirth) {
