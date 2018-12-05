@@ -456,12 +456,12 @@ public class TripServiceTest extends AbstractTestNGSpringContextTests {
         Trip trip3 = new Trip(from, to, "Bratislava", 5, 30.1);
         Trip trip4 = new Trip(from, to, "Brno", 5, 60.0);
         Trip trip5 = new Trip(from, to, "Oslo", 5, 50.0);
-        new Excursion("test1", "any1", 0.05, from, Duration.ZERO, trip1);
-        new Excursion("test2", "any2", 2.00, from, Duration.ZERO, trip2);
-        new Excursion("test3", "any3", 1.99, from, Duration.ZERO, trip1);
-        new Excursion("test4", "any4", 2.00, from, Duration.ZERO, trip5);
-        new Excursion("test5", "any5", 0.50, from, Duration.ZERO, trip4);
-        new Excursion("test6", "any6", 11.50, from, Duration.ZERO, trip2);
+        new Excursion(trip1, "any1", from, Duration.ZERO, 0.05, "test1");
+        new Excursion(trip2, "any2", from, Duration.ZERO, 2.00, "test2");
+        new Excursion(trip1, "any3", from, Duration.ZERO, 1.99, "test3");
+        new Excursion(trip5, "any4", from, Duration.ZERO, 2.00, "test4");
+        new Excursion(trip4, "any5", from, Duration.ZERO, 0.50, "test5");
+        new Excursion(trip2, "any6", from, Duration.ZERO, 11.50, "test6");
         Collection<Trip> trips = Arrays.asList(trip1, trip2, trip3, trip4, trip5);
         Mockito.when(tripDao.findAll()).thenReturn(trips);
         Map<Trip, Collection<Excursion>> result = tripService.tripsForMoney(155.99);

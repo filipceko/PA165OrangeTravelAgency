@@ -102,8 +102,8 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void createTest() {
         LocalDate excursionDate = LocalDate.of(2018, 7, 13);
-        Excursion testExcursion = new Excursion("Description", "Destination", 10.00,
-                excursionDate, Duration.ofMinutes(20), newYorkTrip);
+        Excursion testExcursion = new Excursion(newYorkTrip, "Destination", excursionDate, Duration.ofMinutes(20), 10.00, "Description"
+        );
         excursionDao.create(testExcursion);
         Excursion stored = excursionDao.findById(testExcursion.getId());
         assertEquals(testExcursion, stored);
@@ -113,18 +113,18 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         assertEquals(stored.getId(), testExcursion.getId());
 
         assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion()));
-        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion(null,
-                "Destination", 10.0, excursionDate, Duration.ofMinutes(20), newYorkTrip)));
-        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion("Description",
-                null, 10.0, excursionDate, Duration.ofMinutes(20), newYorkTrip)));
-        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion("Description",
-                "Destination", null, excursionDate, Duration.ofMinutes(20), newYorkTrip)));
-        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion("Description",
-                "Destination", 10.0, null, Duration.ofMinutes(20), newYorkTrip)));
-        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion("Description",
-                "Destination", 10.0, excursionDate, null, newYorkTrip)));
-        assertThrows(NullPointerException.class, () -> excursionDao.create(new Excursion("Description",
-                "Destination", 10.0, excursionDate, Duration.ofMinutes(20), null)));
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion(newYorkTrip, "Destination", excursionDate, Duration.ofMinutes(20), 10.0, null
+        )));
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion(newYorkTrip, null, excursionDate, Duration.ofMinutes(20), 10.0, "Description"
+        )));
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion(newYorkTrip, "Destination", excursionDate, Duration.ofMinutes(20), null, "Description"
+        )));
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion(newYorkTrip, "Destination", null, Duration.ofMinutes(20), 10.0, "Description"
+        )));
+        assertThrows(PersistenceException.class, () -> excursionDao.create(new Excursion(newYorkTrip, "Destination", excursionDate, null, 10.0, "Description"
+        )));
+        assertThrows(NullPointerException.class, () -> excursionDao.create(new Excursion(null, "Destination", excursionDate, Duration.ofMinutes(20), 10.0, "Description"
+        )));
 
         assertThrows(IllegalArgumentException.class, () -> excursionDao.create(null));
         excursionDao.remove(testExcursion);
@@ -172,8 +172,8 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void removeTest() {
         LocalDate excursionDate = LocalDate.of(2018, 7, 13);
-        Excursion testExcursion = new Excursion("Description", "Destination", 10.00,
-                excursionDate, Duration.ofMinutes(20), newYorkTrip);
+        Excursion testExcursion = new Excursion(newYorkTrip, "Destination", excursionDate, Duration.ofMinutes(20), 10.00, "Description"
+        );
         excursionDao.create(testExcursion);
         assertEquals(4, excursionDao.findAll().size());
         excursionDao.remove(testExcursion);
