@@ -5,8 +5,6 @@ import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
-import cz.muni.fi.travelAgency.facade.ExcursionFacade;
-import cz.muni.fi.travelAgency.facade.ExcursionFacadeImpl;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.ExcursionService;
 import java.time.Duration;
@@ -99,7 +97,7 @@ public class ExcursionFacadeTest extends AbstractTestNGSpringContextTests {
         Duration baliDuration = Duration.ofMinutes(120);
         String baliDescription = "Visit the Bali's most Famous Beach with the beautiful sunset";
         String baliDestination = "Kuta Beach";
-        excursionKutaBeach = new Excursion(baliDescription, baliDestination, baliPrice, baliTime, baliDuration, baliTrip);
+        excursionKutaBeach = new Excursion(baliTrip, baliDestination, baliTime, baliDuration, baliPrice, baliDescription);
         excursionKutaBeach.setId(15L);
         excursionKutaBeachDTO = new ExcursionDTO();
         excursionKutaBeachDTO.setDescription(baliDescription);
@@ -114,7 +112,7 @@ public class ExcursionFacadeTest extends AbstractTestNGSpringContextTests {
         Duration jakartaDuration = Duration.ofMinutes(240);
         String jakartaDescription = "The National Monument (Indonesian: Monumen Nasional, abbreviated Monas) is a 132 m (433 ft) tower in the centre of Merdeka Square, Central Jakarta, symbolizing the fight for Indonesia";
         String jakartaDestination = "Statue Of Monas";
-        excursionStatueOfMonas = new Excursion(jakartaDescription, jakartaDestination, jakartaPrice, jakartaTime, jakartaDuration, jakartaTrip);
+        excursionStatueOfMonas = new Excursion(jakartaTrip, jakartaDestination, jakartaTime, jakartaDuration, jakartaPrice, jakartaDescription);
         excursionStatueOfMonas.setId(20L);
         excursionStatueOfMonasDTO = new ExcursionDTO();
         excursionStatueOfMonasDTO.setDescription(jakartaDescription);

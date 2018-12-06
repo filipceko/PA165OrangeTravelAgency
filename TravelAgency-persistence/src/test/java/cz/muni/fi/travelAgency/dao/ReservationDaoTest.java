@@ -64,10 +64,10 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         customer1 = new Customer("Filip", "Cekovsky", "filip@ceko.com");
         customer2 = new Customer("Frodo", "Zemiak", "frodo@zemiak.com");
         customer3 = new Customer("Imrich", "Piskotka", "piskota@sucha.com");
-        Excursion excursion1 = new Excursion("Test excursion", "Test", 10.00,
-                firstDate, Duration.ZERO, trip);
-        excursion2 = new Excursion("Test excursion 2.0", "Tale", 11.50,
-                secondDate, Duration.ofHours(5), trip);
+        Excursion excursion1 = new Excursion(trip, "Test", firstDate, Duration.ZERO, 10.00, "Test excursion"
+        );
+        excursion2 = new Excursion(trip, "Tale", secondDate, Duration.ofHours(5), 11.50, "Test excursion 2.0"
+        );
         reservation1 = new Reservation(customer1, trip, firstDate);
         reservation2 = new Reservation(customer2, trip, secondDate);
         tripDao.create(trip);

@@ -76,7 +76,7 @@ public class Excursion {
     /**
      * All non-null fields constructor
      */
-    public Excursion(String description, String destination, Double price, LocalDate excursionDate, Duration excursionDuration, Trip trip) {
+    public Excursion(Trip trip, String destination, LocalDate excursionDate, Duration excursionDuration, Double price, String description) {
         this.description = description;
         this.destination = destination;
         this.price = price;

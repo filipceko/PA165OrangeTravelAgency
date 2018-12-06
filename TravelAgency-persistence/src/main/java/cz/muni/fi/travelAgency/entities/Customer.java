@@ -44,8 +44,10 @@ public class Customer {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column
     private String passwordHash;
 
+    @Column
     private boolean admin;
 
     /**
@@ -57,6 +59,7 @@ public class Customer {
     /**
      * Nullable passport number
      */
+    @Column
     private String passportNumber;
 
     /**
@@ -80,8 +83,11 @@ public class Customer {
     /**
      * All fields constructor
      */
-    public Customer(String name, String surname, String email, String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
-        this(name, surname, email);
+    public Customer(@NotNull String name, @NotNull String surname, @NotNull String email,
+                    String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
         this.phoneNumber = phoneNumber;
         this.passportNumber = passportNumber;
         this.dateOfBirth = dateOfBirth;

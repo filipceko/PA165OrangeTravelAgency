@@ -3,6 +3,7 @@ package cz.muni.fi.travelAgency.sampleData;
 import cz.muni.fi.travelAgency.config.ServiceConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -19,8 +20,12 @@ import java.io.IOException;
 public class SampleDataConfiguration {
     final static Logger logger = LoggerFactory.getLogger(SampleDataConfiguration.class);
 
+    @Autowired
+    DataLoadingFacade sampleDataLoader;
+
     @PostConstruct
     public void loadData() throws IOException {
-        logger.debug("Data loading... NOT IMPLEMENTED");
+        logger.debug("Data loading... ");
+        sampleDataLoader.loadData();
     }
 }
