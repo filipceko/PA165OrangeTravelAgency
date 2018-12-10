@@ -81,7 +81,6 @@ public class ExcursionCreateDTO {
         this.price = price;
         this.excursionDate = excursionDate;
         this.excursionDuration = excursionDuration;
-        this.durationString = initDurationString();
         this.trip = trip;
     }
 
@@ -123,7 +122,6 @@ public class ExcursionCreateDTO {
 
     public void setExcursionDuration(Duration excursionDuration) {
         this.excursionDuration = excursionDuration;
-        this.durationString = initDurationString();
     }
 
     public TripDTO getTrip() {
@@ -132,13 +130,6 @@ public class ExcursionCreateDTO {
 
     public void setTrip(TripDTO trip) {
         this.trip = trip;
-    }
-
-    public String initDurationString(){
-        return excursionDuration.toString()
-                .substring(2)
-                .replaceAll("(\\d[HMS])(?!$)", "$1 ")
-                .toLowerCase();
     }
 
     public String getDurationString() {
