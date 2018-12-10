@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cz.muni.fi.PA165</groupId>
+    <groupId>cz.muni.fi.pa165</groupId>
     <artifactId>TravelAgency-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -80,6 +80,15 @@
                                 <version>${tomcat.version}</version>
                             </artifactInstaller>
                         </container>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.16</version>
+                    <configuration>
+                        <reuseForks>false</reuseForks>
+                        <forkCount>1</forkCount>
                     </configuration>
                 </plugin>
             </plugins>
