@@ -35,14 +35,28 @@ public class AdminExcursionController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model) {
         Collection<ExcursionDTO> excursions = excursionFacade.getAllExcursions();
+        for (ExcursionDTO excursion : excursions){
+            initDurationString(excursion);
+        }
         model.addAttribute("excursions",excursions);
         return "admin/excursion/list";
     }
 
     @RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
     public String create(@PathVariable long id, Model model){
-        model.addAttribute("excursion", excursionFacade.findExcursionById(id));
+        ExcursionDTO excursionDTO = excursionFacade.findExcursionById(id);
+        initDurationString(excursionDTO);
+        model.addAttribute("excursion", excursionDTO);
         return "admin/excursion/detail";
     }
+
+    private void initDurationString(ExcursionDTO excursion){
+        excursion.setDurationString(excursion.getExcursionDuration().toString()
+                .substring(2)
+                .replaceAll("(\\d[HMS])(?!$)", "$1 ")
+                .toLowerCase());
+    }
+
+
 
 }
