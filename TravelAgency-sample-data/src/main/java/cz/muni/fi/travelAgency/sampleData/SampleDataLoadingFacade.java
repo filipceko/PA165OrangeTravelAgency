@@ -94,7 +94,7 @@ public class SampleDataLoadingFacade implements DataLoadingFacade {
                 "Visit with us the most famous sight in Athens, the Acropolis");
         Excursion mycanae = new Excursion(athens, "Mycanae", daysFromNow(82), Duration.ofDays(1), 35.0,
                 "Full day trip to the nearby sight of Mycenae, TOTAL BESTSELLER");
-        Excursion cathedral = new Excursion(milan, "Milan Cathedral", daysFromNow(-8), Duration.ofHours(6), 15.56,
+        Excursion cathedral = new Excursion(milan, "Milan Cathedral", daysFromNow(-8), Duration.ofMinutes(150), 15.56,
                 "Take a look with us in the most amazing structure in Milan, the Cathedral. We will also take " +
                         "you to the restricted area of the rooftops with only fraction of the original price");
         Excursion operaHouse = new Excursion(sydney, "Sydney Opera House", daysFromNow(185), Duration.ofHours(3), 70.0,

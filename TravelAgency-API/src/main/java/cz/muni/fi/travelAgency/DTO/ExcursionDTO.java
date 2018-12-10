@@ -17,6 +17,8 @@ public class ExcursionDTO extends ExcursionCreateDTO {
      */
     private Long id;
 
+
+
     /**
      * Simple non-parametric constructor
      */
@@ -57,6 +59,7 @@ public class ExcursionDTO extends ExcursionCreateDTO {
     public void setId(Long id) {
         this.id = id;
     }
+
 
     @Override
     public boolean equals(Object o) {

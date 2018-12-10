@@ -43,7 +43,7 @@
                     <ul class="dropdown-menu">
                         <li><my:a href="/admin/trip/list/all"><f:message key="navigation.admin.trips"/></my:a></li>
                         <li><my:a href="/user/list"><f:message key="navigation.admin.customers"/></my:a></li>
-                        <li><my:a href="/product/list"><f:message key="navigation.admin.excursions"/></my:a></li>
+                        <li><my:a href="/admin/excursion/list"><f:message key="navigation.admin.excursions"/></my:a></li>
                         <li><my:a href="/category/list"><f:message key="navigation.admin.reservations"/></my:a></li>
                     </ul>
                 </li>
