@@ -42,7 +42,7 @@ public class AdminExcursionController {
         return "admin/excursion/list";
     }
 
-    @RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public String create(@PathVariable long id, Model model){
         ExcursionDTO excursionDTO = excursionFacade.findExcursionById(id);
         initDurationString(excursionDTO);
@@ -57,6 +57,33 @@ public class AdminExcursionController {
                 .toLowerCase());
     }
 
+//    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+//    public String delete(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) {
+//        ExcursionDTO excursion = excursionFacade.findExcursionById(id);
+//        logger.debug("delete({})", id);
+//        try {
+//            excursionFacade.deleteExcursion(excursion);
+//            redirectAttributes.addFlashAttribute("alert_success", "Excursion \"" + excursion.getId() + "\" was deleted.");
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            logger.error("excursion "+id+" cannot be deleted");
+//            logger.error(NestedExceptionUtils.getMostSpecificCause(ex).getMessage());
+//            redirectAttributes.addFlashAttribute("alert_danger", "Excursion \"" + excursion.getId() + "\" cannot be deleted." + ex.getMessage());
+//        }
+//        return "redirect:" + uriBuilder.path("/admin/excursion/list").toUriString();
+//    }
+
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
+    public String delete(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes attributes){
+        try {
+            excursionFacade.deleteExcursion(excursionFacade.findExcursionById(id));
+            attributes.addFlashAttribute("alert_success", "Trip number "+id+" was canceled.");
+        } catch (DataAccessException ex) {
+            logger.warn("cannot remove Trip {}", id);
+            attributes.addFlashAttribute("alert_danger", "Trip number "+id+" was not canceled. "+ex.getMessage());
+        }
+        return "redirect:" + uriBuilder.path("/admin/excursion/list").build().encode().toUriString();
+    }
 
 
 }
