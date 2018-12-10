@@ -25,12 +25,10 @@
                     <c:out value="${excursion.trip.destination}"/>
                 </my:a> <br/>
     <my:a href="/admin/excursion/edit/${excursion.id}" class="btn btn-primary">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         <f:message key="common.edit"/>
     </my:a>
-    <my:a href="/admin/excursion/delete/${excursion.id}" class="btn btn-primary">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        <f:message key="common.delete"/>
+    <my:a href="/admin/excursion/delete/${excursion.id}" class="btn btn-danger">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
     </my:a>
 </jsp:attribute>
 </my:pageTemplate>

@@ -1,13 +1,15 @@
 package cz.muni.fi.travelAgency.dao;
 
 import cz.muni.fi.travelAgency.entities.Excursion;
+import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Implementation of {@link ExcursionDao}
@@ -22,6 +24,12 @@ public class ExcursionDaoImpl implements ExcursionDao {
      */
     @PersistenceContext
     private EntityManager eManager;
+
+    @Autowired
+    private ReservationDao reservationDao;
+
+    @Autowired
+    private TripDao tripDao;
 
     @Override
     public void create(Excursion excursion) {
@@ -77,11 +85,17 @@ public class ExcursionDaoImpl implements ExcursionDao {
         }
         if (findById(excursion.getId()) != null) {
             Trip trip = excursion.getTrip();
-            eManager.remove(eManager.merge(excursion));
             trip.removeExcursion(excursion);
-            eManager.merge(trip);
+            List<Reservation> reservationArrayList = new ArrayList<>(trip.getReservations());
+            for (Reservation reservation : reservationArrayList){
+                reservation.removeExcursion(excursion);
+            }
+            trip.setReservations(reservationArrayList);
+            eManager.remove(eManager.merge(excursion));
         } else {
             throw new IllegalArgumentException("Excursion must be saved before remove");
         }
+
+
     }
 }

@@ -39,7 +39,7 @@
                 <li><my:a href="/shopping/show"><f:message key="navigation.trips"/></my:a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><f:message key="navigation.admin"/><b
-                            class="caret"></b></a>
+                            class="cbtn-primaryaret"></b></a>
                     <ul class="dropdown-menu">
                         <li><my:a href="/admin/trip/list/all"><f:message key="navigation.admin.trips"/></my:a></li>
                         <li><my:a href="/user/list"><f:message key="navigation.admin.customers"/></my:a></li>
