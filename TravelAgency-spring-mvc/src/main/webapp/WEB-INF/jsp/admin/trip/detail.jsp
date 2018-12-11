@@ -12,14 +12,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<my:pageTemplate title="Trip Detail">
+<my:pageTemplate title="Trip #${trip.id} Detail">
 <jsp:attribute name="body">
-    <h1><f:message key="trip"/> #${trip.id}</h1>
     <f:message key="trip.destination"/>: ${trip.destination} <br/>
     <f:message key="trip.from"/>: ${trip.fromDate} <br/>
     <f:message key="trip.to"/>: ${trip.toDate} <br/>
     <f:message key="trip.capacity"/>: ${trip.capacity} <br/>
-    <f:message key="trip.price"/>: ${trip.capacity} <br/>
+    <f:message key="trip.price"/>: ${trip.price} <br/>
     <f:message key="trip.excursions"/>: <c:forEach items="${trip.excursions}" var="excursion">
         ${excursion.destination},
         <!-- TODO link to excursion page -->
