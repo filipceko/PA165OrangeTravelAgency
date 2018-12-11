@@ -1,9 +1,6 @@
 package cz.muni.fi.travelAgency.dao;
 
-import cz.muni.fi.travelAgency.entities.Excursion;
-import cz.muni.fi.travelAgency.entities.Reservation;
 import cz.muni.fi.travelAgency.entities.Trip;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -21,12 +18,6 @@ public class TripDaoImpl implements TripDao {
 
     @PersistenceContext
     private EntityManager em;
-
-    @Autowired
-    private ExcursionDao excursionDao;
-
-    @Autowired
-    private ReservationDao reservationDao;
 
     @Override
     public void create(Trip trip) {
@@ -75,14 +66,6 @@ public class TripDaoImpl implements TripDao {
         }
         if (findById(trip.getId()) == null) {
             throw new IllegalArgumentException("Tried to delete trip that was not saved");
-        }
-        Collection<Reservation> reservations = trip.getReservations();
-        Collection<Excursion> excursions = trip.getExcursions();
-        for (Excursion excursion : excursions) {
-            excursionDao.remove(excursion);
-        }
-        for (Reservation reservation : reservations) {
-            reservationDao.remove(reservation);
         }
         em.remove(em.merge(trip));
     }

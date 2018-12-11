@@ -3,7 +3,6 @@ package cz.muni.fi.travelAgency.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -71,7 +70,7 @@ public class Customer {
     /**
      * Set of reservations made by the customer
      */
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Reservation> reservations = new HashSet<>();
 
     /**
@@ -232,7 +231,7 @@ public class Customer {
      * @return unmodifiable set of reservations
      */
     public Set<Reservation> getReservations() {
-        return Collections.unmodifiableSet(reservations);
+        return reservations;
     }
 
     /**

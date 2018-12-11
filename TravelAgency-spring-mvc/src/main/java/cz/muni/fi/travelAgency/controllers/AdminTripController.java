@@ -8,15 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * @author Filip Cekovsky
+ */
 @Controller
 @RequestMapping("admin/trip")
 public class AdminTripController {
@@ -45,20 +52,58 @@ public class AdminTripController {
     }
 
     @RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
-    public String create(@PathVariable long id, Model model){
+    public String detail(@PathVariable long id, Model model) {
         model.addAttribute("trip", tripFacade.getTripById(id));
         return "admin/trip/detail";
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable long id, Model model, UriComponentsBuilder uriBuilder, RedirectAttributes attributes){
+    public String delete(@PathVariable long id, Model model, UriComponentsBuilder uriBuilder, RedirectAttributes attributes) {
         try {
             tripFacade.removeTrip(tripFacade.getTripById(id));
-            attributes.addFlashAttribute("alert_success", "Trip number "+id+" was canceled.");
+            attributes.addFlashAttribute("alert_success", "Trip number " + id + " was canceled.");
         } catch (DataAccessException ex) {
             logger.warn("cannot remove Trip {}", id);
-            attributes.addFlashAttribute("alert_danger", "Trip number "+id+" was not canceled. "+ex.getMessage());
+            attributes.addFlashAttribute("alert_danger", "Trip number " + id + " was not canceled. " + ex.getMessage());
         }
         return "redirect:" + uriBuilder.path("/admin/trip/list/all").build().encode().toUriString();
+    }
+
+    @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
+    public String getEdit(@PathVariable long id, Model model) {
+        model.addAttribute("trip", tripFacade.getTripById(id));
+        return "admin/trip/edit";
+    }
+
+    @RequestMapping(value = "editTrip", method = RequestMethod.POST)
+    public String submitEdit(@Valid @ModelAttribute("trip") TripDTO trip, BindingResult result, ModelMap model,
+                             RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
+        if (result.hasErrors()) {
+            model.addAttribute("alert_danger", result);
+            model.addAttribute("trip", trip);
+            return "/admin/trip/edit";
+        }
+        tripFacade.updateTrip(trip);
+        redirectAttributes.addFlashAttribute("alert_success", "Trip #" + trip.getId() + " updated");
+        return "redirect:" + uriBuilder.path("/admin/trip/detail/" + trip.getId()).build().encode().toUriString();
+    }
+
+    @RequestMapping(value = "new", method = RequestMethod.GET)
+    public String create(Model model) {
+        model.addAttribute("trip", new TripDTO());
+        return "admin/trip/create";
+    }
+
+    @RequestMapping(value = "createTrip", method = RequestMethod.POST)
+    public String submitCreate(@Valid @ModelAttribute("trip") TripDTO trip, BindingResult result, ModelMap model,
+                               RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
+        if (result.hasErrors()) {
+            model.addAttribute("alert_danger", result);
+            model.addAttribute("trip", trip);
+            return "/admin/trip/create";
+        }
+        tripFacade.createTrip(trip);
+        redirectAttributes.addFlashAttribute("alert_success", "Trip #" + trip.getId() + " created");
+        return "redirect:" + uriBuilder.path("/admin/trip/detail/" + trip.getId()).build().encode().toUriString();
     }
 }

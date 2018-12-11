@@ -18,6 +18,8 @@ import javax.persistence.PersistenceException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,21 +66,17 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         customer1 = new Customer("Filip", "Cekovsky", "filip@ceko.com");
         customer2 = new Customer("Frodo", "Zemiak", "frodo@zemiak.com");
         customer3 = new Customer("Imrich", "Piskotka", "piskota@sucha.com");
-        Excursion excursion1 = new Excursion(trip, "Test", firstDate, Duration.ZERO, 10.00, "Test excursion"
-        );
+        Excursion excursion1 = new Excursion(trip, "Test", firstDate, Duration.ZERO, 10.00, "Test excursion");
         excursion2 = new Excursion(trip, "Tale", secondDate, Duration.ofHours(5), 11.50, "Test excursion 2.0"
         );
-        reservation1 = new Reservation(customer1, trip, firstDate);
-        reservation2 = new Reservation(customer2, trip, secondDate);
-        tripDao.create(trip);
         customerDao.create(customer1);
         customerDao.create(customer2);
         customerDao.create(customer3);
-        excursionDao.create(excursion1);
-        excursionDao.create(excursion2);
-
-        reservation1.addExcursion(excursion1);
-        reservation1.addExcursion(excursion2);
+        tripDao.create(trip);
+        Set<Excursion> excursions = new HashSet<>();
+        excursions.add(excursion1);
+        reservation1 = new Reservation(customer1, trip, firstDate, excursions);
+        reservation2 = new Reservation(customer2, trip, secondDate);
         reservationDao.create(reservation1);
         reservationDao.create(reservation2);
     }
@@ -107,7 +105,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
         assertEquals(reservation1, stored);
         assertEquals(firstDate, reservation1.getReserveDate());
         Collection<Excursion> retrievedExcursions = stored.getExcursions();
-        assertEquals(2, retrievedExcursions.size());
+        assertEquals(1, retrievedExcursions.size());
         assertEquals(stored.getId(), reservation1.getId());
         assertThrows(PersistenceException.class, () -> reservationDao.create(new Reservation()));
         assertThrows(IllegalArgumentException.class, () -> reservationDao.create(null));

@@ -3,7 +3,10 @@ package cz.muni.fi.travelAgency.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Class representing trip.
@@ -59,13 +62,13 @@ public class Trip {
     /**
      * Excursions assigned to trip.
      */
-    @OneToMany(mappedBy = "trip", cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip", cascade = CascadeType.ALL)
     private Collection<Excursion> excursions = new HashSet<>();
 
     /**
      * Reservations for this trip.
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip", cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip", cascade = CascadeType.ALL)
     private Collection<Reservation> reservations = new HashSet<>();
 
     /**
@@ -209,7 +212,7 @@ public class Trip {
      * @return unmodifiable et of available excursions
      */
     public Collection<Excursion> getExcursions() {
-        return Collections.unmodifiableCollection(excursions);
+        return excursions;
     }
 
     /**
@@ -245,7 +248,7 @@ public class Trip {
      * @return unmodifiable et of reservations
      */
     public Collection<Reservation> getReservations() {
-        return Collections.unmodifiableCollection(reservations);
+        return reservations;
     }
 
     /**

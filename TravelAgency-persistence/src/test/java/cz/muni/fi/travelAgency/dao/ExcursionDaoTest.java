@@ -127,7 +127,6 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         )));
 
         assertThrows(IllegalArgumentException.class, () -> excursionDao.create(null));
-        excursionDao.remove(testExcursion);
     }
 
     @Test
