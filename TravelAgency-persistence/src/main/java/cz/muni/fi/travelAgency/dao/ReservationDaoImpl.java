@@ -1,8 +1,6 @@
 package cz.muni.fi.travelAgency.dao;
 
-import cz.muni.fi.travelAgency.entities.Customer;
 import cz.muni.fi.travelAgency.entities.Reservation;
-import cz.muni.fi.travelAgency.entities.Trip;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -97,13 +95,7 @@ public class ReservationDaoImpl implements ReservationDao {
             throw new IllegalArgumentException("Tried to remove NULL!");
         }
         if (findById(reservation.getId()) != null) {
-            Trip trip = reservation.getTrip();
-            trip.removeReservation(reservation);
-            Customer customer = reservation.getCustomer();
-            customer.removeReservation(reservation);
             em.remove(em.merge(reservation));
-            em.merge(trip);
-            em.merge(customer);
         } else {
             throw new IllegalArgumentException("Tried to Remove Reservation that was not saved before.");
         }

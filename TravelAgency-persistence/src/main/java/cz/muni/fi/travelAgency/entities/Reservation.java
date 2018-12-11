@@ -48,7 +48,7 @@ public class Reservation {
     /**
      * Excursions reserved with this trip
      */
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "RESERVATIONS_EXCURSIONS")
     private Collection<Excursion> excursions = new HashSet<>();
 

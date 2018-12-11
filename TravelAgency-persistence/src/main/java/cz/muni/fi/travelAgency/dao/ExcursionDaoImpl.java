@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.*;
+import java.util.Collection;
 
 /**
  * Implementation of {@link ExcursionDao}
@@ -86,11 +86,13 @@ public class ExcursionDaoImpl implements ExcursionDao {
         if (findById(excursion.getId()) != null) {
             Trip trip = excursion.getTrip();
             trip.removeExcursion(excursion);
-            List<Reservation> reservationArrayList = new ArrayList<>(trip.getReservations());
-            for (Reservation reservation : reservationArrayList){
-                reservation.removeExcursion(excursion);
+            tripDao.update(trip);
+            for (Reservation reservation : reservationDao.findByTripId(trip.getId())) {
+                if (reservation.getExcursions().contains(excursion)) {
+                    reservation.removeExcursion(excursion);
+                    reservationDao.update(reservation);
+                }
             }
-            trip.setReservations(reservationArrayList);
             eManager.remove(eManager.merge(excursion));
         } else {
             throw new IllegalArgumentException("Excursion must be saved before remove");
