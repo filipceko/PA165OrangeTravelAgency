@@ -31,15 +31,16 @@ public class ExcursionServiceImpl implements ExcursionService {
     }
 
     @Override
-    public void createExcursion(Excursion excursion) {
+    public Excursion createExcursion(Excursion excursion) {
         if (excursion == null) {
             throw new IllegalArgumentException("tried to create NULL excursion");
         }
         try {
-            excursionDao.create(excursion);
+             excursionDao.create(excursion);
         } catch (IllegalArgumentException exp) {
             throw new DataAccessLayerException(exp.getMessage());
         }
+        return excursion;
     }
 
     @Override

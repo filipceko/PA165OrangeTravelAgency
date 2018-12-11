@@ -1,5 +1,6 @@
 package cz.muni.fi.travelAgency.facade;
 
+import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
@@ -32,10 +33,10 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     private BeanMappingService beanMappingService;
 
     @Override
-    public void createExcursion(ExcursionDTO excursionDTO) {
+    public Long createExcursion(ExcursionCreateDTO excursionDTO) {
         Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
-        excursionService.createExcursion(mappedExcursion);
-        excursionDTO.setId(mappedExcursion.getId());
+        Excursion excursion = excursionService.createExcursion(mappedExcursion);
+        return excursion.getId();
     }
 
     @Override

@@ -1,7 +1,10 @@
 package cz.muni.fi.travelAgency.controllers;
 
+import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
+import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.facade.ExcursionFacade;
+import cz.muni.fi.travelAgency.facade.TripFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +12,21 @@ import org.springframework.core.NestedExceptionUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Controller
 @RequestMapping("admin/excursion")
@@ -25,6 +36,9 @@ public class AdminExcursionController {
 
     @Autowired
     private ExcursionFacade excursionFacade;
+
+    @Autowired
+    private TripFacade tripFacade;
 
     /**
      * Shows a list of excursions.
@@ -86,4 +100,61 @@ public class AdminExcursionController {
     }
 
 
+    @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
+    public String getEdit(@PathVariable long id, Model model) {
+        model.addAttribute("excursion", excursionFacade.findExcursionById(id));
+        return "admin/excursion/edit";
+    }
+
+    @RequestMapping(value = "editExcursion", method = RequestMethod.POST)
+    public String submitEdit(@Valid @ModelAttribute("excursion") ExcursionDTO excursion, BindingResult result, ModelMap model,
+                             RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
+        if (result.hasErrors()) {
+            model.addAttribute("alert_danger", result);
+            model.addAttribute("excursion", excursion);
+            return "/admin/excursion/edit";
+        }
+        excursionFacade.updateExcursion(excursion);
+        redirectAttributes.addFlashAttribute("alert_success", "Excursion #" + excursion.getId() + " updated");
+        return "redirect:" + uriBuilder.path("/admin/excursion/detail/" + excursion.getId()).build().encode().toUriString();
+    }
+
+    /**
+     * Prepares an empty form.
+     *
+     * @param model data to be displayed
+     * @return JSP page
+     */
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public String newProduct(Model model) {
+        logger.debug("new()");
+        model.addAttribute("excursionCreate", new ExcursionCreateDTO());
+        return "admin/excursion/create";
+    }
+
+    @ModelAttribute("trips")
+    public List<TripDTO> trips() {
+        logger.debug("trips()");
+        return new ArrayList<>(tripFacade.getAllTrips());
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String create(@Valid @ModelAttribute("excursionCreate") ExcursionCreateDTO formBean, BindingResult bindingResult,
+                         Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
+        logger.debug("create(excursionCreate={})", formBean);
+
+        if (bindingResult.hasErrors()) {
+            for (ObjectError ge : bindingResult.getGlobalErrors()) {
+                logger.trace("ObjectError: {}", ge);
+            }
+            for (FieldError fe : bindingResult.getFieldErrors()) {
+                model.addAttribute(fe.getField() + "_error", true);
+                logger.trace("FieldError: {}", fe);
+            }
+            return "admin/excursion/new";
+        }
+        Long id = excursionFacade.createExcursion(formBean);
+        redirectAttributes.addFlashAttribute("alert_success", "Excursion " + id + " was created");
+        return "redirect:" + uriBuilder.path("/admin/excursion/detail/{id}").buildAndExpand(id).encode().toUriString();
+    }
 }

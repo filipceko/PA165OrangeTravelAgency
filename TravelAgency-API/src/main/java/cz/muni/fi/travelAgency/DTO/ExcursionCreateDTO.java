@@ -56,7 +56,7 @@ public class ExcursionCreateDTO {
      * Trip the excursion was made for.
      */
     @NotNull
-    private TripDTO trip;
+    private Long tripId;
 
     /**
      * Simple non-parametric constructor.
@@ -72,16 +72,16 @@ public class ExcursionCreateDTO {
      * @param price             of this excursion
      * @param excursionDate     of this excursion
      * @param excursionDuration of this excursion
-     * @param trip              the excursion was made for
+     * @param tripId            id of trip the excursion was made for
      */
 
-    public ExcursionCreateDTO(@NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, @NotNull TripDTO trip) {
+    public ExcursionCreateDTO(@NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, @NotNull Long tripId) {
         this.description = description;
         this.destination = destination;
         this.price = price;
         this.excursionDate = excursionDate;
         this.excursionDuration = excursionDuration;
-        this.trip = trip;
+        this.tripId = tripId;
     }
 
     public String getDescription() {
@@ -124,12 +124,12 @@ public class ExcursionCreateDTO {
         this.excursionDuration = excursionDuration;
     }
 
-    public TripDTO getTrip() {
-        return trip;
+    public Long getTripId() {
+        return tripId;
     }
 
-    public void setTrip(TripDTO trip) {
-        this.trip = trip;
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
     }
 
     public String getDurationString() {
@@ -152,12 +152,12 @@ public class ExcursionCreateDTO {
         return Objects.equals(getDescription(), that.getDescription())
                 && Objects.equals(getPrice(), that.getPrice())
                 && Objects.equals(getDestination(), that.getDestination())
-                && Objects.equals(getTrip(), that.getTrip());
+                && Objects.equals(getTripId(), that.getTripId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDestination(), getPrice(), getDescription(), getTrip());
+        return Objects.hash(getDestination(), getPrice(), getDescription(), getTripId());
     }
 
 }
