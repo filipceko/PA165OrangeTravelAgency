@@ -120,8 +120,8 @@ public class ExcursionCreateDTO {
         return excursionDuration;
     }
 
-    public void setExcursionDuration(Duration excursionDuration) {
-        this.excursionDuration = excursionDuration;
+    public void setExcursionDuration(Long excursionDuration) {
+        this.excursionDuration = Duration.ofMinutes(excursionDuration);
     }
 
     public Long getTripId() {
@@ -142,22 +142,18 @@ public class ExcursionCreateDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ExcursionCreateDTO)) {
-            return false;
-        }
-        ExcursionCreateDTO that = (ExcursionCreateDTO) o;
-        return Objects.equals(getDescription(), that.getDescription())
-                && Objects.equals(getPrice(), that.getPrice())
-                && Objects.equals(getDestination(), that.getDestination())
-                && Objects.equals(getTripId(), that.getTripId());
+        if (this == o) return true;
+        if (!(o instanceof ExcursionCreateDTO)) return false;
+        ExcursionCreateDTO excursion = (ExcursionCreateDTO) o;
+        return Objects.equals(getDestination(), excursion.getDestination()) &&
+                Objects.equals(getPrice(), excursion.getPrice()) &&
+                Objects.equals(getExcursionDate(), excursion.getExcursionDate()) &&
+                Objects.equals(getExcursionDuration(), excursion.getExcursionDuration()) &&
+                Objects.equals(getTripId(), excursion.getTripId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDestination(), getPrice(), getDescription(), getTripId());
+        return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getExcursionDuration(), getTripId());
     }
-
 }

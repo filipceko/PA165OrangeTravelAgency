@@ -7,13 +7,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- * Excursion Data Transfer Object representing all the information about a
- * single excursion
- *
- * @author Rajivv, Simona Raucinova
- */
-public class ExcursionDTO {
+public class ExcursionEditDTO {
 
     /**
      * ID of the excursion
@@ -54,49 +48,27 @@ public class ExcursionDTO {
     private Duration excursionDuration;
 
     /**
-     * Pretty print representation of duration.
+     * Duration represented as number of minutes.
      */
-    private String durationString;
-
     private int durationMinutes;
 
     /**
      * Trip the excursion was made for.
      */
-    private TripDTO trip;
+    @NotNull
+    private Long tripId;
 
-    /**
-     * Simple non-parametric constructor
-     */
-    public ExcursionDTO() {
+    public ExcursionEditDTO() {
     }
 
-    /**
-     * Parametric constructor with trip and with ID
-     *
-     * @param description       of this excursion
-     * @param destination       of this excursion
-     * @param price             of this excursion
-     * @param trip              the excursion is for
-     * @param excursionDate     of this excursion
-     * @param excursionDuration of this excursion
-     * @param id                of this excursion
-     */
-    public ExcursionDTO(@NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, @NotNull TripDTO trip, Long id) {
+    public ExcursionEditDTO(@NotNull @Size(min = 3, max = 500) String description, @NotNull @Size(min = 3, max = 500) String destination, @NotNull @Min(0) Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, int durationMinutes, @NotNull Long tripId) {
         this.description = description;
         this.destination = destination;
         this.price = price;
         this.excursionDate = excursionDate;
         this.excursionDuration = excursionDuration;
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.durationMinutes = durationMinutes;
+        this.tripId = tripId;
     }
 
 
@@ -140,44 +112,45 @@ public class ExcursionDTO {
         this.excursionDuration = excursionDuration;
     }
 
-    public String getDurationString() {
-        return durationString;
-    }
-
-    public void setDurationString(String durationString) {
-        this.durationString = durationString;
-    }
-
     public int getDurationMinutes() {
         return durationMinutes;
     }
 
     public void setDurationMinutes(int durationMinutes) {
         this.durationMinutes = durationMinutes;
+        this.excursionDuration = Duration.ofMinutes(durationMinutes);
     }
 
-    public TripDTO getTrip() {
-        return trip;
+    public Long getTripId() {
+        return tripId;
     }
 
-    public void setTrip(TripDTO trip) {
-        this.trip = trip;
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ExcursionDTO)) return false;
-        ExcursionDTO excursion = (ExcursionDTO) o;
+        if (!(o instanceof ExcursionEditDTO)) return false;
+        ExcursionEditDTO excursion = (ExcursionEditDTO) o;
         return Objects.equals(getDestination(), excursion.getDestination()) &&
                 Objects.equals(getPrice(), excursion.getPrice()) &&
                 Objects.equals(getExcursionDate(), excursion.getExcursionDate()) &&
                 Objects.equals(getExcursionDuration(), excursion.getExcursionDuration()) &&
-                Objects.equals(getTrip(), excursion.getTrip());
+                Objects.equals(getTripId(), excursion.getTripId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getExcursionDuration(), getTrip());
+        return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getExcursionDuration(), getTripId());
     }
 }
