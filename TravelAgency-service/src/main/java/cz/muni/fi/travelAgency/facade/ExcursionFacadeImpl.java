@@ -43,8 +43,8 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
         mappedExcursion.setExcursionDuration(Duration.ofMinutes(excursionDTO.getDurationMinutes()));
         mappedExcursion.setTrip(tripService.findById(excursionDTO.getTripId()));
 
-        Excursion excursion = excursionService.createExcursion(mappedExcursion);
-        excursionDTO.setId(excursion.getId());
+        excursionService.createExcursion(mappedExcursion);
+        excursionDTO.setId(mappedExcursion.getId());
     }
 
     @Override
@@ -81,7 +81,6 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
         Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
         mappedExcursion.setExcursionDuration(Duration.ofMinutes(excursionDTO.getDurationMinutes()));
         mappedExcursion.setTrip(tripService.findById(excursionDTO.getTripId()));
-        mappedExcursion.setId(excursionDTO.getId());
         excursionService.updateExcursion(mappedExcursion);
     }
 

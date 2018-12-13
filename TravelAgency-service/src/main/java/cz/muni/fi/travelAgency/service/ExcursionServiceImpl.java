@@ -31,7 +31,7 @@ public class ExcursionServiceImpl implements ExcursionService {
     }
 
     @Override
-    public Excursion createExcursion(Excursion excursion) {
+    public void createExcursion(Excursion excursion) {
         if (excursion == null) {
             throw new IllegalArgumentException("tried to create NULL excursion");
         }
@@ -40,7 +40,6 @@ public class ExcursionServiceImpl implements ExcursionService {
         } catch (IllegalArgumentException exp) {
             throw new DataAccessLayerException(exp.getMessage());
         }
-        return excursion;
     }
 
     @Override

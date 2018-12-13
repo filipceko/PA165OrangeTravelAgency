@@ -25,7 +25,7 @@ public interface ExcursionService {
      *
      * @param excursion to be created
      */
-    Excursion createExcursion(Excursion excursion);
+    void createExcursion(Excursion excursion);
 
     /**
      * Updates excursion.
