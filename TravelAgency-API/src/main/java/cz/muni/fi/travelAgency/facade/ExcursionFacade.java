@@ -1,5 +1,6 @@
 package cz.muni.fi.travelAgency.facade;
 
+import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 
 import java.util.Collection;
@@ -16,7 +17,7 @@ public interface ExcursionFacade {
      *
      * @param excursionDTO to be created
      */
-    void createExcursion(ExcursionDTO excursionDTO);
+    void createExcursion(ExcursionCreateDTO excursionDTO);
 
     /**
      * Retrieves excursion with given id.
@@ -54,7 +55,7 @@ public interface ExcursionFacade {
      *
      * @param excursionDTO to be updated
      */
-    void updateExcursion(ExcursionDTO excursionDTO);
+    void updateExcursion(ExcursionCreateDTO excursionDTO);
 
     /**
      * Remove Excursion.
