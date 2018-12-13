@@ -41,10 +41,10 @@
            </div>
         </div>
         <div class="form-group ${duration_error?'has-error':''}">
-           <form:label path="excursionDuration" cssClass="col-sm-2 control-label">Excursion duration in minutes</form:label>
+           <form:label path="durationMinutes" cssClass="col-sm-2 control-label">Excursion duration in minutes</form:label>
            <div class="col-sm-10">
-               <form:input path="excursionDuration" cssClass="form-control"/>
-               <form:errors path="excursionDuration" cssClass="help-block"/>
+               <form:input path="durationMinutes" cssClass="form-control"/>
+               <form:errors path="durationMinutes" cssClass="help-block"/>
            </div>
         </div>
         <div class="form-group ${price_error?'has-error':''}" >

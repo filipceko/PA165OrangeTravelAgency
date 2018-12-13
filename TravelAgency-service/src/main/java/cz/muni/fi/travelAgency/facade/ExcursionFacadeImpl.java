@@ -2,7 +2,6 @@ package cz.muni.fi.travelAgency.facade;
 
 import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
-import cz.muni.fi.travelAgency.DTO.ExcursionEditDTO;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.ExcursionService;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.Collection;
 
 /**
@@ -38,11 +38,13 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     private BeanMappingService beanMappingService;
 
     @Override
-    public Long createExcursion(ExcursionCreateDTO excursionDTO) {
+    public void createExcursion(ExcursionCreateDTO excursionDTO) {
         Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
+        mappedExcursion.setExcursionDuration(Duration.ofMinutes(excursionDTO.getDurationMinutes()));
         mappedExcursion.setTrip(tripService.findById(excursionDTO.getTripId()));
+
         Excursion excursion = excursionService.createExcursion(mappedExcursion);
-        return excursion.getId();
+        excursionDTO.setId(excursion.getId());
     }
 
     @Override
@@ -69,7 +71,7 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     }
 
     @Override
-    public void updateExcursion(ExcursionEditDTO excursionDTO) {
+    public void updateExcursion(ExcursionCreateDTO excursionDTO) {
         if (excursionDTO == null) {
             throw new IllegalArgumentException("tried to update NULL excursion");
         }
@@ -77,6 +79,7 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
             throw new IllegalArgumentException("tried to update excursion without ID");
         }
         Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
+        mappedExcursion.setExcursionDuration(Duration.ofMinutes(excursionDTO.getDurationMinutes()));
         mappedExcursion.setTrip(tripService.findById(excursionDTO.getTripId()));
         mappedExcursion.setId(excursionDTO.getId());
         excursionService.updateExcursion(mappedExcursion);

@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public class ExcursionCreateDTO {
 
+    private Long id;
     /**
      * Description of the excursion
      */
@@ -42,15 +43,9 @@ public class ExcursionCreateDTO {
     private LocalDate excursionDate;
 
     /**
-     * Duration of the excursion
-     */
-    @NotNull
-    private Duration excursionDuration;
-
-    /**
      * Pretty print representation of duration.
      */
-    private String durationString;
+    private int durationMinutes;
 
     /**
      * Trip the excursion was made for.
@@ -80,7 +75,6 @@ public class ExcursionCreateDTO {
         this.destination = destination;
         this.price = price;
         this.excursionDate = excursionDate;
-        this.excursionDuration = excursionDuration;
         this.tripId = tripId;
     }
 
@@ -116,14 +110,6 @@ public class ExcursionCreateDTO {
         this.excursionDate = excursionDate;
     }
 
-    public Duration getExcursionDuration() {
-        return excursionDuration;
-    }
-
-    public void setExcursionDuration(Long excursionDuration) {
-        this.excursionDuration = Duration.ofMinutes(excursionDuration);
-    }
-
     public Long getTripId() {
         return tripId;
     }
@@ -132,12 +118,20 @@ public class ExcursionCreateDTO {
         this.tripId = tripId;
     }
 
-    public String getDurationString() {
-        return durationString;
+    public int getDurationMinutes() {
+        return durationMinutes;
     }
 
-    public void setDurationString(String durationString) {
-        this.durationString = durationString;
+    public void setDurationMinutes(int durationMinutes) {
+        this.durationMinutes = durationMinutes;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
@@ -148,12 +142,12 @@ public class ExcursionCreateDTO {
         return Objects.equals(getDestination(), excursion.getDestination()) &&
                 Objects.equals(getPrice(), excursion.getPrice()) &&
                 Objects.equals(getExcursionDate(), excursion.getExcursionDate()) &&
-                Objects.equals(getExcursionDuration(), excursion.getExcursionDuration()) &&
+                Objects.equals(getDurationMinutes(), excursion.getDurationMinutes()) &&
                 Objects.equals(getTripId(), excursion.getTripId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getExcursionDuration(), getTripId());
+        return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getDurationMinutes(), getTripId());
     }
 }

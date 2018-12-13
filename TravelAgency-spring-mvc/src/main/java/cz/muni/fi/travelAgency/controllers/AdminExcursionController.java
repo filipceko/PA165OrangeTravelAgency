@@ -2,10 +2,10 @@ package cz.muni.fi.travelAgency.controllers;
 
 import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
-import cz.muni.fi.travelAgency.DTO.ExcursionEditDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.facade.ExcursionFacade;
 import cz.muni.fi.travelAgency.facade.TripFacade;
+import cz.muni.fi.travelAgency.validators.ExcursionCreateDTOValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -37,6 +38,7 @@ public class AdminExcursionController {
 
     @Autowired
     private TripFacade tripFacade;
+
 
     /**
      * Shows a list of excursions.
@@ -101,7 +103,9 @@ public class AdminExcursionController {
     }
 
     @RequestMapping(value = "editExcursion/{excursionId}/{tripId}", method = RequestMethod.POST)
-    public String submitEdit(@PathVariable long excursionId, @PathVariable long tripId, @Valid @ModelAttribute("excursion") ExcursionEditDTO excursion, BindingResult result, ModelMap model,
+    public String submitEdit(@PathVariable long excursionId, @PathVariable long tripId,
+                             @Valid @ModelAttribute("excursion") ExcursionCreateDTO excursion,
+                             BindingResult result, ModelMap model,
                              RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
         if (result.hasErrors()) {
             model.addAttribute("alert_danger", result);
@@ -135,6 +139,13 @@ public class AdminExcursionController {
         return new ArrayList<>(tripFacade.getAllTrips());
     }
 
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        if (binder.getTarget() instanceof ExcursionCreateDTO) {
+            binder.addValidators(new ExcursionCreateDTOValidator());
+        }
+    }
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(@Valid @ModelAttribute("excursionCreate") ExcursionCreateDTO formBean, BindingResult bindingResult,
                          Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
@@ -150,9 +161,10 @@ public class AdminExcursionController {
             }
             return "admin/excursion/create";
         }
-        Long id = excursionFacade.createExcursion(formBean);
-        redirectAttributes.addFlashAttribute("alert_success", "Excursion " + id + " was created");
-        return "redirect:" + uriBuilder.path("/admin/excursion/detail/{id}").buildAndExpand(id).encode().toUriString();
+        excursionFacade.createExcursion(formBean);
+        redirectAttributes.addFlashAttribute("alert_success", "Excursion " + formBean.getId() + " was created");
+        return "redirect:" + uriBuilder.path("/admin/excursion/detail/{id}").buildAndExpand(formBean.getId())
+                                                                            .encode().toUriString();
     }
 
 }
