@@ -21,15 +21,22 @@
         <p class="lead">The best place you can be!</p>
     </div>
 
-    <div class="row">
-        <c:forEach begin="1" end="10" var="i">
-            <div class="col-xs-12 col-sm-6 col-md-2 col-lg-1">
-                <p>
-                    <button class="btn btn-default">Button ${i}</button>
-                </p>
+    <div class="container">
+        <!-- Example row of columns -->
+        <c:forEach items="${trips}" var="trip">
+            <div class="col-md-4">
+                <h2><c:out value="${trip.destination}"/></h2>
+                <p>Price : € <c:out value="${trip.price}"/></p>
+                <p>Date : <c:out value="${trip.fromDate}"/></p>
+                <p>Available : <c:out value="${trip.capacity}" /></p>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
             </div>
-        </c:forEach>
-    </div>
+         </c:forEach>
+        <hr>
+
+    </div> <!-- /container -->
+
 
 </jsp:attribute>
 </my:pageTemplate>
