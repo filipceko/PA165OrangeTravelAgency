@@ -16,11 +16,11 @@
     <form:form method="post" action="${pageContext.request.contextPath}/admin/excursion/create"
                modelAttribute="excursionCreate" cssClass="form-horizontal">
         <div class="form-group">
-            <form:label path="tripId" cssClass="col-sm-2 control-label">Category</form:label>
+            <form:label path="tripId" cssClass="col-sm-2 control-label">Trip</form:label>
             <div class="col-sm-10">
                 <form:select path="tripId" cssClass="form-control">
                     <c:forEach items="${trips}" var="trip">
-                        <form:option value="${trip.id}">${trip.destination}</form:option>
+                        <form:option value="${trip.id}">TO ${trip.destination} FROM ${trip.fromDate} TO ${trip.toDate}</form:option>
                     </c:forEach>
                 </form:select>
                 <p class="help-block"><form:errors path="tripId" cssClass="error"/></p>
