@@ -1,9 +1,5 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: Simi
-  Date: 9.12.2018
-  Time: 15:25
-  To change this template use File | Settings | File Templates.
+  Author: Simona Raucinova
 --%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" trimDirectiveWhitespaces="false" session="false" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>

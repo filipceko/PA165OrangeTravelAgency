@@ -1,6 +1,6 @@
 package cz.muni.fi.travelAgency.facade;
 
-import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
+import cz.muni.fi.travelAgency.DTO.ExcursionManipulationDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
@@ -38,7 +38,7 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     private BeanMappingService beanMappingService;
 
     @Override
-    public void createExcursion(ExcursionCreateDTO excursionDTO) {
+    public void createExcursion(ExcursionManipulationDTO excursionDTO) {
         Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
         mappedExcursion.setExcursionDuration(Duration.ofMinutes(excursionDTO.getDurationMinutes()));
         mappedExcursion.setTrip(tripService.findById(excursionDTO.getTripId()));
@@ -71,7 +71,7 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     }
 
     @Override
-    public void updateExcursion(ExcursionCreateDTO excursionDTO) {
+    public void updateExcursion(ExcursionManipulationDTO excursionDTO) {
         if (excursionDTO == null) {
             throw new IllegalArgumentException("tried to update NULL excursion");
         }

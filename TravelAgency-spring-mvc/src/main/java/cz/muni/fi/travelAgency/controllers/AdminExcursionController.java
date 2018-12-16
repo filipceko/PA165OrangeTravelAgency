@@ -1,11 +1,11 @@
 package cz.muni.fi.travelAgency.controllers;
 
-import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
+import cz.muni.fi.travelAgency.DTO.ExcursionManipulationDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.facade.ExcursionFacade;
 import cz.muni.fi.travelAgency.facade.TripFacade;
-import cz.muni.fi.travelAgency.validators.ExcursionCreateDTOValidator;
+import cz.muni.fi.travelAgency.validators.ExcursionManipulationDTOValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +22,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author Simona Raucinova
+ */
 @Controller
 @RequestMapping("admin/excursion")
 public class AdminExcursionController {
 
     private final static Logger logger = LoggerFactory.getLogger(AdminTripController.class);
+
+    @Autowired
+    private ExcursionManipulationDTOValidator validator;
 
     @Autowired
     private ExcursionFacade excursionFacade;
@@ -95,22 +100,36 @@ public class AdminExcursionController {
     @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
     public String getEdit(@PathVariable long id, Model model) {
         ExcursionDTO excursionDTO = excursionFacade.findExcursionById(id);
-        excursionDTO.setId(id);
-        excursionDTO.setTrip(excursionDTO.getTrip());
         initDurationInteger(excursionDTO);
-        model.addAttribute("excursion", excursionDTO);
+
+        ExcursionManipulationDTO excursionManipulationDTO = new ExcursionManipulationDTO();
+        excursionManipulationDTO.setId(id);
+        excursionManipulationDTO.setDescription(excursionDTO.getDescription());
+        excursionManipulationDTO.setDestination(excursionDTO.getDestination());
+        excursionManipulationDTO.setTripId(excursionDTO.getId());
+        excursionManipulationDTO.setPrice(excursionDTO.getPrice());
+        excursionManipulationDTO.setDurationMinutes(excursionDTO.getDurationMinutes());
+        excursionManipulationDTO.setExcursionDate(excursionDTO.getExcursionDate());
+
+        model.addAttribute("excursion", excursionManipulationDTO);
         return "admin/excursion/edit";
     }
 
     @RequestMapping(value = "editExcursion/{excursionId}/{tripId}", method = RequestMethod.POST)
     public String submitEdit(@PathVariable long excursionId, @PathVariable long tripId,
-                             @Valid @ModelAttribute("excursion") ExcursionCreateDTO excursion,
+                             @Valid @ModelAttribute("excursion") ExcursionManipulationDTO excursion,
                              BindingResult result, ModelMap model,
                              RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
+
         if (result.hasErrors()) {
-            model.addAttribute("alert_danger", result);
-            model.addAttribute("excursion", excursion);
-            return "/admin/excursion/edit";
+            for (ObjectError ge : result.getGlobalErrors()) {
+                logger.trace("ObjectError: {}", ge);
+            }
+            for (FieldError fe : result.getFieldErrors()) {
+                model.addAttribute(fe.getField() + "_error", true);
+                logger.trace("FieldError: {}", fe);
+            }
+            return "admin/excursion/edit";
         }
 
         excursion.setId(excursionId);
@@ -129,7 +148,7 @@ public class AdminExcursionController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String newProduct(Model model) {
         logger.debug("new()");
-        model.addAttribute("excursionCreate", new ExcursionCreateDTO());
+        model.addAttribute("excursionCreate", new ExcursionManipulationDTO());
         return "admin/excursion/create";
     }
 
@@ -141,13 +160,13 @@ public class AdminExcursionController {
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        if (binder.getTarget() instanceof ExcursionCreateDTO) {
-            binder.addValidators(new ExcursionCreateDTOValidator());
+        if (binder.getTarget() instanceof ExcursionManipulationDTO) {
+            binder.addValidators(validator);
         }
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@Valid @ModelAttribute("excursionCreate") ExcursionCreateDTO formBean, BindingResult bindingResult,
+    public String create(@Valid @ModelAttribute("excursionCreate") ExcursionManipulationDTO formBean, BindingResult bindingResult,
                          Model model, RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
         logger.debug("create(excursionCreate={})", formBean);
 
