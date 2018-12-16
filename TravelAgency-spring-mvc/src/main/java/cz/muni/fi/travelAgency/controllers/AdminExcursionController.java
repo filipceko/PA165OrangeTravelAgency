@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author Simona Raucinova
+ */
 @Controller
 @RequestMapping("admin/excursion")
 public class AdminExcursionController {

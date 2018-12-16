@@ -70,11 +70,16 @@ public class SampleDataLoadingFacade implements DataLoadingFacade {
 
         //CUSTOMERS
         Customer admin = new Customer("Admin", "Admin", "admin@orange.org");
+        admin.setAdmin(true);
         Customer filip = new Customer("Filip", "Cekovsky", "filipceko@gmail.com",
                 "+421908925045", "EB428563", LocalDate.of(1995, 7, 30));
+        filip.setAdmin(false);
         Customer simona = new Customer("Simona", "Raucinova", "simi@rauci.sk");
+        simona.setAdmin(false);
         Customer rajiv = new Customer("Rajiv", "Rajiv", "rajiv@rajiv.com");
+        rajiv.setAdmin(false);
         Customer rithy = new Customer("Rithy", "Li", "rithy.li@gmail.com");
+        rithy.setAdmin(false);
         //persist
         customerService.registerAdmin(admin, "admin");
         customerService.registerCustomer(filip, "ceko");

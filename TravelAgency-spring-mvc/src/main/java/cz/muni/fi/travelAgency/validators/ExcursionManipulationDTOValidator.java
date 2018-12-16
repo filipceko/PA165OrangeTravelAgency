@@ -9,6 +9,9 @@ import org.springframework.validation.Validator;
 
 import java.time.LocalDate;
 
+/**
+ * @author Simona Raucinova
+ */
 @Component
 public class ExcursionManipulationDTOValidator implements Validator {
 
