@@ -90,6 +90,7 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.passportNumber = passportNumber;
         this.dateOfBirth = dateOfBirth;
+        this.admin = false;
     }
 
     /**
