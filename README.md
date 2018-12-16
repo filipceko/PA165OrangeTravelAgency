@@ -6,3 +6,5 @@
 3. Please name your branches as follows : name*/milestone_#/*feature (e.g.: filip/milestone_1/customerDTO)
 
 [TODO list for the 3rd milestone](https://docs.google.com/document/d/1F08szfmaQZs0VdblV9RjFau_HxR3beOioD7bFO89a0I/edit?usp=sharing)
+
+[List of users used for authentication](https://docs.google.com/document/d/1-_JuiBhe9Nqr9h4ifV4_IFIyRYrO_a3oCJAz2CnBTzc/edit?usp=sharing)
