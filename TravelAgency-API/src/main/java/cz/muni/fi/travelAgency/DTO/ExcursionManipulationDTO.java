@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author Rajivv
  */
-public class ExcursionCreateDTO {
+public class ExcursionManipulationDTO {
 
     private Long id;
     /**
@@ -56,7 +56,7 @@ public class ExcursionCreateDTO {
     /**
      * Simple non-parametric constructor.
      */
-    public ExcursionCreateDTO() {
+    public ExcursionManipulationDTO() {
     }
 
     /**
@@ -70,7 +70,7 @@ public class ExcursionCreateDTO {
      * @param tripId            id of trip the excursion was made for
      */
 
-    public ExcursionCreateDTO(@NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, @NotNull Long tripId) {
+    public ExcursionManipulationDTO(@NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, @NotNull Long tripId) {
         this.description = description;
         this.destination = destination;
         this.price = price;
@@ -137,8 +137,8 @@ public class ExcursionCreateDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ExcursionCreateDTO)) return false;
-        ExcursionCreateDTO excursion = (ExcursionCreateDTO) o;
+        if (!(o instanceof ExcursionManipulationDTO)) return false;
+        ExcursionManipulationDTO excursion = (ExcursionManipulationDTO) o;
         return Objects.equals(getDestination(), excursion.getDestination()) &&
                 Objects.equals(getPrice(), excursion.getPrice()) &&
                 Objects.equals(getExcursionDate(), excursion.getExcursionDate()) &&

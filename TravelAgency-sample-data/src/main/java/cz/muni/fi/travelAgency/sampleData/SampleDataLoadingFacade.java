@@ -70,6 +70,7 @@ public class SampleDataLoadingFacade implements DataLoadingFacade {
 
         //CUSTOMERS
         Customer admin = new Customer("Admin", "Admin", "admin@orange.org");
+        admin.setAdmin(true);
         Customer filip = new Customer("Filip", "Cekovsky", "filipceko@gmail.com",
                 "+421908925045", "EB428563", LocalDate.of(1995, 7, 30));
         Customer simona = new Customer("Simona", "Raucinova", "simi@rauci.sk");
