@@ -24,7 +24,6 @@
         ${excursion.destination},
         <!-- TODO link to excursion page -->
     </c:forEach> <br/>
-
        <my:a href="/admin/reservation/delete/${reservation.id}" class="btn btn-primary">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         <f:message key="common.delete"/>
