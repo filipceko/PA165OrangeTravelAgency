@@ -140,7 +140,6 @@ public class ExcursionFacadeTest extends AbstractTestNGSpringContextTests {
 //        excursionFacade.createExcursion(excursionKutaBeachDTO);
 //        Assert.assertEquals(excursionKutaBeachDTO.getId(), excursionKutaBeach.getId());
 
-        //TODO : new test for create with ExcursionCreateDTO
     }
 
     /**
@@ -198,10 +197,10 @@ public class ExcursionFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void updateTest() {
-//        excursionKutaBeachDTO.setId(16L);
-//        excursionFacade.updateExcursion(excursionKutaBeachDTO);
-//        Mockito.verify(excursionService).updateExcursion(Mockito.any(Excursion.class));
-        //TODO : new test for update accepting ExcursionEditDTO
+        excursionKutaBeachDTO.setId(16L);
+        excursionFacade.updateExcursion(excursionKutaBeachDTO);
+        Mockito.verify(excursionService).updateExcursion(Mockito.any(Excursion.class));
+
     }
 
     /**
@@ -214,30 +213,5 @@ public class ExcursionFacadeTest extends AbstractTestNGSpringContextTests {
         Mockito.verify(excursionService).deleteExcursion(Mockito.any(Excursion.class));
     }
 
-//    @Test
-//    public void removeTest2(){
-//        CustomerDTO customerDTO = new CustomerDTO();
-//        customerDTO.setId(1L);
-//        customerDTO.setEmail("test@travelAgency.com");
-//        customerDTO.setName("Jan");
-//        customerDTO.setSurname("Novak");
-//        customerDTO.setAdmin(false);
-//        customerDTO.setPasswordHash("passwordHash");
-//        customerDTO.setDateOfBirth(LocalDate.of(1980,01,01));
-//        customerDTO.setPassportNumber("123AB");
-//
-//        LocalDate from1 = LocalDate.now();
-//        LocalDate to1 = LocalDate.now().plusMonths(1).plusDays(7);
-//        TripDTO tripDTO = new TripDTO();
-//        tr
-//        tripDTO.setFromDate(from1);
-//        tripDTO.setToDate(to1);
-//        tripDTO.setDestination("NY");
-//        tripDTO.setCapacity(20);
-//        tripDTO.setPrice(4000.50);
-//
-//        ExcursionDTO excursionDTO = new ExcursionDTO();
-//        excursionDTO.
-//    }
 
 }
