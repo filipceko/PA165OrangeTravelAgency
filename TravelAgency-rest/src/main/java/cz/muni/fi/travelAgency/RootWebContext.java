@@ -23,6 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * @author Simona Raucinova
+ */
 @EnableWebMvc
 @Configuration
 @Import({ServiceConfiguration.class, SampleDataConfiguration.class})

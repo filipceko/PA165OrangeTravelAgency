@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Simona Raucinova
+ */
 @RestController
 public class MainController {
     final static Logger logger = LoggerFactory.getLogger(MainController.class);

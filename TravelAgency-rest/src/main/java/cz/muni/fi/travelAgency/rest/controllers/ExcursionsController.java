@@ -18,6 +18,10 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * REST controller for excursion.
+ * @author Simona Raucinova
+ */
 @ControllerAdvice
 @RestController
 @RequestMapping(ApiUris.EXCURSIONS_URI)
