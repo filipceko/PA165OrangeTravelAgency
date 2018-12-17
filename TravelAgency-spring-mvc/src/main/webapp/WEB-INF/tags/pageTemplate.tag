@@ -55,11 +55,11 @@
                             <ul class="dropdown-menu">
                                 <li><my:a href="/customer/login"><f:message key="navigation.customer.login"/></my:a></li>
                                 <li><my:a href="/customer/registration"><f:message key="navigation.customer.registration"/></my:a></li>
-                                <li><my:a href="/customer/edit"><f:message key="navigation.customer.edit"/></my:a></li>
-                                <li><my:a href="/customer/logout"><f:message key="navigation.customer.logout"/></my:a></li>
+                                <!--<li><my:a href="/customer/edit"><f:message key="navigation.customer.edit"/></my:a></li>-->
+                                <!--<li><my:a href="/customer/logout"><f:message key="navigation.customer.logout"/></my:a></li>-->
                                 </ul>
                             </li>
-                            <li><my:a href="/shopping/show"><f:message key="navigation.gallery"/></my:a></li>
+                        <!--<li><my:a href="/shopping/show"><f:message key="navigation.gallery"/></my:a></li>-->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><f:message key="navigation.about"/><b
                                     class="caret"></b></a>
@@ -73,25 +73,26 @@
                             </ul>
                         </li>
                     </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
-        <div class="container">
-            <!-- page title -->
-            <c:if test="${not empty title}">
-                <div class="page-header">
-                    <h1><c:out value="${title}"/></h1>
-                </div>
-            </c:if>
-            <!-- authenticated user info -->
-            <c:if test="${not empty authenticatedUser}">
-                <div class="row">
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <c:out value="${authenticatedUser.name} ${authenticatedUser.surname}"/>
-                            </div>
-                        </div>
+                </li>
+                <c:if test="${empty authenticatedUser}"><a class="navbar-brand" href="${pageContext.request.contextPath}/login"><f:message key="navigation.login"/></a></c:if>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container">
+    <!-- page title -->
+    <c:if test="${not empty title}">
+        <div class="page-header">
+            <h1><c:out value="${title}"/></h1>
+        </div>
+    </c:if>
+    <!-- authenticated user info -->
+    <c:if test="${not empty authenticatedUser}">
+        <div class="row">
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <c:out value="${authenticatedUser.name} ${authenticatedUser.surname}"/>
                     </div>
                 </div>
             </c:if>
