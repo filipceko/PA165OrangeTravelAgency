@@ -2,14 +2,17 @@ package cz.muni.fi.travelAgency.controllers;
 
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.facade.TripFacade;
+import cz.muni.fi.travelAgency.validators.TripValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,7 +32,18 @@ public class AdminTripController {
     private final static Logger logger = LoggerFactory.getLogger(AdminTripController.class);
 
     @Autowired
+    private TripValidator validator;
+
+    @Autowired
     private TripFacade tripFacade;
+
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        if (binder.getTarget() instanceof TripDTO) {
+            binder.addValidators(validator);
+        }
+    }
 
     @RequestMapping(value = "list/{filter}", method = RequestMethod.GET)
     public String list(@PathVariable String filter, Model model) {
@@ -83,11 +97,9 @@ public class AdminTripController {
     }
 
     @RequestMapping(value = "editTrip", method = RequestMethod.POST)
-    public String submitEdit(@Valid @ModelAttribute("trip") TripDTO trip, BindingResult result, ModelMap model,
+    public String submitEdit(@Valid @ModelAttribute("trip") TripDTO trip, BindingResult result, Model model,
                              RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
-        if (result.hasErrors()) {
-            model.addAttribute("alert_danger", result);
-            model.addAttribute("trip", trip);
+        if (!resultIsValid(result, model)) {
             return "/admin/trip/edit";
         }
         tripFacade.updateTrip(trip);
@@ -102,15 +114,27 @@ public class AdminTripController {
     }
 
     @RequestMapping(value = "createTrip", method = RequestMethod.POST)
-    public String submitCreate(@Valid @ModelAttribute("trip") TripDTO trip, BindingResult result, ModelMap model,
+    public String submitCreate(@Valid @ModelAttribute("trip") TripDTO trip, BindingResult result, Model model,
                                RedirectAttributes redirectAttributes, UriComponentsBuilder uriBuilder) {
-        if (result.hasErrors()) {
-            model.addAttribute("alert_danger", result);
-            model.addAttribute("trip", trip);
+        if (!resultIsValid(result, model)) {
             return "/admin/trip/create";
         }
         tripFacade.createTrip(trip);
         redirectAttributes.addFlashAttribute("alert_success", "Trip #" + trip.getId() + " created");
         return "redirect:" + uriBuilder.path("/admin/trip/detail/" + trip.getId()).build().encode().toUriString();
+    }
+
+    private boolean resultIsValid(BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            for (ObjectError ge : result.getGlobalErrors()) {
+                logger.trace("ObjectError: {}", ge);
+            }
+            for (FieldError fe : result.getFieldErrors()) {
+                model.addAttribute(fe.getField() + "_error", true);
+                logger.trace("FieldError: {}", fe);
+            }
+            return false;
+        }
+        return true;
     }
 }

@@ -1,5 +1,9 @@
 package cz.muni.fi.travelAgency.DTO;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,26 +24,32 @@ public class TripDTO {
     /**
      * Staring Date of the trip was made;
      */
+    @NotNull
     private LocalDate fromDate;
 
     /**
      * Ending Date of the trip was made;
      */
+    @NotNull
     private LocalDate toDate;
 
     /**
      * Description of the trip was made;
      */
+    @Size(min = 3, max = 500)
     private String destination;
 
     /**
      * Capacity of the trip was made;
      */
+    @Min(1)
+    @Max(2000)
     private int capacity;
 
     /**
      * Price of the trip was made;
      */
+    @Min(0)
     private Double price;
 
     /**
