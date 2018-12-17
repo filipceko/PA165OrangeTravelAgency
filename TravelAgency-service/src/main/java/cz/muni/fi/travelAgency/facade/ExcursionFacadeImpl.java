@@ -1,16 +1,13 @@
 package cz.muni.fi.travelAgency.facade;
 
-import cz.muni.fi.travelAgency.DTO.ExcursionManipulationDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.ExcursionService;
-import cz.muni.fi.travelAgency.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.util.Collection;
 
 /**
@@ -28,9 +25,6 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     @Autowired
     private ExcursionService excursionService;
 
-    @Autowired
-    private TripService tripService;
-
     /**
      * Mapper responsible for mapping DTOs to Entities.
      */
@@ -38,11 +32,8 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     private BeanMappingService beanMappingService;
 
     @Override
-    public void createExcursion(ExcursionManipulationDTO excursionDTO) {
+    public void createExcursion(ExcursionDTO excursionDTO) {
         Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
-        mappedExcursion.setExcursionDuration(Duration.ofMinutes(excursionDTO.getDurationMinutes()));
-        mappedExcursion.setTrip(tripService.findById(excursionDTO.getTripId()));
-
         excursionService.createExcursion(mappedExcursion);
         excursionDTO.setId(mappedExcursion.getId());
     }
@@ -71,7 +62,7 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
     }
 
     @Override
-    public void updateExcursion(ExcursionManipulationDTO excursionDTO) {
+    public void updateExcursion(ExcursionDTO excursionDTO) {
         if (excursionDTO == null) {
             throw new IllegalArgumentException("tried to update NULL excursion");
         }
@@ -79,8 +70,6 @@ public class ExcursionFacadeImpl implements ExcursionFacade {
             throw new IllegalArgumentException("tried to update excursion without ID");
         }
         Excursion mappedExcursion = beanMappingService.mapTo(excursionDTO, Excursion.class);
-        mappedExcursion.setExcursionDuration(Duration.ofMinutes(excursionDTO.getDurationMinutes()));
-        mappedExcursion.setTrip(tripService.findById(excursionDTO.getTripId()));
         excursionService.updateExcursion(mappedExcursion);
     }
 
