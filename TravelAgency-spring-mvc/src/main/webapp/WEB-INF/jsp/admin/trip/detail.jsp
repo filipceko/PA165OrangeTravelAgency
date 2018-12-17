@@ -19,20 +19,24 @@
     <f:message key="trip.to"/>: ${trip.toDate} <br/>
     <f:message key="trip.capacity"/>: ${trip.capacity} <br/>
     <f:message key="trip.price"/>: ${trip.price} <br/>
-    <f:message key="trip.excursions"/>: <c:forEach items="${trip.excursions}" var="excursion">
-        ${excursion.destination},
-        <!-- TODO link to excursion page -->
+    <f:message key="trip.excursions"/>:
+    <c:forEach items="${trip.excursions}" var="excursion">
+        <my:a href="/admin/excursion/detail/${excursion.id}" class="text">
+            <c:out value="${excursion.destination},"/>
+        </my:a>
     </c:forEach> <br/>
-    <f:message key="trip.reservations"/>: <c:forEach items="${trip.reservations}" var="reservation">
-            ${reservation.customer.name} ${reservation.customer.surname},
-            <!-- TODO link to customer page -->
+    <f:message key="trip.reservations"/>:
+        <c:forEach items="${trip.reservations}" var="reservation">
+            <my:a href="/admin/customer/detail/${reservation.customer.id}" class="text">
+                <c:out value="${reservation.customer.name} ${reservation.customer.surname},"/>
+            </my:a>
         </c:forEach> <br/>
     <my:a href="/admin/trip/edit/${trip.id}" class="btn btn-primary">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
         <f:message key="common.edit"/>
     </my:a>
-    <my:a href="/admin/trip/delete/${trip.id}" class="btn btn-primary">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    <my:a href="/admin/trip/delete/${trip.id}" class="btn btn-danger">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
         <f:message key="common.delete"/>
     </my:a>
 </jsp:attribute>

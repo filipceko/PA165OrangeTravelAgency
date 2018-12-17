@@ -18,30 +18,48 @@
          <table>
              <tr>
                  <td><form:label path="id">ID: </form:label></td>
-                 <td><form:label path="id"/></td>
+                 <td>
+                     <form:label path="id"/>
+                     <form:errors path="id" cssClass="help-block"/>
+                 </td>
              </tr>
              <tr>
                  <td><form:label path="destination"><f:message key="trip.destination"/>: </form:label></td>
-                 <td><form:input path="destination"/></td>
+                 <td>
+                     <form:input path="destination"/>
+                     <form:errors path="destination" cssClass="help-block"/>
+                 </td>
              </tr>
              <tr>
                  <td><form:label path="fromDate"><f:message key="trip.from"/>: </form:label></td>
-                 <td><form:input path="fromDate"/></td>
+                 <td>
+                     <form:input path="fromDate"/>
+                     <form:errors path="fromDate" cssClass="help-block"/>
+                 </td>
              </tr>
              <tr>
                  <td><form:label path="toDate"><f:message key="trip.to"/>: </form:label></td>
-                 <td><form:input path="toDate"/></td>
+                 <td>
+                     <form:input path="toDate"/>
+                     <form:errors path="toDate" cssClass="help-block"/>
+                 </td>
              </tr>
              <tr>
                  <td><form:label path="capacity"><f:message key="trip.capacity"/>: </form:label></td>
-                 <td><form:input path="capacity"/></td>
+                 <td>
+                     <form:input path="capacity"/>
+                     <form:errors path="capacity" cssClass="help-block"/>
+                 </td>
              </tr>
              <tr>
                  <td><form:label path="price"><f:message key="trip.price"/>: </form:label></td>
-                 <td><form:input path="price"/></td>
+                 <td>
+                     <form:input path="price"/>
+                     <form:errors path="price" cssClass="help-block"/>
+                 </td>
              </tr>
              <tr>
-                 <td><input type="submit" value="Update"/></td>
+                 <td><input type="submit" value="<f:message key="common.create"/>"/></td>
              </tr>
          </table>
     </form:form>

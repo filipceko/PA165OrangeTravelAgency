@@ -137,7 +137,6 @@ public class TripDaoTest extends AbstractTestNGSpringContextTests {
     @Test
     public void removeTest() {
         tripDao.remove(tripBrno);
-        Assert.assertNull(tripDao.findById(tripBrno.getId()));
         assertThrows(IllegalArgumentException.class, () -> tripDao.remove(new Trip()));
         assertThrows(IllegalArgumentException.class, () -> tripDao.remove(null));
     }
