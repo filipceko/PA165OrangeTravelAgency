@@ -22,7 +22,10 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         <f:message key="trip.filter.future"/>
     </my:a>
-
+        <form:form action="/travel.agency/admin/trip/filterTrips" method="POST">
+            <input type="text" id="filter" name="filter" value="<f:message key="trip.filter.baseValue"/>" />
+            <input type="submit" value="<f:message key="common.filter"/>" />
+        </form:form>
     <table class="table">
         <thead>
         <tr>

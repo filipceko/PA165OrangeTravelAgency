@@ -10,16 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @author Filip Cekovsky
@@ -49,6 +47,15 @@ public class AdminTripController {
         }
         model.addAttribute("trips", trips);
         return "admin/trip/list";
+    }
+
+    @RequestMapping(value = "filterTrips", method = RequestMethod.POST)
+    public String filter(@RequestParam("filter") String filter, Model model) {
+        Collection<TripDTO> trips = tripFacade.getAllTrips();
+        Collection<TripDTO> filtered = trips.stream().filter(tripDTO -> tripDTO.getDestination().contains(filter))
+                .collect(Collectors.toList());
+        model.addAttribute("trips", filtered);
+        return "/admin/trip/list";
     }
 
     @RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
