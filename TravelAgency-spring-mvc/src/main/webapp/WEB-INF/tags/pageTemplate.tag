@@ -56,7 +56,7 @@
                         <li><my:a href="/customer/login"><f:message key="navigation.customer.login"/></my:a></li>
                         <li><my:a href="/customer/registration"><f:message
                                 key="navigation.customer.registration"/></my:a></li>
-                        <li><my:a href="/customer/edit_account"><f:message
+                        <li><my:a href="/customer/edit"><f:message
                                 key="navigation.customer.edit_account"/></my:a></li>
                     </ul>
                 </li>

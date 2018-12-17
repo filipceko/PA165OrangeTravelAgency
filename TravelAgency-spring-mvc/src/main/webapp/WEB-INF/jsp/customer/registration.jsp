@@ -24,7 +24,8 @@
                         <form:input path="name" cssClass="form-control"/>
                         <form:errors path="name" cssClass="help-block"/>
                     </div>
-                </div>      
+                </div>
+
                 <div class="form-group ${surname_error?'has-error':''}">
                     <form:label path="surname" cssClass="col-sm-2 control-label">Surname</form:label>
                         <div class="col-sm-10">
