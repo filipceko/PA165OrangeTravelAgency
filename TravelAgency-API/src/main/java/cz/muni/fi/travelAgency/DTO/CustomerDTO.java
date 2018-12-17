@@ -3,6 +3,10 @@ package cz.muni.fi.travelAgency.DTO;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
 /**
  * DTO for Customer.
@@ -13,26 +17,47 @@ public class CustomerDTO {
 
     private Long id;
 
+    @NotNull
+    @Size(min = 3, max = 20)
     private String name;
 
+    @NotNull
+    @Size(min = 3, max = 20)
     private String surname;
 
+    @Email
     private String email;
 
+    @NotNull
+    @Size(min = 8, max = 30)
     private String passwordHash;
 
     private boolean admin;
 
     private String phoneNumber;
 
+    @NotNull
     private String passportNumber;
 
+    @NotNull
+    @Past
     private LocalDate dateOfBirth;
 
     private Set<ReservationDTO> reservationDTOS = new HashSet<>();
 
-
     public CustomerDTO() {
+    }
+
+    public CustomerDTO(@NotNull String name, @NotNull String surname, @Email String email, @NotNull String passwordHash,
+            String phoneNumber, @NotNull String passportNumber, @NotNull LocalDate dateOfBirth) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.phoneNumber = phoneNumber;
+        this.passportNumber = passportNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.admin = false;
     }
 
     public Long getId() {
@@ -117,13 +142,21 @@ public class CustomerDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CustomerDTO)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CustomerDTO)) {
+            return false;
+        }
 
         CustomerDTO that = (CustomerDTO) o;
 
-        if (!getName().equals(that.getName())) return false;
-        if (!getSurname().equals(that.getSurname())) return false;
+        if (!getName().equals(that.getName())) {
+            return false;
+        }
+        if (!getSurname().equals(that.getSurname())) {
+            return false;
+        }
         return getEmail().equals(that.getEmail());
     }
 

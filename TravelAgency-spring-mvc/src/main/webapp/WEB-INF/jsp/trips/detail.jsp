@@ -18,7 +18,7 @@
                 <h3><f:message key="trip.from"/>: ${trip.fromDate} </h3>
                 <h3><f:message key="trip.to"/>: ${trip.toDate} </h3>
                 <h3><f:message key="trip.capacity"/>: ${trip.capacity} </h3>
-                <h3><f:message key="trip.price"/>: ${trip.price} </h3>
+                <h3><f:message key="trip.price"/>: € ${trip.price} </h3>
             </div>
             <div class="col-xs-6">
                 <table class="table">
