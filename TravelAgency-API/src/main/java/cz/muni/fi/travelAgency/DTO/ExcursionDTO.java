@@ -58,8 +58,6 @@ public class ExcursionDTO {
      */
     private String durationString;
 
-    private int durationMinutes;
-
     /**
      * Trip the excursion was made for.
      */
@@ -74,21 +72,40 @@ public class ExcursionDTO {
     /**
      * Parametric constructor with trip and with ID
      *
-     * @param description       of this excursion
-     * @param destination       of this excursion
-     * @param price             of this excursion
+     * @param id                of this excursion
      * @param trip              the excursion is for
+     * @param destination       of this excursion
      * @param excursionDate     of this excursion
      * @param excursionDuration of this excursion
-     * @param id                of this excursion
+     * @param price             of this excursion
+     * @param description       of this excursion
      */
-    public ExcursionDTO(@NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, @NotNull TripDTO trip, Long id) {
+    public ExcursionDTO(Long id, @NotNull TripDTO trip, @NotNull String destination, @NotNull LocalDate excursionDate,
+                        @NotNull Duration excursionDuration, @NotNull Double price, @NotNull String description) {
+        this(trip, destination, excursionDate, excursionDuration, price, description);
+        this.id = id;
+    }
+
+    /**
+     * Parametric constructor with trip and without ID
+     *
+     * @param trip              the excursion is for
+     * @param destination       of this excursion
+     * @param excursionDate     of this excursion
+     * @param excursionDuration of this excursion
+     * @param price             of this excursion
+     * @param description       of this excursion
+     */
+    public ExcursionDTO(TripDTO trip, @NotNull @Size(min = 3, max = 500) String destination, @NotNull LocalDate excursionDate,
+                        @NotNull Duration excursionDuration, @NotNull @Min(0) Double price,
+                        @NotNull @Size(min = 3, max = 500) String description) {
         this.description = description;
         this.destination = destination;
         this.price = price;
         this.excursionDate = excursionDate;
         this.excursionDuration = excursionDuration;
-        this.id = id;
+        this.trip = trip;
+        this.durationString = formatDuration(excursionDuration);
     }
 
     public Long getId() {
@@ -138,6 +155,7 @@ public class ExcursionDTO {
 
     public void setExcursionDuration(Duration excursionDuration) {
         this.excursionDuration = excursionDuration;
+        this.durationString = formatDuration(excursionDuration);
     }
 
     public String getDurationString() {
@@ -146,14 +164,7 @@ public class ExcursionDTO {
 
     public void setDurationString(String durationString) {
         this.durationString = durationString;
-    }
 
-    public int getDurationMinutes() {
-        return durationMinutes;
-    }
-
-    public void setDurationMinutes(int durationMinutes) {
-        this.durationMinutes = durationMinutes;
     }
 
     public TripDTO getTrip() {
@@ -179,5 +190,12 @@ public class ExcursionDTO {
     @Override
     public int hashCode() {
         return Objects.hash(getDestination(), getPrice(), getExcursionDate(), getExcursionDuration(), getTrip());
+    }
+
+    private String formatDuration(Duration duration) {
+        return duration.toString()
+                .substring(2)
+                .replaceAll("(\\d[HMS])(?!$)", "$1 ")
+                .toLowerCase();
     }
 }

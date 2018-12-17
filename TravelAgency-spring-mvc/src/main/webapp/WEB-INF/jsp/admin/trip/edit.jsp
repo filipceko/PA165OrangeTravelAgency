@@ -18,7 +18,7 @@
          <table>
              <tr>
                  <td><form:label path="id">ID: </form:label></td>
-                 <td><form:label path="id"/></td>
+                 <td><form:input path="id" readonly="true"/></td>
              </tr>
              <tr>
                  <td><form:label path="destination"><f:message key="trip.destination"/>: </form:label></td>
