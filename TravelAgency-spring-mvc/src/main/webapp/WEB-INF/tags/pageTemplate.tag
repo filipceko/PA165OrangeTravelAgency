@@ -97,12 +97,11 @@
         </div>
     </c:if>
 
-
     <!-- alerts -->
     <c:if test="${not empty alert_danger}">
-        <div class="alert alert-danger" role="alert"></div>
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <c:out value="${alert_danger}"/>
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <c:out value="${alert_danger}"/></div>
     </c:if>
     <c:if test="${not empty alert_info}">
         <div class="alert alert-info" role="alert"><c:out value="${alert_info}"/></div>

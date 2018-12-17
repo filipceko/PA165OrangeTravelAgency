@@ -3,7 +3,9 @@ package cz.muni.fi.travelAgency.security;
 import cz.muni.fi.travelAgency.DTO.CustomerAuthenticateDTO;
 import cz.muni.fi.travelAgency.DTO.CustomerDTO;
 import cz.muni.fi.travelAgency.facade.CustomerFacade;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -12,12 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Base64;
 
-import org.slf4j.Logger;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 
 @WebFilter(urlPatterns = {"/admin/*"})
-public class ProtectFilter implements Filter{
+public class ProtectFilter implements Filter {
 
     private final static Logger logger = LoggerFactory.getLogger(ProtectFilter.class);
 

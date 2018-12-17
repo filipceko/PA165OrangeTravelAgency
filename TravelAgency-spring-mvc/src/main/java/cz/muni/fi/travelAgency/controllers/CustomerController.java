@@ -7,7 +7,6 @@ package cz.muni.fi.travelAgency.controllers;
 
 import cz.muni.fi.travelAgency.DTO.CustomerCreateDTO;
 import cz.muni.fi.travelAgency.facade.CustomerFacade;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- *
  * @author Rajivv
  */
 @Controller
@@ -25,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class CustomerController {
 
     private final static Logger logger = LoggerFactory.getLogger(AdminCustomerController.class);
+
     @Autowired
     private CustomerFacade customerFacade;
 

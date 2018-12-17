@@ -33,7 +33,7 @@ public class AdminTripController {
     @Autowired
     private TripFacade tripFacade;
 
-    @RequestMapping(value = "/list/{filter}", method = RequestMethod.GET)
+    @RequestMapping(value = "list/{filter}", method = RequestMethod.GET)
     public String list(@PathVariable String filter, Model model) {
         Collection<TripDTO> trips;
         switch (filter) {

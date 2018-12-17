@@ -1,8 +1,6 @@
 package cz.muni.fi.travelAgency.controllers;
 
-import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
-import cz.muni.fi.travelAgency.facade.ExcursionFacade;
 import cz.muni.fi.travelAgency.facade.TripFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.io.IOException;
-import java.util.Collection;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Collection;
 
 /**
  * Provides the public shopping interface.
