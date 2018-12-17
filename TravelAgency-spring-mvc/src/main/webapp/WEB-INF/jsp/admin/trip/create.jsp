@@ -41,7 +41,7 @@
                  <td><form:input path="price"/></td>
              </tr>
              <tr>
-                 <td><input type="submit" value="Update"/></td>
+                 <td><input type="submit" value="<f:message key="common.create"/>"/></td>
              </tr>
          </table>
     </form:form>
