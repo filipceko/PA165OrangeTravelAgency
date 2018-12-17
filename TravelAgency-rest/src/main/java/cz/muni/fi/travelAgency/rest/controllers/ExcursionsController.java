@@ -3,6 +3,7 @@ package cz.muni.fi.travelAgency.rest.controllers;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionManipulationDTO;
 import cz.muni.fi.travelAgency.facade.ExcursionFacade;
+import cz.muni.fi.travelAgency.facade.TripFacade;
 import cz.muni.fi.travelAgency.rest.ApiUris;
 import cz.muni.fi.travelAgency.rest.exceptions.ResourceAlreadyExistingException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.security.InvalidParameterException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class ExcursionsController {
 
     @Inject
     private ExcursionFacade excursionFacade;
+
+    @Inject
+    private TripFacade tripFacade;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final List<ExcursionDTO> getAllExcursions() {
@@ -62,10 +67,15 @@ public class ExcursionsController {
     public final ExcursionDTO createExcursion(@RequestBody ExcursionManipulationDTO excursion) throws Exception {
 
         logger.debug("rest createExcursion()");
-
+        ExcursionDTO excursionDTO = new ExcursionDTO(tripFacade.getTripById(excursion.getTripId()),
+                excursion.getDestination(),
+                excursion.getExcursionDate(),
+                Duration.parse("PT" + excursion.getDurationMinutes() + "M"),
+                excursion.getPrice(),
+                excursion.getDescription());
         try {
-            excursionFacade.createExcursion(excursion);
-            return excursionFacade.findExcursionById(excursion.getId());
+            excursionFacade.createExcursion(excursionDTO);
+            return excursionFacade.findExcursionById(excursionDTO.getId());
         } catch (Exception ex) {
             throw new ResourceAlreadyExistingException();
         }
@@ -77,9 +87,17 @@ public class ExcursionsController {
 
         logger.debug("rest editExcursion()");
 
+        ExcursionDTO excursionDTO = new ExcursionDTO(
+                excursion.getId(),
+                tripFacade.getTripById(excursion.getTripId()),
+                excursion.getDestination(),
+                excursion.getExcursionDate(),
+                Duration.parse("PT" + excursion.getDurationMinutes() + "M"),
+                excursion.getPrice(),
+                excursion.getDescription());
         try {
-            excursionFacade.updateExcursion(excursion);
-            return excursionFacade.findExcursionById(excursion.getId());
+            excursionFacade.updateExcursion(excursionDTO);
+            return excursionFacade.findExcursionById(excursionDTO.getId());
         } catch (Exception ex) {
             throw new InvalidParameterException();
         }
