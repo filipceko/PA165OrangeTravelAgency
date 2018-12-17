@@ -14,7 +14,6 @@
 
 <my:pageTemplate title="Reservation">
 <jsp:attribute name="body">
-
     <table class="table">
         <thead>
         <tr>
@@ -39,11 +38,6 @@
                 <td><c:out value="${reservation.trip.capacity}"/></td>
                 <td><c:out value="${reservation.customer.name}"/></td>
                 <td><c:out value="${reservation.customer.email}"/></td>
-
-                <td><my:a href="/admin/reservation/detail/${reservation.id}" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        <f:message key="common.delete"/>
-                    </my:a></td>
             </tr>
         </c:forEach>
         </tbody>
