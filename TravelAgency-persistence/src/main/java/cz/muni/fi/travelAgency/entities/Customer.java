@@ -83,7 +83,7 @@ public class Customer {
      * All fields constructor
      */
     public Customer(@NotNull String name, @NotNull String surname, @NotNull String email,
-                    String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
+            String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -282,12 +282,16 @@ public class Customer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Customer)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Customer)) {
+            return false;
+        }
         Customer customer = (Customer) o;
-        return Objects.equals(getName(), customer.getName()) &&
-                Objects.equals(getSurname(), customer.getSurname()) &&
-                Objects.equals(getEmail(), customer.getEmail());
+        return Objects.equals(getName(), customer.getName())
+                && Objects.equals(getSurname(), customer.getSurname())
+                && Objects.equals(getEmail(), customer.getEmail());
     }
 
     @Override

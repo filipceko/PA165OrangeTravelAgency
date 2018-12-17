@@ -83,7 +83,7 @@ public class CustomerController {
         return "redirect:" + uriBuilder.path("customer/login" + createDTO.getId()).build().encode().toUriString();
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String getEdit(@PathVariable long id, Model model) {
         CustomerDTO customerDTO = customerFacade.findCustomerById(id);
         CustomerCreateDTO createDTO = new CustomerCreateDTO(
@@ -94,8 +94,8 @@ public class CustomerController {
                 customerDTO.getPhoneNumber(),
                 customerDTO.getPassportNumber(),
                 customerDTO.getDateOfBirth());
-        model.addAttribute("customerSetting", createDTO);
-        return "customer/setting";
+        model.addAttribute("customer", createDTO);
+        return "customer/edit";
     }
 
     @RequestMapping(value = "/editCustomer", method = RequestMethod.POST)
@@ -103,7 +103,7 @@ public class CustomerController {
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes,
             UriComponentsBuilder uriBuilder) {
         if (!resultIsValid(bindingResult, model)) {
-            return "customer/setting";
+            return "customer/edit";
         }
         CustomerDTO customerDTO = new CustomerDTO(
                 createDTO.getName(),
@@ -115,7 +115,7 @@ public class CustomerController {
                 createDTO.getDateOfBirth());
         customerFacade.updateCustomer(customerDTO);
         redirectAttributes.addFlashAttribute("alert_success", "Customer" + createDTO.getId() + " updated");
-        return "redirect:" + uriBuilder.path("customer/setting" + createDTO.getId()).build().encode().toUriString();
+        return "redirect:" + uriBuilder.path("customer/edit" + createDTO.getId()).build().encode().toUriString();
 
     }
     

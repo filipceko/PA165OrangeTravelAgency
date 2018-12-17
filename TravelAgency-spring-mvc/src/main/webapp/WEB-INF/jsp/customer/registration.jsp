@@ -14,7 +14,7 @@
 <my:pageTemplate title="${title}">
     <jsp:attribute name="body">
         <body>
-            <form:form method="post" action="${pageContext.request.contextPath}/customer/registration"
+            <form:form method="post" action="${pageContext.request.contextPath}/customer/create"
                        modelAttribute="customerCreate" cssClass="form-horizontal">
 
                 <div class="form-group ${name_error?'has-error':''}">

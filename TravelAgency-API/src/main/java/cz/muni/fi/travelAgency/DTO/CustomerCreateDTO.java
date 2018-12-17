@@ -23,7 +23,7 @@ public class CustomerCreateDTO {
     @Size(min = 3, max = 20)
     private String surname;
 
-    @Email
+    @NotNull
     private String email;
 
     @NotNull
@@ -32,11 +32,11 @@ public class CustomerCreateDTO {
 
     private String phoneNumber;
 
-    @NotNull
+    
     private String passportNumber;
 
-    @NotNull
-    @Past
+
+ 
     private LocalDate dateOfBirth;
 
     public CustomerCreateDTO() {
@@ -44,7 +44,7 @@ public class CustomerCreateDTO {
     }
 
     public CustomerCreateDTO(@NotNull String name, @NotNull String surname, @Email String email, @NotNull String password,
-            String phoneNumber, @NotNull String passportNumber, @NotNull LocalDate dateOfBirth) {
+            String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
         this.name = name;
         this.surname = surname;
         this.email = email;

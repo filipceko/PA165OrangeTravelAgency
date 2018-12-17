@@ -10,9 +10,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<my:pageTemplate title="Setting Account ${customer.name}">
+<my:pageTemplate title="Edit Account ${customer.name}">
     <jsp:attribute name="body">
-        <form:form method="POST" action="/travel.agency/customer/settingAccount/${customer.id}" modelAttribute="customer">
+        <form:form method="POST" action="/travel.agency/customer/editCustomer/" modelAttribute="customer">
             <table>
                 <tr>
                     <td><form:label path="name"><f:message key="customer.name"/>: </form:label></td>

@@ -55,8 +55,7 @@
                             <ul class="dropdown-menu">
                                 <li><my:a href="/customer/login"><f:message key="navigation.customer.login"/></my:a></li>
                                 <li><my:a href="/customer/registration"><f:message key="navigation.customer.registration"/></my:a></li>
-                                <li><my:a href="/customer/setting"><f:message key="navigation.customer.setting_account"/></my:a></li>
-                                <li><my:a href="/customer/reservation_overview"><f:message key="navigation.customer.reservation_overview"/></my:a></li>
+                                <li><my:a href="/customer/edit"><f:message key="navigation.customer.edit"/></my:a></li>
                                 <li><my:a href="/customer/logout"><f:message key="navigation.customer.logout"/></my:a></li>
                                 </ul>
                             </li>
