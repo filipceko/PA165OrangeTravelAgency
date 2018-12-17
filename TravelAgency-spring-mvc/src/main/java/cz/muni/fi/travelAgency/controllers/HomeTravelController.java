@@ -27,4 +27,9 @@ public class HomeTravelController {
         model.addAttribute("trips", trips);
         return "/home";
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(){
+        return "/home";
+    }
 }

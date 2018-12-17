@@ -60,7 +60,7 @@
                                 key="navigation.customer.edit_account"/></my:a></li>
                     </ul>
                 </li>
-                <li><my:a href="/shopping/show"><f:message key="navigation.gallery"/></my:a></li>
+                <!-- <li> <my:a href="/shopping/show"><f:message key="navigation.gallery"/></my:a></li>-->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><f:message key="navigation.about"/><b
                             class="caret"></b></a>
@@ -73,6 +73,7 @@
                         <li><a href="https://maven.apache.org/">Maven</a></li>
                     </ul>
                 </li>
+                <c:if test="${empty authenticatedUser}"><a class="navbar-brand" href="${pageContext.request.contextPath}/login"><f:message key="navigation.login"/></a></c:if>
             </ul>
         </div><!--/.nav-collapse -->
     </div>

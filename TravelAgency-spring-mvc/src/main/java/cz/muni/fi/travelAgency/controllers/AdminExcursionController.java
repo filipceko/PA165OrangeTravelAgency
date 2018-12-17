@@ -65,8 +65,8 @@ public class AdminExcursionController {
                 manipulationDTO.getPrice(),
                 manipulationDTO.getDescription());
         excursionFacade.createExcursion(excursionDTO);
-        redirectAttributes.addFlashAttribute("alert_success", "Excursion " + manipulationDTO.getId() + " was created");
-        return "redirect:" + uriBuilder.path("/admin/excursion/detail/" + manipulationDTO.getId()).build().encode().toUriString();
+        redirectAttributes.addFlashAttribute("alert_success", "Excursion " + excursionDTO.getId() + " was created");
+        return "redirect:" + uriBuilder.path("/admin/excursion/detail/" + excursionDTO.getId()).build().encode().toUriString();
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
