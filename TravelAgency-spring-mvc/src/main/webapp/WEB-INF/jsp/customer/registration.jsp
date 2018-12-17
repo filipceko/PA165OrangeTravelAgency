@@ -17,7 +17,6 @@
             <form:form method="post" action="${pageContext.request.contextPath}/customer/registration"
                        modelAttribute="customerCreate" cssClass="form-horizontal">
 
-
                 <div class="form-group ${name_error?'has-error':''}">
                     <form:label path="name" cssClass="col-sm-2 control-label">Name</form:label>
                         <div class="col-sm-10">
@@ -69,14 +68,10 @@
                         <form:errors path="password" cssClass="help-block"/>
                     </div>
                 </div>   
-                <div class="form-group ${name_error?'has-error':''}">
-                    <form:label path="name" cssClass="col-sm-2 control-label">Name</form:label>
-                        <div class="col-sm-10">
-                        <form:input path="name" cssClass="form-control"/>
-                        <form:errors path="name" cssClass="help-block"/>
-                    </div>
-                </div>              
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+                    <p class="text-center">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </p>
+
             </form:form>
         </body>
     </jsp:attribute>

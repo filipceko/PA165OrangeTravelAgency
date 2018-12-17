@@ -13,6 +13,8 @@ import java.time.LocalDate;
  */
 public class CustomerCreateDTO {
 
+    private Long id;
+
     @NotNull
     @Size(min = 3, max = 20)
     private String name;
@@ -36,6 +38,21 @@ public class CustomerCreateDTO {
     @NotNull
     @Past
     private LocalDate dateOfBirth;
+
+    public CustomerCreateDTO() {
+
+    }
+
+    public CustomerCreateDTO(@NotNull String name, @NotNull String surname, @Email String email, @NotNull String password,
+            String phoneNumber, @NotNull String passportNumber, @NotNull LocalDate dateOfBirth) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.passportNumber = passportNumber;
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public String getName() {
         return name;
@@ -93,15 +110,31 @@ public class CustomerCreateDTO {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CustomerCreateDTO)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CustomerCreateDTO)) {
+            return false;
+        }
 
         CustomerCreateDTO that = (CustomerCreateDTO) o;
 
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (getSurname() != null ? !getSurname().equals(that.getSurname()) : that.getSurname() != null) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) {
+            return false;
+        }
+        if (getSurname() != null ? !getSurname().equals(that.getSurname()) : that.getSurname() != null) {
+            return false;
+        }
         return getEmail() != null ? getEmail().equals(that.getEmail()) : that.getEmail() == null;
     }
 
