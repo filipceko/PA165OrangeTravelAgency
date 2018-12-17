@@ -36,7 +36,7 @@ public class ExcursionServiceImpl implements ExcursionService {
             throw new IllegalArgumentException("tried to create NULL excursion");
         }
         try {
-             excursionDao.create(excursion);
+            excursionDao.create(excursion);
         } catch (IllegalArgumentException exp) {
             throw new DataAccessLayerException(exp.getMessage());
         }

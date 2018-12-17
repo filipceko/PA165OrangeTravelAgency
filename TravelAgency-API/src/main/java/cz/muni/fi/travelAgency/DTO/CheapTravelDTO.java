@@ -6,6 +6,8 @@ import java.util.Objects;
 
 /**
  * Data Transfer some sub-set of trips and excursions.
+ *
+ * @author Filip Cekovsky
  */
 public class CheapTravelDTO {
 

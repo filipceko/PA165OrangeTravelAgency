@@ -9,12 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * Implementation of {@link ExcursionDao}
@@ -32,9 +27,6 @@ public class ExcursionDaoImpl implements ExcursionDao {
 
     @Autowired
     private ReservationDao reservationDao;
-
-    @Autowired
-    private TripDao tripDao;
 
     @Override
     public void create(Excursion excursion) {

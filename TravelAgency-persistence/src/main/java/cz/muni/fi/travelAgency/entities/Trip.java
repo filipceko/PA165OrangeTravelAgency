@@ -62,7 +62,7 @@ public class Trip {
     /**
      * Excursions assigned to trip.
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip", cascade = CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip", cascade = CascadeType.ALL)
     private Collection<Excursion> excursions = new HashSet<>();
 
     /**

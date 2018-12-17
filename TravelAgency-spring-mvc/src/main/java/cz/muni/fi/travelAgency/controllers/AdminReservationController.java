@@ -8,16 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,7 +26,7 @@ public class AdminReservationController {
     @Autowired
     private ReservationFacade reservationFacade;
 
-    @RequestMapping(value = "/list/{filter}", method = RequestMethod.GET)
+    @RequestMapping(value = "list/{filter}", method = RequestMethod.GET)
     public String list(@PathVariable String filter, Model model) {
         Collection<ReservationDTO> reservations;
         switch (filter) {
@@ -52,13 +48,13 @@ public class AdminReservationController {
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable long id, Model model, UriComponentsBuilder uriBuilder, RedirectAttributes attributes){
+    public String delete(@PathVariable long id, Model model, UriComponentsBuilder uriBuilder, RedirectAttributes attributes) {
         try {
             reservationFacade.delete(reservationFacade.getById(id));
-            attributes.addFlashAttribute("alert_success", "Reservation number "+id+" was canceled.");
+            attributes.addFlashAttribute("alert_success", "Reservation number " + id + " was canceled.");
         } catch (DataAccessException ex) {
             logger.warn("cannot remove Reservation {}", id);
-            attributes.addFlashAttribute("alert_danger", "Reservation number "+id+" was not canceled. "+ex.getMessage());
+            attributes.addFlashAttribute("alert_danger", "Reservation number " + id + " was not canceled. " + ex.getMessage());
         }
         return "redirect:" + uriBuilder.path("/admin/reservation/list/all").build().encode().toUriString();
     }
