@@ -67,6 +67,9 @@ public class TripDaoImpl implements TripDao {
         if (findById(trip.getId()) == null) {
             throw new IllegalArgumentException("Tried to delete trip that was not saved");
         }
-        em.remove(em.merge(trip));
+        Long id = trip.getId();
+        em.createQuery("delete from Reservation r where r.trip.id = :id").setParameter("id", id).executeUpdate();
+        em.createQuery("delete from Excursion e where e.trip.id = :id").setParameter("id", id).executeUpdate();
+        em.createQuery("delete from Trip t where t.id = :id").setParameter("id", id).executeUpdate();
     }
 }
