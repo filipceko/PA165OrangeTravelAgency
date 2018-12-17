@@ -101,6 +101,7 @@
         <module>TravelAgency-API</module>
         <module>TravelAgency-sample-data</module>
         <module>TravelAgency-spring-mvc</module>
+        <module>TravelAgency-rest</module>
     </modules>
 
 
