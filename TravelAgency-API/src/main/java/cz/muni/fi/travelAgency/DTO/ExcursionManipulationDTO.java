@@ -45,7 +45,7 @@ public class ExcursionManipulationDTO {
     /**
      * Pretty print representation of duration.
      */
-    private int durationMinutes;
+    private long durationMinutes;
 
     /**
      * Trip the excursion was made for.
@@ -66,15 +66,17 @@ public class ExcursionManipulationDTO {
      * @param destination       of this excursion
      * @param price             of this excursion
      * @param excursionDate     of this excursion
-     * @param excursionDuration of this excursion
+     * @param durationInMinutes of this excursion
      * @param tripId            id of trip the excursion was made for
      */
 
-    public ExcursionManipulationDTO(@NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull Duration excursionDuration, @NotNull Long tripId) {
+    public ExcursionManipulationDTO(Long id, @NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull long durationInMinutes, @NotNull Long tripId) {
+        this.id = id;
         this.description = description;
         this.destination = destination;
         this.price = price;
         this.excursionDate = excursionDate;
+        this.durationMinutes = durationInMinutes;
         this.tripId = tripId;
     }
 
@@ -118,11 +120,11 @@ public class ExcursionManipulationDTO {
         this.tripId = tripId;
     }
 
-    public int getDurationMinutes() {
+    public long getDurationMinutes() {
         return durationMinutes;
     }
 
-    public void setDurationMinutes(int durationMinutes) {
+    public void setDurationMinutes(long durationMinutes) {
         this.durationMinutes = durationMinutes;
     }
 
