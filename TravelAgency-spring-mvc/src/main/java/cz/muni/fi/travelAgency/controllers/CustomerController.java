@@ -80,7 +80,7 @@ public class CustomerController {
                 createDTO.getDateOfBirth());
         customerFacade.registerCustomer(customerDTO, createDTO.getPassword());
         redirectAttributes.addFlashAttribute("alert_success", "Customer " + createDTO.getId() + " was created");
-        return "redirect:" + uriBuilder.path("customer/login" + createDTO.getId()).build().encode().toUriString();
+        return "redirect:" + uriBuilder.path("/").build().encode().toUriString();
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
