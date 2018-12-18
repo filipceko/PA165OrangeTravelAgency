@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/customer")
 public class CustomerController {
 
-    private final static Logger logger = LoggerFactory.getLogger(AdminCustomerController.class);
+    private final static Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
     private CustomerFacade customerFacade;
