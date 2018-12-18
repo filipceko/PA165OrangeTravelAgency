@@ -44,6 +44,9 @@
                         </c:forEach>
                     </tbody>
                 </table>
+                <my:a href="/reservation/create/${trip.id}" class="btn btn-primary">
+                <f:message key="trip.book"/>
+            </my:a>
             </div>
         </div>
     </jsp:attribute>

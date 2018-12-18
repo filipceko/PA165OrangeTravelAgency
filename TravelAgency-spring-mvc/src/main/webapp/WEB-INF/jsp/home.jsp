@@ -31,7 +31,7 @@
                 <p>Available : <c:out value="${trip.capacity}" /></p>
                 <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
                 <p><a class="btn btn-secondary" href="${pageContext.request.contextPath}/trips/detail/${trip.id}" role="button">View details &raquo;</a></p>
-             </div>
+            </div>
          </c:forEach>
         <hr>
 

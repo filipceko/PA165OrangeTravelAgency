@@ -2,6 +2,8 @@ package cz.muni.fi.travelAgency.DTO;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -9,12 +11,21 @@ import java.util.Set;
  *
  * @author Filip Cekovsky
  */
-public class ReservationDTO extends ReservationCreateDTO {
+public class ReservationDTO {
 
     /**
      * ID of the reservation
      */
     private Long id;
+
+    @NotNull
+    private CustomerDTO customer;
+
+    @NotNull
+    private TripDTO trip;
+
+    @NotNull
+    private Collection<ExcursionDTO> excursions;
 
     /**
      * Date the reservation was made;
@@ -29,19 +40,6 @@ public class ReservationDTO extends ReservationCreateDTO {
     }
 
     /**
-     * constructor based on {@link ReservationCreateDTO} as parent object
-     *
-     * @param parent      ReservationCreateDTO that was used to create this reservation
-     * @param id          this reservation obtained
-     * @param reserveDate date the reservation was created
-     */
-    public ReservationDTO(ReservationCreateDTO parent, Long id, @NotNull LocalDate reserveDate) {
-        super(parent.getCustomer(), parent.getTrip(), parent.getExcursions());
-        this.id = id;
-        this.reserveDate = reserveDate;
-    }
-
-    /**
      * Constructor without excursions and with ID
      *
      * @param customer    who made this reservation
@@ -50,7 +48,8 @@ public class ReservationDTO extends ReservationCreateDTO {
      * @param reserveDate the date this reservation was made
      */
     public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, Long id, @NotNull LocalDate reserveDate) {
-        super(customer, trip);
+        this.customer = customer;
+        this.trip = trip;
         this.id = id;
         this.reserveDate = reserveDate;
     }
@@ -65,7 +64,9 @@ public class ReservationDTO extends ReservationCreateDTO {
      * @param reserveDate the date this reservation was made
      */
     public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, @NotNull Set<ExcursionDTO> excursions, Long id, @NotNull LocalDate reserveDate) {
-        super(customer, trip, excursions);
+        this.customer = customer;
+        this.trip = trip;
+        this.excursions = excursions;
         this.id = id;
         this.reserveDate = reserveDate;
     }
@@ -78,7 +79,8 @@ public class ReservationDTO extends ReservationCreateDTO {
      * @param reserveDate tha date this reservation was made
      */
     public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, @NotNull LocalDate reserveDate) {
-        super(customer, trip);
+        this.customer = customer;
+        this.trip = trip;
         this.reserveDate = reserveDate;
     }
 
@@ -91,8 +93,34 @@ public class ReservationDTO extends ReservationCreateDTO {
      * @param reserveDate the date this reservation was made
      */
     public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, @NotNull Set<ExcursionDTO> excursions, @NotNull LocalDate reserveDate) {
-        super(customer, trip, excursions);
+        this.customer = customer;
+        this.trip = trip;
+        this.excursions = excursions;
         this.reserveDate = reserveDate;
+    }
+
+    public CustomerDTO getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerDTO customer) {
+        this.customer = customer;
+    }
+
+    public TripDTO getTrip() {
+        return trip;
+    }
+
+    public void setTrip(TripDTO trip) {
+        this.trip = trip;
+    }
+
+    public Collection<ExcursionDTO> getExcursions() {
+        return excursions;
+    }
+
+    public void setExcursions(Collection<ExcursionDTO> excursions) {
+        this.excursions = excursions;
     }
 
     public Long getId() {
@@ -115,11 +143,13 @@ public class ReservationDTO extends ReservationCreateDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ReservationDTO)) return false;
-        return super.equals(o);
+        ReservationDTO that = (ReservationDTO) o;
+        return getCustomer().equals(that.getCustomer()) &&
+                getTrip().equals(that.getTrip());
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(getCustomer(), getTrip());
     }
 }

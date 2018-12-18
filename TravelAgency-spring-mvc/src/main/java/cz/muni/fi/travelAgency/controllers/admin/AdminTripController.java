@@ -1,4 +1,4 @@
-package cz.muni.fi.travelAgency.controllers;
+package cz.muni.fi.travelAgency.controllers.admin;
 
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.facade.TripFacade;
