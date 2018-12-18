@@ -1,9 +1,10 @@
 package cz.muni.fi.travelAgency.DTO;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Data Transfer Object for Reservation Creation.
@@ -12,22 +13,16 @@ import java.util.Set;
  */
 public class ReservationCreateDTO {
     /**
-     * Customer who created the reservation.
-     */
-    @NotNull
-    private CustomerDTO customer;
-
-    /**
      * Trip the reservation was made for.
      */
     @NotNull
-    private TripDTO trip;
+    private Long tripId;
 
     /**
      * Excursions booked for the reservation.
      */
     @NotNull
-    private Set<ExcursionDTO> excursions = new HashSet<>();
+    private List<String> excursions = new LinkedList<>();
 
     /**
      * Simple non-parametric constructor.
@@ -35,79 +30,27 @@ public class ReservationCreateDTO {
     public ReservationCreateDTO() {
     }
 
-    /**
-     * Constructor without excursions.
-     *
-     * @param customer who created the reservation
-     * @param trip     the reservation was made for
-     */
-    public ReservationCreateDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip) {
-        this.customer = customer;
-        this.trip = trip;
+    public ReservationCreateDTO(@NotNull Long tripId, @NotNull Collection<ExcursionDTO> excursions) {
+        this.tripId = tripId;
+        for (ExcursionDTO excursionDTO : excursions){
+            this.excursions.add(excursionDTO.getDestination());
+        }
     }
 
-    /**
-     * Constructor with excursions.
-     *
-     * @param customer   who created the reservation
-     * @param trip       the reservation was made for
-     * @param excursions booked with this reservation
-     */
-    public ReservationCreateDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, @NotNull Set<ExcursionDTO> excursions) {
-        this(customer, trip);
-        this.excursions = excursions;
+    public Long getTripId() {
+        return tripId;
     }
 
-    public CustomerDTO getCustomer() {
-        return customer;
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
     }
 
-    public void setCustomer(CustomerDTO customer) {
-        this.customer = customer;
-    }
-
-    public TripDTO getTrip() {
-        return trip;
-    }
-
-    public void setTrip(TripDTO trip) {
-        this.trip = trip;
-    }
-
-    /**
-     * Excursions getter.
-     *
-     * @return Set of selected excursions
-     */
-    public Set<ExcursionDTO> getExcursions() {
+    public List<String> getExcursions() {
         return excursions;
     }
 
-    /**
-     * Sets excursions for this reservation.
-     *
-     * @param excursions Set of excursions selected
-     */
-    public void setExcursions(@NotNull Set<ExcursionDTO> excursions) {
+    public void setExcursions(List<String> excursions) {
         this.excursions = excursions;
-    }
-
-    /**
-     * Adds given excursion to the excursions already included.
-     *
-     * @param excursion to be added
-     */
-    public void addExcursion(ExcursionDTO excursion) {
-        excursions.add(excursion);
-    }
-
-    /**
-     * Removes an excursion from the reservation.
-     *
-     * @param excursion to be removed
-     */
-    public void removeExcursion(ExcursionDTO excursion) {
-        excursions.remove(excursion);
     }
 
     @Override
@@ -115,12 +58,12 @@ public class ReservationCreateDTO {
         if (this == o) return true;
         if (!(o instanceof ReservationCreateDTO)) return false;
         ReservationCreateDTO that = (ReservationCreateDTO) o;
-        return Objects.equals(getCustomer(), that.getCustomer()) &&
-                Objects.equals(getTrip(), that.getTrip());
+        return Objects.equals(getTripId(), that.getTripId()) &&
+                Objects.equals(getExcursions(), that.getExcursions());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCustomer(), getTrip());
+        return Objects.hash(getTripId(), getExcursions());
     }
 }
