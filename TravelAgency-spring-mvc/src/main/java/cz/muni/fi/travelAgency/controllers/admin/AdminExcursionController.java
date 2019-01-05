@@ -5,6 +5,7 @@ import cz.muni.fi.travelAgency.DTO.ExcursionManipulationDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.facade.ExcursionFacade;
 import cz.muni.fi.travelAgency.facade.TripFacade;
+import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.validators.ExcursionValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,9 @@ public class AdminExcursionController {
     @Autowired
     private TripFacade tripFacade;
 
+    @Autowired
+    private BeanMappingService mapper;
+
     @RequestMapping(value = "new", method = RequestMethod.GET)
     public String create(Model model) {
         logger.debug("new()");
@@ -58,12 +62,7 @@ public class AdminExcursionController {
         if (!resultIsValid(bindingResult, model)) {
             return "admin/excursion/create";
         }
-        ExcursionDTO excursionDTO = new ExcursionDTO(tripFacade.getTripById(manipulationDTO.getTripId()),
-                manipulationDTO.getDestination(),
-                manipulationDTO.getExcursionDate(),
-                Duration.parse("PT" + manipulationDTO.getDurationMinutes() + "M"),
-                manipulationDTO.getPrice(),
-                manipulationDTO.getDescription());
+        ExcursionDTO excursionDTO = mapManipulationToEntityDTO(manipulationDTO);
         excursionFacade.createExcursion(excursionDTO);
         redirectAttributes.addFlashAttribute("alert_success", "Excursion " + excursionDTO.getId() + " was created");
         return "redirect:" + uriBuilder.path("/admin/excursion/detail/" + excursionDTO.getId()).build().encode().toUriString();
@@ -104,14 +103,9 @@ public class AdminExcursionController {
     @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
     public String getEdit(@PathVariable long id, Model model) {
         ExcursionDTO excursionDTO = excursionFacade.findExcursionById(id);
-        ExcursionManipulationDTO manipulationDTO = new ExcursionManipulationDTO(
-                excursionDTO.getId(),
-                excursionDTO.getDescription(),
-                excursionDTO.getDestination(),
-                excursionDTO.getPrice(),
-                excursionDTO.getExcursionDate(),
-                excursionDTO.getExcursionDuration().toMinutes(),
-                excursionDTO.getTrip().getId());
+        ExcursionManipulationDTO manipulationDTO = mapper.mapTo(excursionDTO, ExcursionManipulationDTO.class);
+        manipulationDTO.setDurationMinutes(excursionDTO.getExcursionDuration().toMinutes());
+        manipulationDTO.setTripId(excursionDTO.getTrip().getId());
         model.addAttribute("excursion", manipulationDTO);
         return "admin/excursion/edit";
     }
@@ -123,14 +117,7 @@ public class AdminExcursionController {
         if (!resultIsValid(result, model)) {
             return "admin/excursion/edit";
         }
-        ExcursionDTO excursionDTO = new ExcursionDTO(
-                manipulationDTO.getId(),
-                tripFacade.getTripById(manipulationDTO.getTripId()),
-                manipulationDTO.getDestination(),
-                manipulationDTO.getExcursionDate(),
-                Duration.parse("PT" + manipulationDTO.getDurationMinutes() + "M"),
-                manipulationDTO.getPrice(),
-                manipulationDTO.getDescription());
+        ExcursionDTO excursionDTO = mapManipulationToEntityDTO(manipulationDTO);
         excursionFacade.updateExcursion(excursionDTO);
         redirectAttributes.addFlashAttribute("alert_success", "Excursion #" + excursionDTO.getId() + " updated");
         return "redirect:" + uriBuilder.path("/admin/excursion/detail/" + excursionDTO.getId()).build().encode().toUriString();
@@ -147,6 +134,13 @@ public class AdminExcursionController {
         if (binder.getTarget() instanceof ExcursionDTO) {
             binder.addValidators(validator);
         }
+    }
+
+    private ExcursionDTO mapManipulationToEntityDTO(ExcursionManipulationDTO manipulationDTO){
+        ExcursionDTO excursionDTO = mapper.mapTo(manipulationDTO, ExcursionDTO.class);
+        excursionDTO.setTrip(tripFacade.getTripById(manipulationDTO.getTripId()));
+        excursionDTO.setExcursionDuration(Duration.parse("PT" + manipulationDTO.getDurationMinutes() + "M"));
+        return excursionDTO;
     }
 
     private boolean resultIsValid(BindingResult result, Model model) {

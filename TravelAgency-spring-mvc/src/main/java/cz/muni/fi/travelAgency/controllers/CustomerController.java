@@ -8,6 +8,7 @@ package cz.muni.fi.travelAgency.controllers;
 import cz.muni.fi.travelAgency.DTO.CustomerCreateDTO;
 import cz.muni.fi.travelAgency.DTO.CustomerDTO;
 import cz.muni.fi.travelAgency.facade.CustomerFacade;
+import cz.muni.fi.travelAgency.service.BeanMappingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class CustomerController {
     @Autowired
     private CustomerFacade customerFacade;
 
+    @Autowired
+    private BeanMappingService mapper;
+
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         logger.debug("new()");
@@ -53,30 +57,17 @@ public class CustomerController {
         if (!resultIsValid(bindingResult, model)) {
             return "customer/registration";
         }
-        CustomerDTO customerDTO = new CustomerDTO(
-                createDTO.getName(),
-                createDTO.getSurname(),
-                createDTO.getEmail(),
-                createDTO.getPassword(),
-                createDTO.getPhoneNumber(),
-                createDTO.getPassportNumber(),
-                createDTO.getDateOfBirth());
+        CustomerDTO customerDTO = mapper.mapTo(createDTO, CustomerDTO.class);
         customerFacade.registerCustomer(customerDTO, createDTO.getPassword());
-        redirectAttributes.addFlashAttribute("alert_success", "Customer " + createDTO.getId() + " was created");
+        redirectAttributes.addFlashAttribute("alert_success", "Customer " + createDTO.getSurname() + " was created");
         return "redirect:" + uriBuilder.path("/").build().encode().toUriString();
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String getEdit(@PathVariable long id, Model model) {
         CustomerDTO customerDTO = customerFacade.findCustomerById(id);
-        CustomerCreateDTO createDTO = new CustomerCreateDTO(
-                customerDTO.getName(),
-                customerDTO.getSurname(),
-                customerDTO.getEmail(),
-                customerDTO.getPasswordHash(),
-                customerDTO.getPhoneNumber(),
-                customerDTO.getPassportNumber(),
-                customerDTO.getDateOfBirth());
+        CustomerCreateDTO createDTO = mapper.mapTo(customerDTO, CustomerCreateDTO.class);
+        createDTO.setPassword(customerDTO.getPasswordHash());
         model.addAttribute("customer", createDTO);
         return "customer/edit";
     }
@@ -88,18 +79,11 @@ public class CustomerController {
         if (!resultIsValid(bindingResult, model)) {
             return "customer/edit";
         }
-        CustomerDTO customerDTO = new CustomerDTO(
-                createDTO.getName(),
-                createDTO.getSurname(),
-                createDTO.getEmail(),
-                createDTO.getPassword(),
-                createDTO.getPhoneNumber(),
-                createDTO.getPassportNumber(),
-                createDTO.getDateOfBirth());
+        CustomerDTO customerDTO = mapper.mapTo(createDTO, CustomerDTO.class);
+        customerDTO.setPasswordHash(createDTO.getPassword());
         customerFacade.updateCustomer(customerDTO);
-        redirectAttributes.addFlashAttribute("alert_success", "Customer" + createDTO.getId() + " updated");
+        redirectAttributes.addFlashAttribute("alert_success", "Customer" + createDTO.getSurname() + " updated");
         return "redirect:" + uriBuilder.path("customer/edit" + createDTO.getId()).build().encode().toUriString();
-
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
@@ -108,7 +92,7 @@ public class CustomerController {
         logger.debug("delete({})", id);
         try {
             customerFacade.deleteCustomer(customerDTO);
-            redirectAttributes.addFlashAttribute("alert_success", "Customer \"" + customerDTO.getId() + "\" was deleted.");
+            redirectAttributes.addFlashAttribute("alert_success", "Customer \"" + customerDTO.getSurname() + "\" was deleted.");
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error("customer " + id + " cannot be deleted");
