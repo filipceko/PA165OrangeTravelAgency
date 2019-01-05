@@ -19,13 +19,14 @@
         <f:message key="trip.create"/>
     </my:a>
     <br/>
+    <my:a href="/admin/trip/list/future" class="btn btn-primary">
+        <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+        <f:message key="trip.filter.future"/>
+    </my:a>
+    <br/>
     <form:form action="/travel.agency/admin/trip/filterTrips" method="POST">
         <input type="text" id="filter" name="filter" value="<f:message key="trip.filter.baseValue"/>"/>
         <input type="submit" value="<f:message key="common.filter"/>"/>
-        <my:a href="/admin/trip/list/future" class="btn btn-primary">
-            <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-            <f:message key="trip.filter.future"/>
-        </my:a>
     </form:form>
     <table class="table">
         <thead>

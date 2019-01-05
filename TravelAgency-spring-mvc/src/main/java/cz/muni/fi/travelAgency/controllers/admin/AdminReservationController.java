@@ -11,9 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -41,6 +43,18 @@ public class AdminReservationController {
         return "admin/reservation/list";
     }
 
+    @RequestMapping(value = "dateList", method = RequestMethod.POST)
+    public String filter(@RequestParam("fromDate") String fromString,
+                         @RequestParam("toDate") String toString,
+                         Model model) {
+        LocalDate fromDate = LocalDate.parse(fromString);
+        LocalDate toDate = LocalDate.parse(toString);
+        Collection<ReservationDTO> reservations = reservationFacade.getReservationByInterval(fromDate, toDate);
+        model.addAttribute("reservations", reservations);
+        model.addAttribute("alert_success", "Only reservations from " + fromDate + " to " + toDate + " are shown");
+        return "/admin/reservation/list";
+    }
+
     @RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
     public String detail(@PathVariable long id, Model model) {
         model.addAttribute("reservation", reservationFacade.getById(id));
@@ -48,7 +62,7 @@ public class AdminReservationController {
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable long id, Model model, UriComponentsBuilder uriBuilder, RedirectAttributes attributes) {
+    public String delete(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes attributes) {
         try {
             reservationFacade.delete(reservationFacade.getById(id));
             attributes.addFlashAttribute("alert_success", "Reservation number " + id + " was canceled.");
