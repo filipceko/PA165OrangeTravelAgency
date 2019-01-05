@@ -36,18 +36,20 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><my:a href="/trips/show"><f:message key="navigation.trips"/></my:a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <f:message key="navigation.admin"/>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><my:a href="/admin/trip/list/all"><f:message key="navigation.admin.trips"/></my:a></li>
-                        <li><my:a href="/admin/customer/list"><f:message key="navigation.admin.customers"/></my:a></li>
-                        <li><my:a href="/admin/excursion/list"><f:message key="navigation.admin.excursions"/></my:a></li>
-                        <li><my:a href="/admin/reservation/list/all"><f:message key="navigation.admin.reservations"/></my:a></li>
-                    </ul>
-                </li>
+                <c:if test="${not empty authenticatedUser && authenticatedUser.isAdmin()}">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <f:message key="navigation.admin"/>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><my:a href="/admin/trip/list/all"><f:message key="navigation.admin.trips"/></my:a></li>
+                            <li><my:a href="/admin/customer/list"><f:message key="navigation.admin.customers"/></my:a></li>
+                            <li><my:a href="/admin/excursion/list"><f:message key="navigation.admin.excursions"/></my:a></li>
+                            <li><my:a href="/admin/reservation/list/all"><f:message key="navigation.admin.reservations"/></my:a></li>
+                        </ul>
+                    </li>
+                </c:if>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <f:message key="navigation.customer"/>
@@ -55,7 +57,9 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><my:a href="/auth/login"><f:message key="navigation.customer.login"/></my:a></li>
-                        <li><my:a href="/customer/registration"><f:message key="navigation.customer.registration"/></my:a></li>
+                        <c:if test="${empty authenticatedUser}">
+                            <li><my:a href="/customer/registration"><f:message key="navigation.customer.registration"/></my:a></li>
+                        </c:if>
                         <!--<li><my:a href="/customer/edit"><f:message key="navigation.customer.edit"/></my:a></li>-->
                         <c:if test="${not empty authenticatedUser}">
                             <li><my:a href="/auth/logout"><f:message key="navigation.customer.logout"/></my:a></li>
@@ -122,16 +126,14 @@
     </c:if>
     <!-- page body -->
     <jsp:invoke fragment="body"/>
-</div>
     <!-- footer -->
     <footer class="footer">
         <p>&copy;&nbsp;<%=java.time.Year.now().toString()%>&nbsp;Masaryk University</p>
     </footer>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
-
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 </body>
 </html>
