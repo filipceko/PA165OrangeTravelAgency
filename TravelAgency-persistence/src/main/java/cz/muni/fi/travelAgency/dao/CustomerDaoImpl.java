@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Implementation of {@link CustomerDao}
@@ -53,8 +54,9 @@ public class CustomerDaoImpl implements CustomerDao {
             throw new IllegalArgumentException("findByEmail() was called with NULL argument!");
         }
 
-        return manager.createQuery("select c from Customer c where c.email = :email", Customer.class)
-                .setParameter("email", email).getSingleResult();
+        Optional<Customer> result = manager.createQuery("select c from Customer c where c.email = :email", Customer.class)
+                .setParameter("email", email).getResultStream().findFirst();
+        return result.orElse(null);
     }
 
     @Override
