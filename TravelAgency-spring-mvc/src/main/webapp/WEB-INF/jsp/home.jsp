@@ -15,12 +15,10 @@
 <my:pageTemplate>
     <jsp:attribute name="title">Welcome!</jsp:attribute>
     <jsp:attribute name="body">
-
     <div class="jumbotron">
         <h1>Orange Travel Agency</h1>
         <p class="lead">The best place you can be!</p>
     </div>
-
     <div class="container">
         <!-- Example row of columns -->
         <c:forEach items="${trips}" var="trip">
@@ -29,15 +27,12 @@
                 <p>Price : € <c:out value="${trip.price}"/></p>
                 <p>Date : <c:out value="${trip.fromDate}"/></p>
                 <p>Available : <c:out value="${trip.capacity}" /></p>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                <p><c:out value="Trip to ${trip.destination} the best you can get for this price!"/></p>
                 <p><a class="btn btn-secondary" href="${pageContext.request.contextPath}/trips/detail/${trip.id}" role="button">View details &raquo;</a></p>
             </div>
          </c:forEach>
-        <hr>
-
+        <br/>
     </div> <!-- /container -->
-
-
 </jsp:attribute>
 </my:pageTemplate>
 

@@ -164,7 +164,6 @@ public class ExcursionDTO {
 
     public void setDurationString(String durationString) {
         this.durationString = durationString;
-
     }
 
     public TripDTO getTrip() {
