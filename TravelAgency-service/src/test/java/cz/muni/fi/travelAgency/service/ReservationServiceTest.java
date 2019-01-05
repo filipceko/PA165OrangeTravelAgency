@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
@@ -63,8 +64,10 @@ public class ReservationServiceTest extends AbstractTestNGSpringContextTests {
     @BeforeMethod
     public void initTest() {
         Mockito.reset(reservationDao);
-        Customer customer1 = new Customer("Janko", "Hrasko", "janko@hrasko.com");
-        Customer customer2 = new Customer("Jozko", "Mrkvicka", "jozef@mrkva.com");
+        Customer customer1 = new Customer("Janko", "Hrasko", "janko@hrasko.com",
+                BCrypt.hashpw("pswd1", BCrypt.gensalt()));
+        Customer customer2 = new Customer("Jozko", "Mrkvicka", "jozef@mrkva.com",
+                BCrypt.hashpw("pswd2", BCrypt.gensalt()));
         Trip trip1 = new Trip(LocalDate.now(), LocalDate.now().plusDays(5L), "Paris", 5, 80.0);
         Trip trip2 = new Trip(LocalDate.now(), LocalDate.now().plusDays(5L), "Hong Kong", 17, 1200.0);
         reservation1 = new Reservation(customer1, trip1, LocalDate.now().plusDays(3));

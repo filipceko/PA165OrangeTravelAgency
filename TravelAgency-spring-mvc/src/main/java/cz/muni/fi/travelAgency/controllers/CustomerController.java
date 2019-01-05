@@ -7,17 +7,11 @@ package cz.muni.fi.travelAgency.controllers;
 
 import cz.muni.fi.travelAgency.DTO.CustomerCreateDTO;
 import cz.muni.fi.travelAgency.DTO.CustomerDTO;
-import cz.muni.fi.travelAgency.DTO.ReservationDTO;
 import cz.muni.fi.travelAgency.facade.CustomerFacade;
-import cz.muni.fi.travelAgency.facade.ReservationFacade;
-import java.util.ArrayList;
-import java.util.Collection;
-import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NestedExceptionUtils;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+
 /**
  * @author Rajivv
  */
@@ -41,19 +37,6 @@ public class CustomerController {
 
     @Autowired
     private CustomerFacade customerFacade;
-    @Autowired
-    private ReservationFacade reservationFacade;
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, String error, String logout) {
-        if (error != null) {
-            model.addAttribute("error", "Your username and password is invalid.");
-        }
-        if (logout != null) {
-            model.addAttribute("message", "You have been logged out successfully.");
-        }
-        return "customer/login";
-    }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
@@ -64,8 +47,8 @@ public class CustomerController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String submitCreate(@Valid @ModelAttribute("customerCreate") CustomerCreateDTO createDTO,
-            BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes,
-            UriComponentsBuilder uriBuilder) {
+                               BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes,
+                               UriComponentsBuilder uriBuilder) {
         logger.debug("create(customerCreate={})", createDTO);
         if (!resultIsValid(bindingResult, model)) {
             return "customer/registration";
@@ -100,8 +83,8 @@ public class CustomerController {
 
     @RequestMapping(value = "/editCustomer", method = RequestMethod.POST)
     public String submitEdit(@Valid @ModelAttribute("customer") CustomerCreateDTO createDTO,
-            BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes,
-            UriComponentsBuilder uriBuilder) {
+                             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes,
+                             UriComponentsBuilder uriBuilder) {
         if (!resultIsValid(bindingResult, model)) {
             return "customer/edit";
         }
@@ -118,10 +101,10 @@ public class CustomerController {
         return "redirect:" + uriBuilder.path("customer/edit" + createDTO.getId()).build().encode().toUriString();
 
     }
-    
+
     @RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
     public String delete(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) {
-        CustomerDTO customerDTO  = customerFacade.findCustomerById(id);
+        CustomerDTO customerDTO = customerFacade.findCustomerById(id);
         logger.debug("delete({})", id);
         try {
             customerFacade.deleteCustomer(customerDTO);
@@ -135,24 +118,6 @@ public class CustomerController {
         return "redirect:" + uriBuilder.path("customer/login").toUriString();
     }
 
-
-    
-
-//    @RequestMapping(value = "/reservation_overview/{filter}", method = RequestMethod.GET)
-//    public String overview(@PathVariable String filter, Model model
-//    ) {
-//        Collection<ReservationDTO> reservations;
-//        switch (filter) {
-//            case "all":
-//                reservations = reservationFacade.getAllReservations();
-//                break;
-//            default:
-//                reservations = new ArrayList<>();
-//                model.addAttribute("alert_danger", "Unknown filter " + filter);
-//        }
-//        model.addAttribute("reservations_overview", reservations);
-//        return "customer/reservation_overview";
-//    }
     private boolean resultIsValid(BindingResult result, Model model) {
         if (result.hasErrors()) {
             for (ObjectError ge : result.getGlobalErrors()) {

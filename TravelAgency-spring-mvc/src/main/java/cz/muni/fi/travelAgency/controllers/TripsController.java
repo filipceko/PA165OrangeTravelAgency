@@ -15,21 +15,15 @@ import java.util.Collection;
 
 /**
  * Provides the public shopping interface.
- *
- * @author Martin Kuba makub@ics.muni.cz
  */
 @Controller
 @RequestMapping("/trips")
 public class TripsController {
 
-    final static Logger log = LoggerFactory.getLogger(TripsController.class);
+    private final static Logger log = LoggerFactory.getLogger(TripsController.class);
 
     @Autowired
     private TripFacade tripFacade;
-
-    public void setTripFacade(TripFacade tripFacade) {
-        this.tripFacade = tripFacade;
-    }
 
     /**
      * Shows all categories and products.

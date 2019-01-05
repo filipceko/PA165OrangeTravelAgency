@@ -43,8 +43,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 
     @Override
     public boolean authenticate(CustomerAuthenticateDTO customer) {
-        return customerService.authenticate(
-                customerService.findCustomerById(customer.getCustomerId()), customer.getPassword());
+        return customerService.authenticate(customer.getCustomerEmail(), customer.getPassword());
     }
 
     @Override

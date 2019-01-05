@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * Test for service layer of customer.
+ *
  * @author Simona Raucinova
  */
 
@@ -38,6 +39,7 @@ public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
     private final String passportNumber = "123AB";
     private final boolean admin = false;
     private final String phoneNumber = "012345678";
+    private final String password = "pswd";
 
     private final Long id = 1L;
     @InjectMocks
@@ -62,6 +64,7 @@ public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
         customer.setPassportNumber(passportNumber);
         customer.setAdmin(admin);
         customer.setPhoneNumber(phoneNumber);
+        customer.setPasswordHash(BCrypt.hashpw(password, BCrypt.gensalt()));
     }
 
     /**
@@ -151,9 +154,9 @@ public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
      */
     @Test
     public void testAuthenticate() {
-        customer.setPasswordHash(BCrypt.hashpw("pswd", BCrypt.gensalt()));
-        Assert.assertFalse(customerService.authenticate(customer, "123"));
-        Assert.assertTrue(customerService.authenticate(customer, "pswd"));
+        when(customerDao.findByEmail(email)).thenReturn(customer);
+        Assert.assertFalse(customerService.authenticate(customer.getEmail(), "123"));
+        Assert.assertTrue(customerService.authenticate(customer.getEmail(), password));
     }
 
     /**
@@ -185,7 +188,7 @@ public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
      * Test updating null customer.
      */
     @Test(expectedExceptions = DataAccessLayerException.class)
-    public void testUpdateNull(){
+    public void testUpdateNull() {
         Mockito.doThrow(IllegalArgumentException.class).when(customerDao).update(null);
         customerService.updateCustomer(null);
     }
@@ -194,7 +197,7 @@ public class CustomerServiceTest extends AbstractTestNGSpringContextTests {
      * Test deletion of null customer.
      */
     @Test(expectedExceptions = DataAccessLayerException.class)
-    public void testDeleteNull(){
+    public void testDeleteNull() {
         Mockito.doThrow(IllegalArgumentException.class).when(customerDao).remove(null);
         customerService.deleteCustomer(null);
     }

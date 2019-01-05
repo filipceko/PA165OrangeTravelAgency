@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -29,6 +30,7 @@ import javax.validation.Validator;
 @EnableWebMvc
 @Configuration
 @Import(SampleDataConfiguration.class)
+@ComponentScan
 public class TravelAgencySpringMvcConfig implements WebMvcConfigurer {
 
     private final static Logger logger = LoggerFactory.getLogger(TravelAgencySpringMvcConfig.class);

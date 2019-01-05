@@ -2,7 +2,6 @@ package cz.muni.fi.travelAgency.DTO;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
@@ -32,11 +31,8 @@ public class CustomerCreateDTO {
 
     private String phoneNumber;
 
-    
     private String passportNumber;
 
-
- 
     private LocalDate dateOfBirth;
 
     public CustomerCreateDTO() {
@@ -44,7 +40,7 @@ public class CustomerCreateDTO {
     }
 
     public CustomerCreateDTO(@NotNull String name, @NotNull String surname, @Email String email, @NotNull String password,
-            String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
+                             String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
         this.name = name;
         this.surname = surname;
         this.email = email;

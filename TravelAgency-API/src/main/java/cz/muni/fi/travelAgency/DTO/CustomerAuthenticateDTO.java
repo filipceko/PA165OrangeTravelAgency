@@ -1,5 +1,7 @@
 package cz.muni.fi.travelAgency.DTO;
 
+import javax.validation.constraints.Email;
+
 /**
  * DTO for authentication of customer.
  *
@@ -10,18 +12,24 @@ public class CustomerAuthenticateDTO {
     /**
      * Id of customer.
      */
-    private Long customerId;
+    @Email
+    private String customerEmail;
     /**
      * Customer's password.
      */
     private String password;
 
-    public Long getCustomerId() {
-        return customerId;
+    public CustomerAuthenticateDTO(@Email String customerEmail, String password) {
+        this.customerEmail = customerEmail;
+        this.password = password;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 
     public String getPassword() {

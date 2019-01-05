@@ -43,7 +43,7 @@ public class Customer {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
+    @Column (nullable = false)
     private String passwordHash;
 
     @Column
@@ -96,7 +96,17 @@ public class Customer {
     /**
      * Non-null fields constructor
      */
-    public Customer(String name, String surname, String email) {
+    public Customer(String name, String surname, String email, String passwordHash) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.passwordHash = passwordHash;
+    }
+
+    /**
+     * Non-Null fields without password hash constructor
+     */
+    public Customer(@NotNull String name, @NotNull String surname, @NotNull String email) {
         this.name = name;
         this.surname = surname;
         this.email = email;
