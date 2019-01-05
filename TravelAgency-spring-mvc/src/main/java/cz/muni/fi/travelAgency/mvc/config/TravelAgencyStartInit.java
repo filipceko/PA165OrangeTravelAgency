@@ -1,5 +1,6 @@
 package cz.muni.fi.travelAgency.mvc.config;
 
+import cz.muni.fi.travelAgency.mvc.config.auth.SecurityConfig;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -20,7 +21,7 @@ import javax.servlet.Filter;
 public class TravelAgencyStartInit extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{TravelAgencySpringMvcConfig.class};
+        return new Class<?>[]{TravelAgencySpringMvcConfig.class, SecurityConfig.class};
     }
 
     @Override

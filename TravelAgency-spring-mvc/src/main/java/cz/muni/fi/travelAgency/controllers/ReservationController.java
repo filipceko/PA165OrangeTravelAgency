@@ -49,7 +49,9 @@ public class ReservationController {
 
     @RequestMapping(value = "/createReservation", method = RequestMethod.POST)
     public String submitReservation(@ModelAttribute("reservation") ReservationCreateDTO createDTO,
-                                    @RequestAttribute("authenticatedUser") CustomerDTO customer, Model model, RedirectAttributes redirectAttributes) {
+                                    @ModelAttribute("authenticatedUser") CustomerDTO customer,
+                                    Model model,
+                                    RedirectAttributes redirectAttributes) {
         TripDTO trip = tripFacade.getTripById(createDTO.getTripId());
         Set<ExcursionDTO> excursions = trip.getExcursions().stream().filter(excursion -> createDTO
                 .getExcursions().contains(excursion.getDestination())).collect(Collectors.toSet());

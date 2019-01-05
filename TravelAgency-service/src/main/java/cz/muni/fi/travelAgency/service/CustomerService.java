@@ -36,10 +36,10 @@ public interface CustomerService {
     /**
      * Try to authenticate a customer. Return true only if the hashed password matches the records.
      *
-     * @param customer to be authenticated
+     * @param customerEmail email to be used for authentication
      * @param password inputted password
      */
-    boolean authenticate(Customer customer, String password);
+    boolean authenticate(String customerEmail, String password);
 
     /**
      * Check if the given user is admin.

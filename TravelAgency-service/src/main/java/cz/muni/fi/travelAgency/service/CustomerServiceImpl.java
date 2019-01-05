@@ -41,17 +41,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean authenticate(Customer customer, String password) {
-        if (customer == null) {
-            throw new IllegalArgumentException("Cannot authenticate null customer.");
+    public boolean authenticate(String customerEmail, String password) {
+        if (customerEmail == null) {
+            throw new IllegalArgumentException("Can not authenticate customer without email address");
         }
-        if (customer.getEmail() == null) {
-            throw new IllegalArgumentException("Cannot authenticate customer without email address.");
+        Customer customer = findCustomerByEmail(customerEmail);
+        if (customer == null) {
+            return false;
         }
         if (password == null) {
             throw new IllegalArgumentException("Cannot authenticate customer without password.");
         }
-
         return BCrypt.checkpw(password, customer.getPasswordHash());
     }
 

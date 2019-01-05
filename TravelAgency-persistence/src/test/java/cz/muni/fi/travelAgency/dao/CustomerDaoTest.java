@@ -46,6 +46,7 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests {
         customer.setPassportNumber("PASSPORT2018");
         customer.setPhoneNumber("776741422");
         customer.setEmail("lyrithyit@gmail.com");
+        customer.setPasswordHash("dummyPassword");
         customerDao.create(customer);
     }
 
@@ -106,6 +107,7 @@ public class CustomerDaoTest extends AbstractTestNGSpringContextTests {
         newCustomer.setPassportNumber("PASSPORT2");
         newCustomer.setPhoneNumber("77766699");
         newCustomer.setEmail("filip@gmail.com");
+        newCustomer.setPasswordHash("DummyPasswordHash");
         customerDao.create(newCustomer);
         // Get all customers store in database
         Collection<Customer> allCustomers = customerDao.findAll();

@@ -11,6 +11,7 @@ import cz.muni.fi.travelAgency.entities.Trip;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
 import cz.muni.fi.travelAgency.service.ReservationService;
 import org.mockito.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
@@ -72,7 +73,8 @@ public class ReservationFacadeTest extends AbstractTestNGSpringContextTests {
      */
     @BeforeMethod
     public void setUp() {
-        Customer customer1 = new Customer("Albert", "Alojz", "alojz@gmail.com");
+        Customer customer1 = new Customer("Albert", "Alojz", "alojz@gmail.com",
+                BCrypt.hashpw("password", BCrypt.gensalt()));
         CustomerDTO customer1DTO = new CustomerDTO();
         customer1DTO.setName("Albert");
         customer1DTO.setSurname("Alojz");
