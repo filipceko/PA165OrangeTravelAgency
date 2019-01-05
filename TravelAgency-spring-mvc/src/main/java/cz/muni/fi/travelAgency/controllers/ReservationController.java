@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,14 +33,16 @@ public class ReservationController {
     @Autowired
     ReservationFacade reservationFacade;
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String createReservation(Model model) {
-        model.addAttribute("trips", tripFacade.getAllTrips());
-        return "reservation/pickTrip";
-    }
-
     @RequestMapping(value = "/create/{tripId}", method = RequestMethod.GET)
-    public String createReservation(@PathVariable long tripId, Model model) {
+    public String createReservation(@PathVariable long tripId, Model model,
+                                    @ModelAttribute("authenticatedUser") CustomerDTO customer) {
+        Collection<ReservationDTO> oldReservations = reservationFacade.getByCustomer(customer.getId());
+        Set<ReservationDTO> bookedSet = oldReservations.stream()
+                .filter(reservation -> reservation.getTrip().getId().equals(tripId))
+                .collect(Collectors.toSet());
+        if (!bookedSet.isEmpty()){
+            model.addAttribute("alert_warning", "You already booked this trip.");
+        }
         TripDTO tripDTO = tripFacade.getTripById(tripId);
         model.addAttribute("trip", tripDTO);
         ReservationCreateDTO createDTO = new ReservationCreateDTO(tripId, tripDTO.getExcursions());
@@ -52,7 +55,18 @@ public class ReservationController {
                                     @ModelAttribute("authenticatedUser") CustomerDTO customer,
                                     Model model,
                                     RedirectAttributes redirectAttributes) {
+        Collection<ReservationDTO> oldReservations = reservationFacade.getByCustomer(customer.getId());
+        Set<ReservationDTO> bookedSet = oldReservations.stream()
+                .filter(reservation -> reservation.getTrip().getId().equals(createDTO.getTripId()))
+                .collect(Collectors.toSet());
         TripDTO trip = tripFacade.getTripById(createDTO.getTripId());
+        if (!bookedSet.isEmpty()){
+            model.addAttribute("alert_danger", "You already booked this trip!! " +
+                    "It is not possible to book it twice for the same customer");
+            model.addAttribute("trip", trip);
+            model.addAttribute("reservation", createDTO);
+            return "/reservation/create";
+        }
         Set<ExcursionDTO> excursions = trip.getExcursions().stream().filter(excursion -> createDTO
                 .getExcursions().contains(excursion.getDestination())).collect(Collectors.toSet());
         ReservationDTO reservationDTO = new ReservationDTO(customer, trip, excursions, LocalDate.now());
