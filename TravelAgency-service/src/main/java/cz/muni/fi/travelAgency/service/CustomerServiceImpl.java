@@ -85,7 +85,7 @@ public class CustomerServiceImpl implements CustomerService {
         try {
             return customerDao.findByEmail(email);
         } catch (Exception exp) {
-            throw new DataAccessLayerException(exp.getMessage(), exp.getCause());
+            throw new DataAccessLayerException(exp.getMessage(), exp);
         }
 
     }

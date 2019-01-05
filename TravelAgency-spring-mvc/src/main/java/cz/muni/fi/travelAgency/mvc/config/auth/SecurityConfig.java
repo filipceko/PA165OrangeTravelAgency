@@ -2,6 +2,7 @@ package cz.muni.fi.travelAgency.mvc.config.auth;
 
 import cz.muni.fi.travelAgency.DTO.CustomerAuthenticateDTO;
 import cz.muni.fi.travelAgency.DTO.CustomerDTO;
+import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import cz.muni.fi.travelAgency.facade.CustomerFacade;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -54,8 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     } else {
                         authorities.add(new SimpleGrantedAuthority("ROLE_" + "Customer"));
                     }
+                    return new UsernamePasswordAuthenticationToken(principal, credentials, authorities);
                 }
-                return new UsernamePasswordAuthenticationToken(principal, credentials, authorities);
+                return null;
             }
 
             @Override
