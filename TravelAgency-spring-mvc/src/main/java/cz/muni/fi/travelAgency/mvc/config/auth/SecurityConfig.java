@@ -94,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             CustomerDTO customer = customerFacade.findCustomerByEmail(email);
                             HttpSession session = request.getSession(true);
                             session.setAttribute("authenticatedUser", customer);
-                            response.sendRedirect(request.getRequestURI());
+                            response.sendRedirect("/travel.agency/");
                         })
                 .permitAll()
 

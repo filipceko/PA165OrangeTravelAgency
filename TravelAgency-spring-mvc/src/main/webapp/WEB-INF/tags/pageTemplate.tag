@@ -57,7 +57,9 @@
                         <li><my:a href="/auth/login"><f:message key="navigation.customer.login"/></my:a></li>
                         <li><my:a href="/customer/registration"><f:message key="navigation.customer.registration"/></my:a></li>
                         <!--<li><my:a href="/customer/edit"><f:message key="navigation.customer.edit"/></my:a></li>-->
-                        <li><my:a href="/auth/logout"><f:message key="navigation.customer.logout"/></my:a></li>
+                        <c:if test="${not empty authenticatedUser}">
+                            <li><my:a href="/auth/logout"><f:message key="navigation.customer.logout"/></my:a></li>
+                        </c:if>
                     </ul>
                 </li>
                 <li class="dropdown">
