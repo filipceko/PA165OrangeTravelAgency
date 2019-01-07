@@ -65,7 +65,7 @@
                             <li><my:a href="/auth/logout"><f:message key="navigation.customer.logout"/></my:a></li>
                         </c:if>
                         <c:if test="${not empty authenticatedUser}">
-                            <li><my:a href="/customer/edit/${authenticatedUser.getId()}"><f:message key="customer.myAccount"/></my:a></li>
+                            <li><my:a href="/customer/edit"><f:message key="customer.myAccount"/></my:a></li>
                         </c:if>
                     </ul>
                 </li>
