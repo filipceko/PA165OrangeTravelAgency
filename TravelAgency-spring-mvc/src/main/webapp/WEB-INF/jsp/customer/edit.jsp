@@ -1,7 +1,7 @@
-<%-- 
+<%--
     Document   : edit
     Created on : 17.12.2018, 10:54:02
-    Author     : Rajivv
+    Author     : Rajivv/Rithy
 --%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" trimDirectiveWhitespaces="false" session="false" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
@@ -13,6 +13,7 @@
 <my:pageTemplate title="Edit Account ${customer.name}">
     <jsp:attribute name="body">
         <form:form method="POST" action="/travel.agency/customer/editCustomer/" modelAttribute="customer">
+            <form:input type="hidden" path="id"/>
             <table>
                 <tr>
                     <td><form:label path="name"><f:message key="customer.name"/>: </form:label></td>
@@ -40,17 +41,21 @@
                 </tr>
                 <tr>
                     <td><form:label path="password"><f:message key="customer.password"/>: </form:label></td>
-                    <td><form:input path="password"/></td>
+                    <td><form:input type="password" path="password"/></td>
                 </tr>
-                <br/> 
+                <br/>
+                <br/>
                 <br/>
                 <tr>
                     <td><p class="text-center">
-                            <button class="btn btn-primary" type="submit">Update</button>
-                        </p></td>
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </p></td>
                     <td><p class="text-center">
-                            <button class="btn btn-danger" type="submit">Delete</button>
-                        </p></td>
+                           <my:a href="/customer/delete/${customer.id}" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </my:a>
+                    </p>
+                    </td>
 
                 </tr>
                 <br/>
