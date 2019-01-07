@@ -44,14 +44,12 @@
                     <td><form:input type="password" path="password"/></td>
                 </tr>
                 <br/>
-                <br/>
-                <br/>
                 <tr>
                     <td><p class="text-center">
                         <button class="btn btn-primary" type="submit">Update</button>
                     </p></td>
                     <td><p class="text-center">
-                           <my:a href="/customer/delete/${customer.id}" class="btn btn-danger">
+                           <my:a href="/customer/delete" class="btn btn-danger">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </my:a>
                     </p>
