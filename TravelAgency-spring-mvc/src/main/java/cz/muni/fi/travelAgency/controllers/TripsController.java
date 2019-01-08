@@ -1,5 +1,6 @@
 package cz.muni.fi.travelAgency.controllers;
 
+import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.facade.TripFacade;
 import org.slf4j.Logger;
@@ -10,8 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Provides the public shopping interface.
@@ -25,12 +28,6 @@ public class TripsController {
     @Autowired
     private TripFacade tripFacade;
 
-    /**
-     * Shows all categories and products.
-     *
-     * @param model data to display
-     * @return JSP page name
-     */
     @RequestMapping("/show")
     public String list(Model model) {
         log.debug("show()");
@@ -45,4 +42,12 @@ public class TripsController {
         return "trips/detail";
     }
 
+    @RequestMapping(value = "forMoney", method = RequestMethod.POST)
+    public String filter(@RequestParam("money") String moneyString, Model model) {
+        Double money = Double.parseDouble(moneyString);
+        CheapTravelDTO result = tripFacade.tripsForMoney(money);
+        model.addAttribute("trips", result.getTrips());
+        model.addAttribute("excursions", result.getExcursions());
+        return "/trips/forMoney";
+    }
 }
