@@ -93,11 +93,16 @@
             <artifactId>hamcrest-core</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap-datepicker</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
 
     <!--
-       Start tomcat with "mvn cargo:run" and visit http://localhost:8080/travel.agency/
-     -->
+      Start tomcat with "mvn cargo:run" and visit http://localhost:8080/travel.agency/
+    -->
     <build>
         <defaultGoal>cargo:run</defaultGoal>
         <finalName>travel.agency</finalName>

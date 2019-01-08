@@ -53,14 +53,16 @@
                         <form:input path="passportNumber" cssClass="form-control"/>
                         <form:errors path="passportNumber" cssClass="help-block"/>
                     </div>
-                </div>               
+                </div>      
+
                 <div class="form-group ${dateOfBirth_error?'has-error':''}">
                     <form:label path="dateOfBirth" cssClass="col-sm-2 control-label">Date Of Birth</form:label>
                         <div class="col-sm-10">
-                        <form:input path="dateOfBirth" cssClass="form-control"/>
+                        <form:input path="dateOfBirth" type="text" class="form-control" required="required"/>
                         <form:errors path="dateOfBirth" cssClass="help-block"/>
                     </div>
-                </div>                 
+                </div>   
+
                 <div class="form-group ${password_error?'has-error':''}">
                     <form:label path="password" cssClass="col-sm-2 control-label">Password</form:label>
                         <div class="col-sm-10">
@@ -68,12 +70,27 @@
                         <form:errors path="password" cssClass="help-block"/>
                     </div>
                 </div>   
-                    <p class="text-center">
+
+                <p class="text-center">
                     <button class="btn btn-primary" type="submit">Submit</button>
                 </p>
-
             </form:form>
+            <link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css">
+            <link rel="stylesheet" href="resources/css/custom.css" type="text/css">
+            <script type="text/javascript" src="resources/jquery/jquery-ui.min.js"></script>
+            <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+            <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+            <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+            <script src="webjars/jquery/1.9.1/jquery.min.js"></script>
+            <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+            <script src="webjars/bootstrap-datepicker/1.0.1/js/bootstrap-datepicker.js"></script>
+            <script>
+                $("#dateOfBirth").datepicker({
+                    dateFormat: "mm/dd/y",
+                    changeMonth: true,
+                    changeYear: true
+                });
+            </script> 
         </body>
     </jsp:attribute>
 </my:pageTemplate>
-
