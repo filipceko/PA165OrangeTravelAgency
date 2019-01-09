@@ -62,6 +62,9 @@
                         </c:if>
                         <!--<li><my:a href="/customer/edit"><f:message key="navigation.customer.edit"/></my:a></li>-->
                         <c:if test="${not empty authenticatedUser}">
+                                    <li><my:a href="/customer/reservationView"><f:message key="customer.reservationView"/></my:a></li>
+                                    </c:if>
+                        <c:if test="${not empty authenticatedUser}">
                             <li><my:a href="/auth/logout"><f:message key="navigation.customer.logout"/></my:a></li>
                         </c:if>
                     </ul>

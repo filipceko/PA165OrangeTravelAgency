@@ -7,8 +7,11 @@ package cz.muni.fi.travelAgency.controllers;
 
 import cz.muni.fi.travelAgency.DTO.CustomerCreateDTO;
 import cz.muni.fi.travelAgency.DTO.CustomerDTO;
+import cz.muni.fi.travelAgency.DTO.ReservationDTO;
 import cz.muni.fi.travelAgency.facade.CustomerFacade;
+import cz.muni.fi.travelAgency.facade.ReservationFacade;
 import cz.muni.fi.travelAgency.service.BeanMappingService;
+import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +41,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerFacade customerFacade;
+    
+    @Autowired
+    ReservationFacade reservationFacade;
 
     @Autowired
     private BeanMappingService mapper;
@@ -101,6 +107,18 @@ public class CustomerController {
         }
         return "redirect:" + uriBuilder.path("customer/login").toUriString();
     }
+    @RequestMapping(value = "reservationView", method = RequestMethod.GET)
+    public String detailReservation(
+            @ModelAttribute("authenticatedUser") CustomerDTO customer,
+            Model model) {
+        CustomerDTO customerDTO = customerFacade.findCustomerById(customer.getId());
+        Collection<ReservationDTO> reservationDTO = reservationFacade.getByCustomer(customer.getId());
+        
+        model.addAttribute("reservations", reservationDTO);
+        model.addAttribute("customer", customerDTO);
+        return "customer/reservationView";
+    }
+
 
     private boolean resultIsValid(BindingResult result, Model model) {
         if (result.hasErrors()) {

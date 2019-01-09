@@ -3,6 +3,7 @@ package cz.muni.fi.travelAgency.controllers;
 import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.facade.TripFacade;
+import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,24 @@ public class TripsController {
     public String detail(@PathVariable long id, Model model) {
         model.addAttribute("trip", tripFacade.getTripById(id));
         return "trips/detail";
+    }
+    
+    @RequestMapping(value = "show/{filter}", method = RequestMethod.GET)
+    public String list(@PathVariable String filter, Model model) {
+        Collection<TripDTO> trips;
+        switch (filter) {
+            case "all":
+                trips = tripFacade.getAllTrips();
+                break;
+            case "future":
+                trips = tripFacade.getAvailableFutureTrip();
+                break;
+            default:
+                trips = new ArrayList<>();
+                model.addAttribute("alert_danger", "Unknown filter " + filter);
+        }
+        model.addAttribute("trips", trips);
+        return "trips/show";
     }
 
     @RequestMapping(value = "forMoney", method = RequestMethod.POST)
