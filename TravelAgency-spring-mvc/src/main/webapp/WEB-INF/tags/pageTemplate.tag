@@ -36,7 +36,7 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><my:a href="/trips/show"><f:message key="navigation.trips"/></my:a></li>
-                <c:if test="${not empty authenticatedUser && authenticatedUser.isAdmin()}">
+                <c:if test="${not empty  authenticatedUser && authenticatedUser.isAdmin()}">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <f:message key="navigation.admin"/>
@@ -60,12 +60,15 @@
                         <c:if test="${empty authenticatedUser}">
                             <li><my:a href="/customer/registration"><f:message key="navigation.customer.registration"/></my:a></li>
                         </c:if>
-                        <!--<li><my:a href="/customer/edit"><f:message key="navigation.customer.edit"/></my:a></li>-->
+
                         <c:if test="${not empty authenticatedUser}">
                                     <li><my:a href="/customer/reservationView"><f:message key="customer.reservationView"/></my:a></li>
                                     </c:if>
                         <c:if test="${not empty authenticatedUser}">
                             <li><my:a href="/auth/logout"><f:message key="navigation.customer.logout"/></my:a></li>
+                        </c:if>
+                        <c:if test="${not empty authenticatedUser}">
+                            <li><my:a href="/customer/edit"><f:message key="customer.myAccount"/></my:a></li>
                         </c:if>
                     </ul>
                 </li>
@@ -95,9 +98,9 @@
 <div class="container">
     <!-- page title -->
     <c:if test="${not empty title}">
-    <div class="page-header">
-        <h1><c:out value="${title}"/></h1>
-    </div>
+        <div class="page-header">
+            <h1><c:out value="${title}"/></h1>
+        </div>
     </c:if>
     <!-- authenticated user info -->
     <div class="row">

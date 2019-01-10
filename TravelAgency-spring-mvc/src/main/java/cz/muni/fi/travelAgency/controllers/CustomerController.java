@@ -31,7 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 
 /**
- * @author Rajivv
+ * @author Rajivv/Rithy
  */
 @Controller
 @RequestMapping("/customer")
@@ -69,43 +69,52 @@ public class CustomerController {
         return "redirect:" + uriBuilder.path("/").build().encode().toUriString();
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String getEdit(@PathVariable long id, Model model) {
-        CustomerDTO customerDTO = customerFacade.findCustomerById(id);
+
+    @RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
+    public String detail(@PathVariable long id, Model model) {
+        model.addAttribute("customer", customerFacade.findCustomerById(id));
+        return "customer/detail";
+    }
+
+    @RequestMapping(value = "edit" , method = RequestMethod.GET)
+    public String getEdit(@ModelAttribute("authenticatedUser") CustomerDTO customer,
+            Model model) {
+        CustomerDTO customerDTO = customerFacade.findCustomerById(customer.getId());
         CustomerCreateDTO createDTO = mapper.mapTo(customerDTO, CustomerCreateDTO.class);
         createDTO.setPassword(customerDTO.getPasswordHash());
         model.addAttribute("customer", createDTO);
         return "customer/edit";
     }
 
-    @RequestMapping(value = "/editCustomer", method = RequestMethod.POST)
+    @RequestMapping(value = "editCustomer", method = RequestMethod.POST)
     public String submitEdit(@Valid @ModelAttribute("customer") CustomerCreateDTO createDTO,
                              BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes,
                              UriComponentsBuilder uriBuilder) {
-        if (!resultIsValid(bindingResult, model)) {
+        if (createDTO == null)
+        {
             return "customer/edit";
         }
         CustomerDTO customerDTO = mapper.mapTo(createDTO, CustomerDTO.class);
         customerDTO.setPasswordHash(createDTO.getPassword());
         customerFacade.updateCustomer(customerDTO);
         redirectAttributes.addFlashAttribute("alert_success", "Customer" + createDTO.getSurname() + " updated");
-        return "redirect:" + uriBuilder.path("customer/edit" + createDTO.getId()).build().encode().toUriString();
+        return "redirect:" + uriBuilder.path("/customer/detail/" + createDTO.getId()).build().encode().toUriString();
     }
 
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
-    public String delete(@PathVariable long id, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) {
-        CustomerDTO customerDTO = customerFacade.findCustomerById(id);
-        logger.debug("delete({})", id);
+    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    public String delete(@ModelAttribute("authenticatedUser") CustomerDTO customer, UriComponentsBuilder uriBuilder, RedirectAttributes redirectAttributes) {
+        CustomerDTO customerDTO = customerFacade.findCustomerById(customer.getId());
+        logger.debug("delete({})", customer.getId());
         try {
             customerFacade.deleteCustomer(customerDTO);
             redirectAttributes.addFlashAttribute("alert_success", "Customer \"" + customerDTO.getSurname() + "\" was deleted.");
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error("customer " + id + " cannot be deleted");
+            logger.error("customer " + customer.getId() + " cannot be deleted");
             logger.error(NestedExceptionUtils.getMostSpecificCause(ex).getMessage());
             redirectAttributes.addFlashAttribute("alert_danger", "Customer \"" + customerDTO.getId() + "\" cannot be deleted." + ex.getMessage());
         }
-        return "redirect:" + uriBuilder.path("customer/login").toUriString();
+        return "redirect:" + uriBuilder.path("/auth/login").toUriString();
     }
     @RequestMapping(value = "reservationView", method = RequestMethod.GET)
     public String detailReservation(
