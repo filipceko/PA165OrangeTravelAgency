@@ -38,7 +38,7 @@
                                 <td>${ic.count}. <c:out value="${excursion.destination}"/></td>
                                 <td><c:out value="${excursion.description}"/></td>
                                 <td><c:out value="${excursion.excursionDate}"/></td>
-                                <td><c:out value="${excursion.excursionDuration}"/></td>
+                                <td><c:out value="${excursion.durationString}"/></td>
                                 <td><c:out value="${excursion.price}"/></td>
                             </tr>
                         </c:forEach>
