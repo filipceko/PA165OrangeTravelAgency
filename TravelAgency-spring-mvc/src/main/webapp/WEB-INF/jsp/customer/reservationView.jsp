@@ -13,24 +13,28 @@
 <my:pageTemplate>
     <jsp:attribute name="title"><f:message key="reservation.yourReservations"/></jsp:attribute>
     <jsp:attribute name="body">
-        <h3><f:message key="reservation.customer.detail"/>: <br/></h3>
-        <f:message key="customer.name"/>: ${customer.name} <br/>
-        <f:message key="customer.surname"/>: ${customer.surname} <br/>
-        <f:message key="customer.email"/>: ${customer.email} <br/>
+        <div class="row">
+            <h3><f:message key="reservation.customer.detail"/>: <br/></h3>
+            <f:message key="customer.name"/>: ${customer.name} <br/>
+            <f:message key="customer.surname"/>: ${customer.surname} <br/>
+            <f:message key="customer.email"/>: ${customer.email} <br/>
 
-        <c:forEach items="${reservations}" var="reservation">
-            <h3><f:message key="reservation.detail"/>: <br/></h3>
-            <tr>
-                <td><f:message key="reservation.destination"/>: ${reservation.trip.destination}</td><br/>
-                <td><f:message key="reservation.reserveDate"/>: ${reservation.reserveDate}</td><br/>
-                <td><f:message key="trip.from"/>: ${reservation.trip.fromDate}</td><br/>
-                <td><f:message key="trip.to"/>: ${reservation.trip.toDate}</td><br/>
-                <td><f:message key="trip.capacity"/>: ${reservation.trip.capacity}</td><br/>
-                <h5><f:message key="reservation.excursion"/>: <br/></h5>
-                <c:forEach items="${reservation.trip.excursions}" var="excursion">
-                    <td><f:message key="reservation.excursion.destination"/>: ${excursion.destination}</td><br/>
-                </c:forEach> <br/>
-            </tr>
-        </c:forEach>
+            <c:forEach items="${reservations}" var="reservation">
+                <div class="col-md-4">
+                    <h3><f:message key="reservation.detail"/>: <br/></h3>
+                    <tr>
+                        <td><f:message key="reservation.destination"/>: ${reservation.trip.destination}</td><br/>
+                    <td><f:message key="reservation.reserveDate"/>: ${reservation.reserveDate}</td><br/>
+                    <td><f:message key="trip.from"/>: ${reservation.trip.fromDate}</td><br/>
+                    <td><f:message key="trip.to"/>: ${reservation.trip.toDate}</td><br/>
+                    <td><f:message key="trip.capacity"/>: ${reservation.trip.capacity}</td><br/>
+                    <h5><f:message key="reservation.excursion"/>: <br/></h5>
+                        <c:forEach items="${reservation.trip.excursions}" var="excursion">
+                        <td><f:message key="reservation.excursion.destination"/>: ${excursion.destination}</td><br/>
+                    </c:forEach> <br/>
+                    </tr>
+                </div>
+            </c:forEach>
+        </div>
     </jsp:attribute>
 </my:pageTemplate>

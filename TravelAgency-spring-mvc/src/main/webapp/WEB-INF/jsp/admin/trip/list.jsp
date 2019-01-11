@@ -25,7 +25,7 @@
     </my:a>
     <br/>
     <form:form action="/travel.agency/admin/trip/filterTrips" method="POST">
-        <input type="text" id="filter" name="filter" value="<f:message key="trip.filter.baseValue"/>"/>
+        <input type="text" id="filter" name="filter" placeholder="<f:message key="trip.filter.baseValue"/>"/>
         <input type="submit" value="<f:message key="common.filter"/>"/>
     </form:form>
     <table class="table">
