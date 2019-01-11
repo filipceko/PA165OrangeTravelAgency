@@ -20,7 +20,7 @@
         <p class="lead"><f:message key="home.slogan"/></p>
     </div>
     <form:form action="/travel.agency/trips/forMoney" method="POST">
-        <input type="text" id="money" name="money" value="<f:message key="home.moneyDefault"/>"/>
+        <input type="text" id="money" name="money" placeholder="<f:message key="home.moneyDefault"/>"/>
         <button type="submit" class="btn btn-primary">
             <span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
             <f:message key="home.showTrips"/>

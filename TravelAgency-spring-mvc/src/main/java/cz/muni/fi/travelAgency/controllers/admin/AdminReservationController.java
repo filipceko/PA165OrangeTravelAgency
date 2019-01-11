@@ -74,9 +74,9 @@ public class AdminReservationController {
                          @RequestParam("toDate") String toString,
                          Model model) {
         LocalDate fromDate = (fromString == null || fromString.isEmpty()) ? null :
-                LocalDate.parse(fromString, DateTimeFormatter.ofPattern("mm/dd/yy"));
+                LocalDate.parse(fromString, DateTimeFormatter.ofPattern("MM/dd/yy"));
         LocalDate toDate = (toString == null || toString.isEmpty()) ? null :
-                LocalDate.parse(toString, DateTimeFormatter.ofPattern("mm/dd/yy"));
+                LocalDate.parse(toString, DateTimeFormatter.ofPattern("MM/dd/yy"));
         Collection<ReservationDTO> reservations = reservationFacade.getReservationByInterval(fromDate, toDate);
         model.addAttribute("reservations", reservations);
         model.addAttribute("alert_info", context.getMessage("info.tripsFromTo",
@@ -116,6 +116,6 @@ public class AdminReservationController {
             attributes.addFlashAttribute("alert_danger", context.getMessage("error.reservationNotCanceled",
                     new Object[]{id}, LocaleContextHolder.getLocale()));
         }
-        return "redirect:" + uriBuilder.path("/admin/reservation/list/all").build().encode().toUriString();
+        return "redirect:" + uriBuilder.path("/admin/reservation/list").build().encode().toUriString();
     }
 }
