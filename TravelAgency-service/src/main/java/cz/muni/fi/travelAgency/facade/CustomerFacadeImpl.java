@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 /**
- * Implemetation of {@link CustomerFacade}.
+ * Implementation of {@link CustomerFacade}.
  *
  * @author Simona Raucinova
  */

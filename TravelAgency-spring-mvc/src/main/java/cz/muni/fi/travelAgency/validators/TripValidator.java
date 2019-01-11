@@ -7,8 +7,14 @@ import org.springframework.validation.Validator;
 
 import java.time.LocalDate;
 
+/**
+ * Class securing Trip validation
+ *
+ * @author Filip Cekovsky
+ */
 @Component
 public class TripValidator implements Validator {
+
     @Override
     public boolean supports(Class<?> aClass) {
         return TripDTO.class.isAssignableFrom(aClass);
@@ -20,7 +26,7 @@ public class TripValidator implements Validator {
             TripDTO tripDTO = (TripDTO) o;
             LocalDate from = tripDTO.getFromDate();
             LocalDate to = tripDTO.getToDate();
-            if ( from != null && to != null && from.isAfter(to)) {
+            if (from != null && to != null && from.isAfter(to)) {
                 errors.rejectValue("toDate", "tripValidator.fromAfterTo");
             }
         }

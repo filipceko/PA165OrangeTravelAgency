@@ -37,17 +37,23 @@ public class Customer {
     private String surname;
 
     /**
-     * Email address - compulsory
+     * Email address
      */
     @NotNull
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column (nullable = false)
+    /**
+     * Hashed password
+     */
+    @Column(nullable = false)
     private String passwordHash;
 
+    /**
+     *
+     */
     @Column
-    private boolean admin;
+    private boolean isAdmin;
 
     /**
      * Nullable phone number
@@ -83,14 +89,14 @@ public class Customer {
      * All fields constructor
      */
     public Customer(@NotNull String name, @NotNull String surname, @NotNull String email,
-            String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
+                    String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.passportNumber = passportNumber;
         this.dateOfBirth = dateOfBirth;
-        this.admin = false;
+        this.isAdmin = false;
     }
 
     /**
@@ -157,11 +163,11 @@ public class Customer {
     }
 
     public boolean isAdmin() {
-        return admin;
+        return isAdmin;
     }
 
     public void setAdmin(boolean admin) {
-        this.admin = admin;
+        this.isAdmin = admin;
     }
 
     /**

@@ -17,46 +17,46 @@ public interface TripFacade {
     /**
      * Create new Trip
      *
-     * @param trip
+     * @param trip to be created
      */
     void createTrip(TripDTO trip);
 
     /**
      * Get Trip by provided trip id
      *
-     * @return
+     * @return Obtained TripDTO
      */
     TripDTO getTripById(long id);
 
     /**
      * Get all trips
      *
-     * @return
+     * @return Collection of all trips
      */
     Collection<TripDTO> getAllTrips();
 
     /**
      * Get Trips by provided destination
      *
-     * @param destination
-     * @return
+     * @param destination to retrieve trips to
+     * @return Collection of all trips to given destination
      */
     Collection<TripDTO> getTripByDestination(String destination);
 
     /**
-     * Get Trips by provided from date and to date
+     * Get Trips that happen in given interval
      *
-     * @param fromDate
-     * @param toDate
-     * @return
+     * @param fromDate earliest starting date
+     * @param toDate   latest return date
+     * @return Collection ot trips
      */
     Collection<TripDTO> getTripByInterval(LocalDate fromDate, LocalDate toDate);
 
     /**
      * Get Trip by available slots
      *
-     * @param amount
-     * @return
+     * @param amount of slots that should be available
+     * @return Collection of trips with enough available slots
      */
     Collection<TripDTO> getTripBySlot(int amount);
 
@@ -65,19 +65,19 @@ public interface TripFacade {
      *
      * @return collection of available future trips
      */
-    public Collection<TripDTO> getAvailableFutureTrip();
+    Collection<TripDTO> getAvailableFutureTrip();
 
     /**
      * Update existing trip
      *
-     * @param trip
+     * @param trip trip to update
      */
     void updateTrip(TripDTO trip);
 
     /**
      * Remove Trip
      *
-     * @param trip
+     * @param trip to be removed
      */
     void removeTrip(TripDTO trip);
 

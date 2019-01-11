@@ -3,7 +3,6 @@ package cz.muni.fi.travelAgency.DTO;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -12,7 +11,7 @@ import java.util.Objects;
  *
  * @author Rajivv
  */
-public class ExcursionManipulationDTO {
+public class ExcursionCreateDTO {
 
     private Long id;
     /**
@@ -53,24 +52,10 @@ public class ExcursionManipulationDTO {
     @NotNull
     private Long tripId;
 
-    /**
-     * Simple non-parametric constructor.
-     */
-    public ExcursionManipulationDTO() {
+    public ExcursionCreateDTO() {
     }
 
-    /**
-     * Parametric constructor with trip.
-     *
-     * @param description       of this excursion
-     * @param destination       of this excursion
-     * @param price             of this excursion
-     * @param excursionDate     of this excursion
-     * @param durationInMinutes of this excursion
-     * @param tripId            id of trip the excursion was made for
-     */
-
-    public ExcursionManipulationDTO(Long id, @NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull long durationInMinutes, @NotNull Long tripId) {
+    public ExcursionCreateDTO(Long id, @NotNull String description, @NotNull String destination, @NotNull Double price, @NotNull LocalDate excursionDate, @NotNull long durationInMinutes, @NotNull Long tripId) {
         this.id = id;
         this.description = description;
         this.destination = destination;
@@ -139,8 +124,8 @@ public class ExcursionManipulationDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ExcursionManipulationDTO)) return false;
-        ExcursionManipulationDTO excursion = (ExcursionManipulationDTO) o;
+        if (!(o instanceof ExcursionCreateDTO)) return false;
+        ExcursionCreateDTO excursion = (ExcursionCreateDTO) o;
         return Objects.equals(getDestination(), excursion.getDestination()) &&
                 Objects.equals(getPrice(), excursion.getPrice()) &&
                 Objects.equals(getExcursionDate(), excursion.getExcursionDate()) &&

@@ -1,14 +1,14 @@
 package cz.muni.fi.travelAgency.rest.controllers;
 
+import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
-import cz.muni.fi.travelAgency.DTO.ExcursionManipulationDTO;
 import cz.muni.fi.travelAgency.facade.ExcursionFacade;
 import cz.muni.fi.travelAgency.facade.TripFacade;
 import cz.muni.fi.travelAgency.rest.ApiUris;
 import cz.muni.fi.travelAgency.rest.exceptions.ResourceAlreadyExistingException;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * REST controller for excursion.
+ *
  * @author Simona Raucinova
  */
 @ControllerAdvice
@@ -46,7 +47,7 @@ public class ExcursionsController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final ExcursionDTO detail(@PathVariable long id){
+    public final ExcursionDTO detail(@PathVariable long id) {
         logger.debug("rest getExcursion({})", id);
         ExcursionDTO excursionDTO = excursionFacade.findExcursionById(id);
         if (excursionDTO != null) {
@@ -68,7 +69,7 @@ public class ExcursionsController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public final ExcursionDTO createExcursion(@RequestBody ExcursionManipulationDTO excursion) throws Exception {
+    public final ExcursionDTO createExcursion(@RequestBody ExcursionCreateDTO excursion) throws Exception {
 
         logger.debug("rest createExcursion()");
         ExcursionDTO excursionDTO = new ExcursionDTO(tripFacade.getTripById(excursion.getTripId()),
@@ -87,7 +88,7 @@ public class ExcursionsController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public final ExcursionDTO editExcursion(@RequestBody ExcursionManipulationDTO excursion) throws Exception{
+    public final ExcursionDTO editExcursion(@RequestBody ExcursionCreateDTO excursion) throws Exception {
 
         logger.debug("rest editExcursion()");
 

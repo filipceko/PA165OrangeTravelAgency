@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 /**
- * Implemetation of {@link TripFacade}.
+ * Implementation of {@link TripFacade}.
  *
  * @author Rithy Ly
  */
@@ -23,9 +23,15 @@ import java.util.Collection;
 @Transactional
 public class TripFacadeImpl implements TripFacade {
 
+    /**
+     * Service for trips
+     */
     @Autowired
     private TripService tripService;
 
+    /**
+     * Mapping service
+     */
     @Autowired
     private BeanMappingService beanMappingService;
 

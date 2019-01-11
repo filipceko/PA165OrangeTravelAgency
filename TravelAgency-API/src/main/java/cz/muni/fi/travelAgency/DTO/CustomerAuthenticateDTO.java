@@ -10,10 +10,11 @@ import javax.validation.constraints.Email;
 public class CustomerAuthenticateDTO {
 
     /**
-     * Id of customer.
+     * Customers email
      */
     @Email
     private String customerEmail;
+
     /**
      * Customer's password.
      */

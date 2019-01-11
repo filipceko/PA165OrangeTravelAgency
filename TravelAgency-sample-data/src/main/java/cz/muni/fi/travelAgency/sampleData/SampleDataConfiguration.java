@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 
 /**
  * Takes Service configuration and loads sample data
@@ -18,13 +17,23 @@ import java.io.IOException;
 @Configuration
 @Import(ServiceConfiguration.class)
 public class SampleDataConfiguration {
-    final static Logger logger = LoggerFactory.getLogger(SampleDataConfiguration.class);
 
+    /**
+     * Logger for this class
+     */
+    private final static Logger logger = LoggerFactory.getLogger(SampleDataConfiguration.class);
+
+    /**
+     * Sample data loading facade
+     */
     @Autowired
     DataLoadingFacade sampleDataLoader;
 
+    /**
+     * Loads data
+     */
     @PostConstruct
-    public void loadData() throws IOException {
+    public void loadData() {
         logger.debug("Data loading... ");
         sampleDataLoader.loadData();
     }

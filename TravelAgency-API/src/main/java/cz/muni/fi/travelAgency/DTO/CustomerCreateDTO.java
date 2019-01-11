@@ -12,42 +12,56 @@ import java.time.LocalDate;
  */
 public class CustomerCreateDTO {
 
+    /**
+     * Customer's id
+     */
     private Long id;
 
+    /**
+     * Customer's name
+     */
     @NotNull
     @Size(min = 3, max = 20)
     private String name;
 
+    /**
+     * Customer's surname
+     */
     @NotNull
     @Size(min = 3, max = 20)
     private String surname;
 
+    /**
+     * Customer's email
+     */
     @NotNull
+    @Email
     private String email;
 
+    /**
+     * Plain text password
+     */
     @NotNull
     @Size(min = 8, max = 30)
     private String password;
 
+    /**
+     * Phone number
+     */
     private String phoneNumber;
 
+    /**
+     * Passport number
+     */
     private String passportNumber;
 
+    /**
+     * Customer's date of birth
+     */
     private LocalDate dateOfBirth;
 
     public CustomerCreateDTO() {
 
-    }
-
-    public CustomerCreateDTO(@NotNull String name, @NotNull String surname, @Email String email, @NotNull String password,
-                             String phoneNumber, String passportNumber, LocalDate dateOfBirth) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.passportNumber = passportNumber;
-        this.dateOfBirth = dateOfBirth;
     }
 
     public String getName() {
@@ -122,9 +136,7 @@ public class CustomerCreateDTO {
         if (!(o instanceof CustomerCreateDTO)) {
             return false;
         }
-
         CustomerCreateDTO that = (CustomerCreateDTO) o;
-
         if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) {
             return false;
         }

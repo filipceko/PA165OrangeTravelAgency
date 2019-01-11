@@ -18,8 +18,13 @@ import java.util.List;
  */
 @Configuration
 @Import(PersistenceApplicationContext.class)
-@ComponentScan(basePackages = {"cz.muni.fi.travelAgency.service","cz.muni.fi.travelAgency.facade"})
+@ComponentScan(basePackages = {"cz.muni.fi.travelAgency.service", "cz.muni.fi.travelAgency.facade"})
 public class ServiceConfiguration {
+    /**
+     * Initializes mapper
+     *
+     * @return mapper bean
+     */
     @Bean
     public Mapper dozer() {
         List<String> mappingFiles = new ArrayList<>();

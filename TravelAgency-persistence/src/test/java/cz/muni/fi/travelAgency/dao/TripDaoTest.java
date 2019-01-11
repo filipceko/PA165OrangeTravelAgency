@@ -21,21 +21,35 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
+ * Class testing Trip DAO object
+ *
  * @author Rajivv
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
 public class TripDaoTest extends AbstractTestNGSpringContextTests {
+    /**
+     * Data access object for trips
+     */
     @Autowired
     private TripDao tripDao;
 
+    /**
+     * Trip used for testing
+     */
     private Trip tripBrno;
+    /**
+     * Date used for testing
+     */
     private LocalDate firstDate = LocalDate.of(2018, 10, 20);
+    /**
+     * Date used for testing
+     */
     private LocalDate secondDate = LocalDate.of(2018, 10, 25);
 
     /**
-     * create trip
+     * Create testing data
      */
     @BeforeMethod
     public void setUpTest() {

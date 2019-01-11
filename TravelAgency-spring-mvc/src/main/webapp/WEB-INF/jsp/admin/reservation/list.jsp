@@ -45,6 +45,27 @@
                 <td><c:out value="${reservation.customer.email}"/></td>
             </tr>
         </c:forEach>
+        <link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css">
+        <link rel="stylesheet" href="resources/css/custom.css" type="text/css">
+        <script type="text/javascript" src="resources/jquery/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <script src="webjars/jquery/1.9.1/jquery.min.js"></script>
+        <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="webjars/bootstrap-datepicker/1.0.1/js/bootstrap-datepicker.js"></script>
+        <script>
+            $("#fromDate").datepicker({
+                dateFormat: "mm/dd/y",
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#toDate").datepicker({
+                dateFormat: "mm/dd/y",
+                changeMonth: true,
+                changeYear: true
+            });
+        </script>
         </tbody>
     </table>
 </jsp:attribute>

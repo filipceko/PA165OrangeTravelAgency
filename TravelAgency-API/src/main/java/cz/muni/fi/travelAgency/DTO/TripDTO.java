@@ -22,49 +22,46 @@ public class TripDTO {
     private Long id;
 
     /**
-     * Staring Date of the trip was made;
+     * Staring Date
      */
     @NotNull
     private LocalDate fromDate;
 
     /**
-     * Ending Date of the trip was made;
+     * Ending Date
      */
     @NotNull
     private LocalDate toDate;
 
     /**
-     * Description of the trip was made;
+     * Description of the trip
      */
     @Size(min = 3, max = 500)
     private String destination;
 
     /**
-     * Capacity of the trip was made;
+     * Capacity of the trip
      */
     @Min(1)
     @Max(2000)
     private int capacity;
 
     /**
-     * Price of the trip was made;
+     * Price of the trip
      */
     @Min(0)
     private Double price;
 
     /**
-     * Excursions of the trip was made;
+     * Excursions available for this trip
      */
     private Collection<ExcursionDTO> excursions = new HashSet<>();
 
     /**
-     * Reservations of the trip was made;
+     * Reservations of this trip
      */
     private Collection<ReservationDTO> reservations = new HashSet<>();
 
-    /**
-     * Simple non-parametric constructor
-     */
     public TripDTO() {
 
     }

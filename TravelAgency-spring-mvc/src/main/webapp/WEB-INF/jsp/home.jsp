@@ -29,7 +29,7 @@
     <div class="container">
         <!-- Example row of columns -->
         <c:forEach items="${trips}" var="trip">
-            <div class="col-md-4">s
+            <div class="col-md-4">
                 <h2><c:out value="${trip.destination}"/></h2>
                 <p>Price : € <c:out value="${trip.price}"/></p>
                 <p>Date : <c:out value="${trip.fromDate}"/></p>

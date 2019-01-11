@@ -16,6 +16,9 @@ import java.util.Collection;
 @Repository
 public class TripDaoImpl implements TripDao {
 
+    /**
+     * Entity manager
+     */
     @PersistenceContext
     private EntityManager em;
 

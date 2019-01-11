@@ -1,6 +1,8 @@
 package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
+import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
+import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
 import org.dozer.Mapper;
@@ -71,4 +73,11 @@ public interface BeanMappingService {
      * @return constructed DTO
      */
     CheapTravelDTO mapToCheapTravel(Map<Trip, Collection<Excursion>> entitiesMap);
+
+    /**
+     * Maps excursion {@link ExcursionCreateDTO} to {@link ExcursionDTO}
+     * @param manipulationDTO to be mapped
+     * @return mapped ExcursionDTO
+     */
+    ExcursionDTO mapManipulationToEntityDTO(ExcursionCreateDTO manipulationDTO);
 }

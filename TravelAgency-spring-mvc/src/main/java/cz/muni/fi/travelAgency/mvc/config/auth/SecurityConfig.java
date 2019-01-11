@@ -2,7 +2,6 @@ package cz.muni.fi.travelAgency.mvc.config.auth;
 
 import cz.muni.fi.travelAgency.DTO.CustomerAuthenticateDTO;
 import cz.muni.fi.travelAgency.DTO.CustomerDTO;
-import cz.muni.fi.travelAgency.exceptions.DataAccessLayerException;
 import cz.muni.fi.travelAgency.facade.CustomerFacade;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,10 +20,17 @@ import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Security config provided with needed security implementation
+ *
+ * @author Filip Cekovsky
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+    /**
+     * Customer facade
+     */
     @Inject
     private CustomerFacade customerFacade;
 
@@ -35,9 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             public Authentication authenticate(Authentication authentication) throws AuthenticationException {
                 String userEmail = "";
                 String password = "";
-                Set<GrantedAuthority> authorities = new HashSet<>();
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + "Guest"));
-
                 Object principal = authentication.getPrincipal();
                 if (principal instanceof String) {
                     userEmail = (String) principal;
@@ -46,14 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 if (credentials instanceof String) {
                     password = (String) credentials;
                 }
-
                 boolean isAuthenticated = customerFacade.authenticate(new CustomerAuthenticateDTO(userEmail, password));
                 if (isAuthenticated) {
+                    Set<GrantedAuthority> authorities = new HashSet<>();
                     CustomerDTO user = customerFacade.findCustomerByEmail(userEmail);
+                    authorities.add(new SimpleGrantedAuthority("ROLE_" + "Customer"));
                     if (user.isAdmin()) {
                         authorities.add(new SimpleGrantedAuthority("ROLE_" + "Admin"));
-                    } else {
-                        authorities.add(new SimpleGrantedAuthority("ROLE_" + "Customer"));
                     }
                     return new UsernamePasswordAuthenticationToken(principal, credentials, authorities);
                 }
@@ -71,15 +73,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-
                 // Permit anonymous access
-                .antMatchers("/").permitAll()
-                .antMatchers("/auth/login", "/customer/registration", "/customer/create","/customer/reservationView").permitAll()
-                .antMatchers("/home", "/trips/**").permitAll()
-                .antMatchers("/reservation/**").hasAnyRole("Customer")
-                .antMatchers("/admin/**").hasAnyRole("Admin")
-                .antMatchers("/customer/edit", "/customer/editCustomer", "/customer/delete/*").hasAnyRole("Admin", "User")
-
+                .antMatchers("/", "/auth/login", "/home", "/trips/**", "/customer/registration", "/customer/create",
+                        "/customer/reservationView").permitAll()
+                .antMatchers("/reservation/**", "/customer/edit", "/customer/editCustomer",
+                        "/customer/delete/*").hasAnyRole("Customer")
                 .antMatchers("/**").hasAnyRole("Admin")
                 .anyRequest().authenticated()
 

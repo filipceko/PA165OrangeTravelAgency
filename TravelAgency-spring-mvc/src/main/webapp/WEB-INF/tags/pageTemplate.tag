@@ -6,7 +6,9 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html lang="${pageContext.request.locale}">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -46,7 +48,7 @@
                             <li><my:a href="/admin/trip/list/all"><f:message key="navigation.admin.trips"/></my:a></li>
                             <li><my:a href="/admin/customer/list"><f:message key="navigation.admin.customers"/></my:a></li>
                             <li><my:a href="/admin/excursion/list"><f:message key="navigation.admin.excursions"/></my:a></li>
-                            <li><my:a href="/admin/reservation/list/all"><f:message key="navigation.admin.reservations"/></my:a></li>
+                            <li><my:a href="/admin/reservation/list"><f:message key="navigation.admin.reservations"/></my:a></li>
                         </ul>
                     </li>
                 </c:if>
@@ -96,12 +98,6 @@
     </div>
 </nav><!--/.nav-collapse -->
 <div class="container">
-    <!-- page title -->
-    <c:if test="${not empty title}">
-        <div class="page-header">
-            <h1><c:out value="${title}"/></h1>
-        </div>
-    </c:if>
     <!-- authenticated user info -->
     <div class="row">
         <c:if test="${not empty authenticatedUser}">
@@ -114,6 +110,12 @@
             </div>
         </c:if>
     </div>
+    <!-- page title -->
+    <c:if test="${not empty title}">
+        <div class="page-header">
+            <h1><c:out value="${title}"/></h1>
+        </div>
+    </c:if>
     <!-- alerts -->
     <c:if test="${not empty alert_danger}">
         <div class="alert alert-danger" role="alert">

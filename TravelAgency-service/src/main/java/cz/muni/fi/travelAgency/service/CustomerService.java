@@ -37,7 +37,7 @@ public interface CustomerService {
      * Try to authenticate a customer. Return true only if the hashed password matches the records.
      *
      * @param customerEmail email to be used for authentication
-     * @param password inputted password
+     * @param password      inputted password
      */
     boolean authenticate(String customerEmail, String password);
 
