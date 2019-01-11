@@ -26,6 +26,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-2 col-lg-1">
             <my:a href="/admin/excursion/edit/${excursion.id}" class="btn btn-primary">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                 <f:message key="common.edit"/>
             </my:a>
         </div>

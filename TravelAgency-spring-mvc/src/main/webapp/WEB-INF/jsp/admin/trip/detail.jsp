@@ -39,7 +39,6 @@
         </my:a>
         <my:a href="/admin/trip/delete/${trip.id}" class="btn btn-danger">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-            <f:message key="common.delete"/>
         </my:a>
     </jsp:attribute>
 </my:pageTemplate>

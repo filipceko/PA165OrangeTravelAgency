@@ -40,7 +40,8 @@
                     <c:out value="${excursion.trip.destination}"/>
                 </my:a></td>
                 <td><my:a href="/admin/excursion/edit/${excursion.id}" class="btn btn-primary">
-                        <f:message key="common.edit"/>
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            <f:message key="common.edit"/>
                     </my:a></td>
                 <td><form method="post" action="${pageContext.request.contextPath}/admin/excursion/delete/${excursion.id}">
                     <button type="submit" class="btn btn-danger">

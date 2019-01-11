@@ -34,14 +34,18 @@
         <tbody>
         <c:forEach items="${reservations}" var="reservation">
             <tr>
-                <td>${reservation.id}</td>
                 <td><my:a href="/admin/reservation/detail/${reservation.id}" class="text">
+                    <c:out value="${reservation.id}"/>
+                </my:a></td>
+                <td><my:a href="/admin/trip/detail/${reservation.trip.id}" class="text">
                     <c:out value="${reservation.trip.destination}"/>
                 </my:a></td>
                 <td><c:out value="${reservation.reserveDate}"/></td>
                 <td><c:out value="${reservation.trip.fromDate}"/></td>
                 <td><c:out value="${reservation.trip.capacity}"/></td>
-                <td><c:out value="${reservation.customer.name}"/></td>
+                <td><my:a href="/admin/customer/detail/${reservation.customer.id}" class="text">
+                    <c:out value="${reservation.customer.name}"/>
+                </my:a></td>
                 <td><c:out value="${reservation.customer.email}"/></td>
             </tr>
         </c:forEach>
