@@ -13,29 +13,32 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <my:pageTemplate>
-    <jsp:attribute name="title">Welcome!</jsp:attribute>
+    <jsp:attribute name="title"><f:message key="home.welcome"/></jsp:attribute>
     <jsp:attribute name="body">
     <div class="jumbotron">
         <h1>Orange Travel Agency</h1>
-        <p class="lead">The best place you can be!</p>
+        <p class="lead"><f:message key="home.slogan"/></p>
     </div>
     <form:form action="/travel.agency/trips/forMoney" method="POST">
-        <input type="text" id="money" name="money" value="<f:message key="trip.filter.baseValue"/>"/>
+        <input type="text" id="money" name="money" value="<f:message key="home.moneyDefault"/>"/>
         <button type="submit" class="btn btn-primary">
             <span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
-            <f:message key="common.filter"/>
+            <f:message key="home.showTrips"/>
         </button>
     </form:form>
     <div class="container">
         <!-- Example row of columns -->
         <c:forEach items="${trips}" var="trip">
-            <div class="col-md-4">s
+            <div class="col-md-4">
                 <h2><c:out value="${trip.destination}"/></h2>
-                <p>Price : € <c:out value="${trip.price}"/></p>
-                <p>Date : <c:out value="${trip.fromDate}"/></p>
-                <p>Available : <c:out value="${trip.capacity}" /></p>
-                <p><c:out value="Trip to ${trip.destination}. The best you can get, for this price there is!"/></p>
-                <p><a class="btn btn-secondary" href="${pageContext.request.contextPath}/trips/detail/${trip.id}" role="button">View details &raquo;</a></p>
+                <p><f:message key="trip.price"/> : € <c:out value="${trip.price}"/></p>
+                <p><f:message key="trip.from"/> : <c:out value="${trip.fromDate}"/></p>
+                <p><f:message key="trip.to"/> : <c:out value="${trip.toDate}"/></p>
+                <p><f:message key="trip.capacity"/>: <c:out value="${trip.capacity}" /></p>
+                <p><f:message key="home.bait"><f:param value="${trip.destination}"/></f:message> </p>
+                <p><a class="btn btn-secondary" href="${pageContext.request.contextPath}/trips/detail/${trip.id}" role="button">
+                    <f:message key="home.details"/>&raquo;
+                </a></p>
             </div>
          </c:forEach>
         <br/>

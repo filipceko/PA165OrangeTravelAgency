@@ -16,6 +16,10 @@ import java.util.Collection;
  */
 @Service
 public class ReservationServiceImpl implements ReservationService {
+
+    /**
+     * Data access object for reservations
+     */
     @Inject
     private ReservationDao reservationDao;
 

@@ -18,7 +18,7 @@
             <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
             <f:message key="trip.filter.future"/>
         </my:a>
-        <br/>
+        <br/><br/><br/>
         <div class="row">
             <c:forEach items="${trips}" var="trip" varStatus="ic">
                 <div class="col-xs-12"><!-- bootstrap responsive grid -->

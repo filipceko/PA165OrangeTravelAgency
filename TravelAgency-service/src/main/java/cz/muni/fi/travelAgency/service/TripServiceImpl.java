@@ -22,6 +22,9 @@ import java.util.*;
 @Service
 public class TripServiceImpl implements TripService {
 
+    /**
+     * Data access object for trips
+     */
     @Inject
     private TripDao tripDao;
 

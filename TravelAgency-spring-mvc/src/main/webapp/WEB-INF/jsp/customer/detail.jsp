@@ -10,7 +10,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<my:pageTemplate title="Customer #${customer.id} Detail">
+<my:pageTemplate>
+    <jsp:attribute name="title"><f:message key="customer.accountDetails"/></jsp:attribute>
     <jsp:attribute name="body">
         <h3> <f:message key="customer.name"/>: ${customer.name} <br/></h3>
         <h3><f:message key="customer.surname"/>: ${customer.surname} <br/></h3>

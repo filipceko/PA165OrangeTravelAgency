@@ -23,6 +23,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
+ * Excursion DAO testing class
+ *
  * @author Simona Raucinova
  */
 @ContextConfiguration(classes = PersistenceTestAppContext.class)
@@ -30,18 +32,42 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
 
+    /**
+     * Data access object for excursions
+     */
     @Autowired
     private ExcursionDao excursionDao;
 
+    /**
+     * Data access object for trips
+     */
     @Autowired
     private TripDao tripDao;
 
+    /**
+     * Trip used for testing
+     */
     private Trip newYorkTrip;
-    private Excursion excursionStatueOfLiberty;
-    private Excursion excursionObservatory;
+    /**
+     * Trip used for testing
+     */
     private Trip parisTrip;
+    /**
+     * Excursion used for testing
+     */
     private Excursion excursionEiffel;
+    /**
+     * Excursion used for testing
+     */
+    private Excursion excursionStatueOfLiberty;
+    /**
+     * Excursion used for testing
+     */
+    private Excursion excursionObservatory;
 
+    /**
+     * Creates testing objects
+     */
     @BeforeMethod
     public void setUp() {
         Trip newYorkTrip = new Trip();
@@ -50,7 +76,6 @@ public class ExcursionDaoTest extends AbstractTestNGSpringContextTests {
         newYorkTrip.setDestination("New York");
         newYorkTrip.setCapacity(25);
         newYorkTrip.setPrice(100.20);
-
 
         Excursion excursionStatueOfLiberty = new Excursion();
         excursionStatueOfLiberty.setDescription("Visit the America’s most notable visitor experiences " +

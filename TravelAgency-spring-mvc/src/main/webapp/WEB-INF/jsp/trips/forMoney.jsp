@@ -12,19 +12,20 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<my:pageTemplate title="Best options for you">
+<my:pageTemplate>
+<jsp:attribute name="title"><f:message key="trips.forMoney.title"/></jsp:attribute>
 <jsp:attribute name="body">
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Destination</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Capacity</th>
-                <th>Price</th>
-                <th># of Reservations</th>
-                <th># of Excursions</th>
+                <th><f:message key="common.id"/></th>
+                <th><f:message key="trip.destination"/></th>
+                <th><f:message key="trip.from"/></th>
+                <th><f:message key="trip.to"/></th>
+                <th><f:message key="trip.capacity"/></th>
+                <th><f:message key="trip.price"/></th>
+                <th><f:message key="trips.numberOfReservations"/></th>
+                <th><f:message key="trips.numberOfExcursions"/></th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +47,7 @@
             </c:forEach>
         </tbody>
     </table>
-    <c:out value="With these available excursions"/>
+    <f:message key="trips.forMoney.excursions"/>
     <table class="table">
         <thead>
             <tr>

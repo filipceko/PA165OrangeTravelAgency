@@ -33,28 +33,59 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
 
-
+    /**
+     * Data access object for reservations
+     */
     @Autowired
     private ReservationDao reservationDao;
 
+    /**
+     * Data access object for Trips
+     */
     @Autowired
     private TripDao tripDao;
 
-    @Autowired
-    private ExcursionDao excursionDao;
-
+    /**
+     * Data access object for Customer
+     */
     @Autowired
     private CustomerDao customerDao;
 
+    /**
+     * Date used for testing
+     */
     private LocalDate firstDate = LocalDate.of(1995, 7, 28);
+    /**
+     * Date used for testing
+     */
     private LocalDate secondDate = LocalDate.of(2018, 11, 24);
-
+    /**
+     * Data used for testing
+     */
     private Trip trip;
+    /**
+     * Data used for testing
+     */
     private Customer customer1;
+    /**
+     * Data used for testing
+     */
     private Customer customer2;
+    /**
+     * Data used for testing
+     */
     private Customer customer3;
+    /**
+     * Data used for testing
+     */
     private Reservation reservation1;
+    /**
+     * Data used for testing
+     */
     private Reservation reservation2;
+    /**
+     * Data used for testing
+     */
     private Excursion excursion2;
 
     /**
@@ -88,7 +119,7 @@ public class ReservationDaoTest extends AbstractTestNGSpringContextTests {
     public void removeTest() {
         reservationDao.remove(reservation1);
         reservationDao.remove(reservation2);
-        //Test remove was successful
+        //Test that remove was successful
         assertNull(reservationDao.findById(reservation1.getId()));
         assertNull(reservationDao.findById(reservation2.getId()));
         assertThrows(IllegalArgumentException.class, () -> reservationDao.remove(new Reservation()));

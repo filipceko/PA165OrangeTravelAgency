@@ -5,6 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 /**
  * @author Simona Raucinova
  */
-@JsonIgnoreProperties({ "excursions", "reservations" })
+@JsonIgnoreProperties({"excursions", "reservations"})
 public class TripDTOMixin {
 }

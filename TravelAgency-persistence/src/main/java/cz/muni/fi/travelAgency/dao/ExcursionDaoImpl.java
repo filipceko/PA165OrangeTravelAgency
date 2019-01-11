@@ -25,6 +25,9 @@ public class ExcursionDaoImpl implements ExcursionDao {
     @PersistenceContext
     private EntityManager eManager;
 
+    /**
+     * Data access object for reservations
+     */
     @Autowired
     private ReservationDao reservationDao;
 

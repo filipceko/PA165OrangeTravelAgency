@@ -31,9 +31,6 @@ public class PersistenceApplicationContext {
         return new JpaTransactionManager(entityManagerFactory().getObject());
     }
 
-    /**
-     * Starts up a container that emulates behavior prescribed in JPA spec for container-managed EntityManager
-     */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean jpaFactoryBean = new LocalContainerEntityManagerFactoryBean();

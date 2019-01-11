@@ -29,9 +29,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 public class CustomerDaoTest extends AbstractTestNGSpringContextTests {
 
+    /**
+     * Data access object for customer
+     */
     @Autowired
     private CustomerDao customerDao;
 
+    /**
+     * Instance of customer used for testing
+     */
     private Customer customer;
 
     /**

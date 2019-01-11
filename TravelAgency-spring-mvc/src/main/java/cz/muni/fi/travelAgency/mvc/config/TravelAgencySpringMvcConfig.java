@@ -21,9 +21,6 @@ import javax.validation.Validator;
 
 /**
  * The central Spring context and Spring MVC configuration.
- * The @Configuration annotation declares it as Spring configuration.
- * The @EnableWebMvc enables default  MVC config for using @Controller, @RequestMapping and so on,
- * see http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html#mvc-config-enable
  *
  * @author Filip Cekovsky
  */
@@ -33,8 +30,14 @@ import javax.validation.Validator;
 @ComponentScan
 public class TravelAgencySpringMvcConfig implements WebMvcConfigurer {
 
-    private final static Logger logger = LoggerFactory.getLogger(TravelAgencySpringMvcConfig.class);
+    /**
+     * Logger for this class
+     */
+    private final static Logger LOGGER = LoggerFactory.getLogger(TravelAgencySpringMvcConfig.class);
 
+    /**
+     * Constant representing Text properties name
+     */
     private static final String TEXTS = "Texts";
 
     /**
@@ -42,7 +45,7 @@ public class TravelAgencySpringMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        logger.debug("mapping URL / to home view");
+        LOGGER.debug("mapping URL / to home view");
         registry.addViewController("/").setViewName("home");
     }
 
@@ -52,7 +55,7 @@ public class TravelAgencySpringMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        logger.debug("enabling default servlet for static files");
+        LOGGER.debug("enabling default servlet for static files");
         configurer.enable();
     }
 
@@ -61,7 +64,7 @@ public class TravelAgencySpringMvcConfig implements WebMvcConfigurer {
      */
     @Bean
     public ViewResolver viewResolver() {
-        logger.debug("registering JSP in /WEB-INF/jsp/ as views");
+        LOGGER.debug("registering JSP in /WEB-INF/jsp/ as views");
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setPrefix("/WEB-INF/jsp/");
         viewResolver.setSuffix(".jsp");
@@ -73,7 +76,7 @@ public class TravelAgencySpringMvcConfig implements WebMvcConfigurer {
      */
     @Bean
     public MessageSource messageSource() {
-        logger.debug("registering ResourceBundle 'Texts' for messages");
+        LOGGER.debug("registering ResourceBundle 'Texts' for messages");
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename(TEXTS);
         return messageSource;
@@ -84,7 +87,7 @@ public class TravelAgencySpringMvcConfig implements WebMvcConfigurer {
      */
     @Bean
     public Validator validator() {
-        logger.debug("registering JSR-303 validator");
+        LOGGER.debug("registering JSR-303 validator");
         return new LocalValidatorFactoryBean();
     }
 

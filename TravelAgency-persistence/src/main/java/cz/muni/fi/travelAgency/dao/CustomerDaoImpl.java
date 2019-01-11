@@ -1,6 +1,8 @@
 package cz.muni.fi.travelAgency.dao;
 
 import cz.muni.fi.travelAgency.entities.Customer;
+import cz.muni.fi.travelAgency.entities.Reservation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -21,6 +23,12 @@ public class CustomerDaoImpl implements CustomerDao {
      */
     @PersistenceContext
     private EntityManager manager;
+
+    /**
+     * Reservation data access object
+     */
+    @Autowired
+    private ReservationDao reservationDao;
 
     @Override
     public void create(Customer customer) {
@@ -74,6 +82,10 @@ public class CustomerDaoImpl implements CustomerDao {
     public void remove(Customer customer) {
         if (customer == null) {
             throw new IllegalArgumentException("Tried to remove NULL from the Customers");
+        }
+        Collection<Reservation> reservations = reservationDao.findByCustomerId(customer.getId());
+        for (Reservation reservation : reservations){
+            reservationDao.remove(reservation);
         }
         manager.remove(manager.merge(customer));
     }

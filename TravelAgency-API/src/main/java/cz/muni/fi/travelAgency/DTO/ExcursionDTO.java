@@ -63,39 +63,15 @@ public class ExcursionDTO {
      */
     private TripDTO trip;
 
-    /**
-     * Simple non-parametric constructor
-     */
     public ExcursionDTO() {
     }
 
-    /**
-     * Parametric constructor with trip and with ID
-     *
-     * @param id                of this excursion
-     * @param trip              the excursion is for
-     * @param destination       of this excursion
-     * @param excursionDate     of this excursion
-     * @param excursionDuration of this excursion
-     * @param price             of this excursion
-     * @param description       of this excursion
-     */
     public ExcursionDTO(Long id, @NotNull TripDTO trip, @NotNull String destination, @NotNull LocalDate excursionDate,
                         @NotNull Duration excursionDuration, @NotNull Double price, @NotNull String description) {
         this(trip, destination, excursionDate, excursionDuration, price, description);
         this.id = id;
     }
 
-    /**
-     * Parametric constructor with trip and without ID
-     *
-     * @param trip              the excursion is for
-     * @param destination       of this excursion
-     * @param excursionDate     of this excursion
-     * @param excursionDuration of this excursion
-     * @param price             of this excursion
-     * @param description       of this excursion
-     */
     public ExcursionDTO(TripDTO trip, @NotNull @Size(min = 3, max = 500) String destination, @NotNull LocalDate excursionDate,
                         @NotNull Duration excursionDuration, @NotNull @Min(0) Double price,
                         @NotNull @Size(min = 3, max = 500) String description) {

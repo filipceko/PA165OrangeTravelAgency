@@ -1,12 +1,11 @@
 package cz.muni.fi.travelAgency.DTO;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
 
 /**
  * DTO for Customer.
@@ -15,41 +14,68 @@ import javax.validation.constraints.Size;
  */
 public class CustomerDTO {
 
+    /**
+     * Customer's id
+     */
     private Long id;
 
+    /**
+     * Customer's name
+     */
     @NotNull
     @Size(min = 3, max = 20)
     private String name;
 
+    /**
+     * Customer's surname
+     */
     @NotNull
     @Size(min = 3, max = 20)
     private String surname;
 
+    /**
+     * Customer's email
+     */
+    @NotNull
     @Email
     private String email;
 
-    @NotNull
-    @Size(min = 8, max = 30)
-    private String passwordHash;
-
-    private boolean admin;
-
+    /**
+     * Phone number
+     */
     private String phoneNumber;
 
-    @NotNull
+    /**
+     * Passport number
+     */
     private String passportNumber;
 
-    @NotNull
-    @Past
+    /**
+     * Customer's date of birth
+     */
     private LocalDate dateOfBirth;
 
+    /**
+     * Hash of the customer's password
+     */
+    @NotNull
+    private String passwordHash;
+
+    /**
+     * True if user is admin, false otherwise
+     */
+    private boolean admin;
+
+    /**
+     * Reservations made by this customer
+     */
     private Set<ReservationDTO> reservationDTOS = new HashSet<>();
 
     public CustomerDTO() {
     }
 
     public CustomerDTO(@NotNull String name, @NotNull String surname, @Email String email, @NotNull String passwordHash,
-            String phoneNumber, @NotNull String passportNumber, @NotNull LocalDate dateOfBirth) {
+                       String phoneNumber, @NotNull String passportNumber, @NotNull LocalDate dateOfBirth) {
         this.name = name;
         this.surname = surname;
         this.email = email;

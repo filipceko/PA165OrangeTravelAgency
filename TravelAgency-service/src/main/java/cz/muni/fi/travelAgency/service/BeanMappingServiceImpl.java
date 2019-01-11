@@ -1,14 +1,17 @@
 package cz.muni.fi.travelAgency.service;
 
 import cz.muni.fi.travelAgency.DTO.CheapTravelDTO;
+import cz.muni.fi.travelAgency.DTO.ExcursionCreateDTO;
 import cz.muni.fi.travelAgency.DTO.ExcursionDTO;
 import cz.muni.fi.travelAgency.DTO.TripDTO;
 import cz.muni.fi.travelAgency.entities.Excursion;
 import cz.muni.fi.travelAgency.entities.Trip;
+import cz.muni.fi.travelAgency.facade.TripFacade;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.*;
 
 /**
@@ -24,6 +27,12 @@ public class BeanMappingServiceImpl implements BeanMappingService {
      */
     @Autowired
     private Mapper mapper;
+
+    /**
+     * Trip facade
+     */
+    @Autowired
+    TripFacade tripFacade;
 
     @Override
     public Mapper getMapper() {
@@ -74,5 +83,13 @@ public class BeanMappingServiceImpl implements BeanMappingService {
         }
         result.setExcursions(mapTo(allExcursions, ExcursionDTO.class));
         return result;
+    }
+
+    @Override
+    public ExcursionDTO mapManipulationToEntityDTO(ExcursionCreateDTO manipulationDTO) {
+        ExcursionDTO excursionDTO = mapTo(manipulationDTO, ExcursionDTO.class);
+        excursionDTO.setTrip(tripFacade.getTripById(manipulationDTO.getTripId()));
+        excursionDTO.setExcursionDuration(Duration.parse("PT" + manipulationDTO.getDurationMinutes() + "M"));
+        return excursionDTO;
     }
 }

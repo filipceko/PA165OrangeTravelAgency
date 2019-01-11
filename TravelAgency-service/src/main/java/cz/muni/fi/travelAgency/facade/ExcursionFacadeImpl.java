@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 
 /**
- * Implemetation of {@link ExcursionFacade}.
+ * Implementation of {@link ExcursionFacade}.
  *
  * @author Rajivv
  */

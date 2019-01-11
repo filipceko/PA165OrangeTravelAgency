@@ -18,12 +18,21 @@ public class ReservationDTO {
      */
     private Long id;
 
+    /**
+     * Customer who made this reservation
+     */
     @NotNull
     private CustomerDTO customer;
 
+    /**
+     * Booked trip by this reservation
+     */
     @NotNull
     private TripDTO trip;
 
+    /**
+     * Excursions booked with this reservation
+     */
     @NotNull
     private Collection<ExcursionDTO> excursions;
 
@@ -33,65 +42,15 @@ public class ReservationDTO {
     @NotNull
     private LocalDate reserveDate;
 
-    /**
-     * Simple non-parametric constructor
-     */
     public ReservationDTO() {
     }
 
-    /**
-     * Constructor without excursions and with ID
-     *
-     * @param customer    who made this reservation
-     * @param trip        the reservation is for
-     * @param id          of this reservation
-     * @param reserveDate the date this reservation was made
-     */
-    public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, Long id, @NotNull LocalDate reserveDate) {
-        this.customer = customer;
-        this.trip = trip;
-        this.id = id;
-        this.reserveDate = reserveDate;
-    }
-
-    /**
-     * Constructor with excursions and ID
-     *
-     * @param customer    who made this reservation
-     * @param trip        the reservation is for
-     * @param excursions  booked with this reservation
-     * @param id          of this reservation
-     * @param reserveDate the date this reservation was made
-     */
-    public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, @NotNull Set<ExcursionDTO> excursions, Long id, @NotNull LocalDate reserveDate) {
-        this.customer = customer;
-        this.trip = trip;
-        this.excursions = excursions;
-        this.id = id;
-        this.reserveDate = reserveDate;
-    }
-
-    /**
-     * Constructor without excursions and ID
-     *
-     * @param customer    who made the reservation
-     * @param trip        the reservation is for
-     * @param reserveDate tha date this reservation was made
-     */
     public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, @NotNull LocalDate reserveDate) {
         this.customer = customer;
         this.trip = trip;
         this.reserveDate = reserveDate;
     }
 
-    /**
-     * Constructor with excursions and without ID
-     *
-     * @param customer    who made the reservation
-     * @param trip        the reservation is for
-     * @param excursions  booked with this reservation
-     * @param reserveDate the date this reservation was made
-     */
     public ReservationDTO(@NotNull CustomerDTO customer, @NotNull TripDTO trip, @NotNull Set<ExcursionDTO> excursions, @NotNull LocalDate reserveDate) {
         this.customer = customer;
         this.trip = trip;

@@ -11,20 +11,17 @@ import java.util.Objects;
  */
 public class CheapTravelDTO {
 
+    /**
+     * Collection of trips
+     */
     private Collection<TripDTO> trips = new HashSet<>();
 
+    /**
+     * Collection of excursions, all excursions should be related to a trip from trips
+     */
     private Collection<ExcursionDTO> excursions = new HashSet<>();
 
     public CheapTravelDTO() {
-    }
-
-    public CheapTravelDTO(Collection<TripDTO> trips, Collection<ExcursionDTO> excursions) {
-        if (trips != null) {
-            this.trips = trips;
-            if (excursions != null) {
-                this.excursions = excursions;
-            }
-        }
     }
 
     public Collection<TripDTO> getTrips() {

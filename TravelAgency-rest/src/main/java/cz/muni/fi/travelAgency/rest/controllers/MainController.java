@@ -17,11 +17,10 @@ import java.util.Map;
  */
 @RestController
 public class MainController {
-    final static Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final Map<String, String> getResources() {
-        Map<String,String> resourcesMap = new HashMap<>();
+        Map<String, String> resourcesMap = new HashMap<>();
 
         resourcesMap.put("excursions_uri", ApiUris.EXCURSIONS_URI);
 

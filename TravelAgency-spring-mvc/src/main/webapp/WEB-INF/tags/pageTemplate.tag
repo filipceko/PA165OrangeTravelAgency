@@ -6,13 +6,14 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html lang="${pageContext.request.locale}">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><c:out value="${title}"/></title>
-    <!-- bootstrap loaded from content delivery network -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -46,7 +47,7 @@
                             <li><my:a href="/admin/trip/list/all"><f:message key="navigation.admin.trips"/></my:a></li>
                             <li><my:a href="/admin/customer/list"><f:message key="navigation.admin.customers"/></my:a></li>
                             <li><my:a href="/admin/excursion/list"><f:message key="navigation.admin.excursions"/></my:a></li>
-                            <li><my:a href="/admin/reservation/list/all"><f:message key="navigation.admin.reservations"/></my:a></li>
+                            <li><my:a href="/admin/reservation/list"><f:message key="navigation.admin.reservations"/></my:a></li>
                         </ul>
                     </li>
                 </c:if>
@@ -56,19 +57,15 @@
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><my:a href="/auth/login"><f:message key="navigation.customer.login"/></my:a></li>
                         <c:if test="${empty authenticatedUser}">
+                            <li><my:a href="/auth/login"><f:message key="navigation.customer.login"/></my:a></li>
                             <li><my:a href="/customer/registration"><f:message key="navigation.customer.registration"/></my:a></li>
                         </c:if>
-
                         <c:if test="${not empty authenticatedUser}">
-                                    <li><my:a href="/customer/reservationView"><f:message key="customer.reservationView"/></my:a></li>
-                                    </c:if>
-                        <c:if test="${not empty authenticatedUser}">
+                            <li><my:a href="/customer/detail"><f:message key="customer.myAccount"/></my:a></li>
+                            <li><my:a href="/customer/reservationView"><f:message key="customer.reservationView"/></my:a></li>
+                            <li><my:a href="/customer/edit"><f:message key="navigation.customer.edit"/></my:a></li>
                             <li><my:a href="/auth/logout"><f:message key="navigation.customer.logout"/></my:a></li>
-                        </c:if>
-                        <c:if test="${not empty authenticatedUser}">
-                            <li><my:a href="/customer/edit"><f:message key="customer.myAccount"/></my:a></li>
                         </c:if>
                     </ul>
                 </li>
@@ -96,12 +93,6 @@
     </div>
 </nav><!--/.nav-collapse -->
 <div class="container">
-    <!-- page title -->
-    <c:if test="${not empty title}">
-        <div class="page-header">
-            <h1><c:out value="${title}"/></h1>
-        </div>
-    </c:if>
     <!-- authenticated user info -->
     <div class="row">
         <c:if test="${not empty authenticatedUser}">
@@ -114,6 +105,12 @@
             </div>
         </c:if>
     </div>
+    <!-- page title -->
+    <c:if test="${not empty title}">
+        <div class="page-header">
+            <h1><c:out value="${title}"/></h1>
+        </div>
+    </c:if>
     <!-- alerts -->
     <c:if test="${not empty alert_danger}">
         <div class="alert alert-danger" role="alert">

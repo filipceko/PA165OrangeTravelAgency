@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -30,30 +29,50 @@ import java.util.Set;
 @Transactional
 public class SampleDataLoadingFacade implements DataLoadingFacade {
 
-    final static Logger logger = LoggerFactory.getLogger(SampleDataLoadingFacade.class);
+    /**
+     * Logger for this class
+     */
+    private final static Logger logger = LoggerFactory.getLogger(SampleDataLoadingFacade.class);
 
+    /**
+     * Service for trips
+     */
     @Autowired
     private TripService tripService;
 
+    /**
+     * Service for customers
+     */
     @Autowired
     private CustomerService customerService;
 
+    /**
+     * Service for excursions
+     */
     @Autowired
     private ExcursionService excursionService;
 
+    /**
+     * Service for reservations
+     */
     @Autowired
     private ReservationService reservationService;
 
-    private static LocalDate daysFromNow(int days) {
-        if (days >= 0) {
-            return LocalDate.now().plusDays(days);
+    /**
+     * Creates Local Date x days from now
+     * @param x days from now
+     * @return LocalDate x days from now
+     */
+    private static LocalDate daysFromNow(int x) {
+        if (x >= 0) {
+            return LocalDate.now().plusDays(x);
         } else {
-            return LocalDate.now().minusDays(Math.abs(days));
+            return LocalDate.now().minusDays(Math.abs(x));
         }
     }
 
     @Override
-    public void loadData() throws IOException {
+    public void loadData() {
         //TRIPS
         Trip rome = new Trip(daysFromNow(10), daysFromNow(17), "Rome, Italy", 30, 1000.0);
         Trip athens = new Trip(daysFromNow(80), daysFromNow(85), "Athens, Greece", 15, 850.0);
@@ -67,7 +86,6 @@ public class SampleDataLoadingFacade implements DataLoadingFacade {
         tripService.createTrip(machuPicchu);
         tripService.createTrip(sydney);
         logger.info("Trips loaded.");
-
         //CUSTOMERS
         Customer admin = new Customer("Admin", "Admin", "admin@orange.org");
         admin.setAdmin(true);
@@ -83,7 +101,6 @@ public class SampleDataLoadingFacade implements DataLoadingFacade {
         customerService.registerCustomer(rajiv, "JavaIsLove");
         customerService.registerCustomer(rithy, "password");
         logger.info("Users loaded.");
-
         //EXCURSIONS
         Excursion colosseum = new Excursion(rome, "Colosseum", daysFromNow(12), Duration.ofHours(5),
                 20.0, "Tour trough the ancient Colosseum");
@@ -109,7 +126,6 @@ public class SampleDataLoadingFacade implements DataLoadingFacade {
         excursionService.createExcursion(cathedral);
         excursionService.createExcursion(operaHouse);
         logger.info("Excursions loaded.");
-
         //RESERVATIONS
         Reservation filipRome = new Reservation(filip, rome, daysFromNow(0));
         Set<Excursion> excursions = new HashSet<>();

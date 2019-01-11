@@ -24,15 +24,12 @@ public class ReservationCreateDTO {
     @NotNull
     private List<String> excursions = new LinkedList<>();
 
-    /**
-     * Simple non-parametric constructor.
-     */
     public ReservationCreateDTO() {
     }
 
     public ReservationCreateDTO(@NotNull Long tripId, @NotNull Collection<ExcursionDTO> excursions) {
         this.tripId = tripId;
-        for (ExcursionDTO excursionDTO : excursions){
+        for (ExcursionDTO excursionDTO : excursions) {
             this.excursions.add(excursionDTO.getDestination());
         }
     }
