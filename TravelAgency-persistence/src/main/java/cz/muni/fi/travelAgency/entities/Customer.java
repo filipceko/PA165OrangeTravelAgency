@@ -50,7 +50,7 @@ public class Customer {
     private String passwordHash;
 
     /**
-     *
+     * true if this customer is admin
      */
     @Column
     private boolean isAdmin;

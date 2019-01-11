@@ -14,14 +14,20 @@
 <%@ taglib prefix="e" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <my:pageTemplate>
-    <jsp:attribute name="title">Booking trip to ${trip.destination}</jsp:attribute>
+    <jsp:attribute name="title">
+        <f:message key="reservation.create.title"><f:param value="${trip.destination}"/></f:message>
+    </jsp:attribute>
     <jsp:attribute name="body">
         <form:form method="post" action="/travel.agency/reservation/createReservation" modelAttribute="reservation">
             <form:hidden path="tripId" />
             <table>
                 <tr>
                     <td><f:message key="trip.chooseExcursions"/>:</td>
+                </tr>
+                <tr>
                     <td><form:checkboxes items="${reservation.excursions}" path="excursions" /></td>
+                </tr>
+                <tr>
                     <td><form:errors path="excursions" cssClass="error" /></td>
                 </tr>
                 <tr>

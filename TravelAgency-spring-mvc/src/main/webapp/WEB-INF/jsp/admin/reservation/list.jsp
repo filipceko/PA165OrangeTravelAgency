@@ -15,8 +15,8 @@
 <my:pageTemplate title="Reservation">
 <jsp:attribute name="body">
     <form:form action="/travel.agency/admin/reservation/dateList" method="POST">
-        <input type="text" id="fromDate" name="fromDate" value="<f:message key="trip.filter.baseValue"/>"/>
-        <input type="text" id="toDate" name="toDate" value="<f:message key="trip.filter.baseValue"/>"/>
+        <input type="text" id="fromDate" name="fromDate" value="<f:message key="common.pickDate"/>"/>
+        <input type="text" id="toDate" name="toDate" value="<f:message key="common.pickDate"/>"/>
         <input type="submit" value="<f:message key="common.filter"/>"/>
     </form:form>
     <table class="table">

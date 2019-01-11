@@ -76,8 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Permit anonymous access
                 .antMatchers("/", "/auth/login", "/home", "/trips/**", "/customer/registration", "/customer/create",
                         "/customer/reservationView").permitAll()
-                .antMatchers("/reservation/**", "/customer/edit", "/customer/editCustomer",
-                        "/customer/delete/*").hasAnyRole("Customer")
+                .antMatchers("/reservation/**", "/customer/**").hasAnyRole("Customer")
                 .antMatchers("/**").hasAnyRole("Admin")
                 .anyRequest().authenticated()
 

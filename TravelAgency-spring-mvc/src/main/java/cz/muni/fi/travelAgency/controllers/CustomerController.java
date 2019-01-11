@@ -146,7 +146,7 @@ public class CustomerController {
         customerFacade.updateCustomer(customerDTO);
         redirectAttributes.addFlashAttribute("alert_success", context.getMessage("success.accountUpdated",
                 new Object[]{}, LocaleContextHolder.getLocale()));
-        return "redirect:" + uriBuilder.path("/customer/detail/" + createDTO.getId()).build().encode().toUriString();
+        return "redirect:" + uriBuilder.path("/customer/detail").build().encode().toUriString();
     }
 
     /**

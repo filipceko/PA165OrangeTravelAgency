@@ -25,11 +25,11 @@
                     <h3><f:message key="trip.excursions"/>: </h3><br/>
                     <thead>
                         <tr>
-                            <th>Destination</th>
-                            <th>Description</th>
-                            <th>Date</th>
-                            <th>Duration</th>
-                            <th>Price</th>
+                            <th><f:message key="excursion.destination"/></th>
+                            <th><f:message key="excursion.description"/></th>
+                            <th><f:message key="excursion.date"/></th>
+                            <th><f:message key="excursion.duration"/></th>
+                            <th><f:message key="excursion.price"/></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,8 +45,8 @@
                     </tbody>
                 </table>
                 <my:a href="/reservation/create/${trip.id}" class="btn btn-primary">
-                <f:message key="trip.book"/>
-            </my:a>
+                    <f:message key="trip.book"/>
+                </my:a>
             </div>
         </div>
     </jsp:attribute>

@@ -10,7 +10,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<my:pageTemplate title="Edit Account ${customer.name}">
+<my:pageTemplate>
     <jsp:attribute name="body">
         <form:form method="POST" action="/travel.agency/customer/editCustomer/" modelAttribute="customer">
             <form:input type="hidden" path="id"/>
@@ -40,8 +40,7 @@
                     <td><form:input path="dateOfBirth"/></td>
                 </tr>
                 <tr>
-                    <td><form:label path="password"><f:message key="customer.password"/>: </form:label></td>
-                    <td><form:input type="password" path="password"/></td>
+                    <td><form:hidden path="password"/></td>
                 </tr>
                 <br/>
                 <tr>

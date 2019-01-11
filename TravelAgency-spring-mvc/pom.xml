@@ -105,7 +105,7 @@
     -->
     <build>
         <defaultGoal>cargo:run</defaultGoal>
-        <finalName>travel.agency</finalName>
+        <finalName>pa165</finalName>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>

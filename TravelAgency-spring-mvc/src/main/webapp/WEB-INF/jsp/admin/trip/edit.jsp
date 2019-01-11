@@ -12,7 +12,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<my:pageTemplate title="Edditing trip #${trip.id}">
+<my:pageTemplate>
+    <jsp:attribute name="title"><f:message key="trip.edit.title">
+        <f:param value="${trip.destination}"/>
+    </f:message></jsp:attribute>
     <jsp:attribute name="body">
         <form:form method="POST" action="/travel.agency/admin/trip/editTrip" modelAttribute="trip">
             <table>

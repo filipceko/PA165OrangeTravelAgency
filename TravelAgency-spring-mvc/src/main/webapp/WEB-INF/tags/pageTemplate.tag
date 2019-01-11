@@ -14,7 +14,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><c:out value="${title}"/></title>
-    <!-- bootstrap loaded from content delivery network -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -58,19 +57,15 @@
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><my:a href="/auth/login"><f:message key="navigation.customer.login"/></my:a></li>
                         <c:if test="${empty authenticatedUser}">
+                            <li><my:a href="/auth/login"><f:message key="navigation.customer.login"/></my:a></li>
                             <li><my:a href="/customer/registration"><f:message key="navigation.customer.registration"/></my:a></li>
                         </c:if>
-
                         <c:if test="${not empty authenticatedUser}">
-                                    <li><my:a href="/customer/reservationView"><f:message key="customer.reservationView"/></my:a></li>
-                                    </c:if>
-                        <c:if test="${not empty authenticatedUser}">
+                            <li><my:a href="/customer/detail"><f:message key="customer.myAccount"/></my:a></li>
+                            <li><my:a href="/customer/reservationView"><f:message key="customer.reservationView"/></my:a></li>
+                            <li><my:a href="/customer/edit"><f:message key="navigation.customer.edit"/></my:a></li>
                             <li><my:a href="/auth/logout"><f:message key="navigation.customer.logout"/></my:a></li>
-                        </c:if>
-                        <c:if test="${not empty authenticatedUser}">
-                            <li><my:a href="/customer/edit"><f:message key="customer.myAccount"/></my:a></li>
                         </c:if>
                     </ul>
                 </li>
